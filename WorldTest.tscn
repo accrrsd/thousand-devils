@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://dy8kur3grffc1"]
+[gd_scene load_steps=8 format=3 uid="uid://dy8kur3grffc1"]
 
-[ext_resource type="PackedScene" uid="uid://bdt6b0la6nj55" path="res://cell.tscn" id="1_38ubh"]
+[ext_resource type="PackedScene" uid="uid://bdt6b0la6nj55" path="res://cells/@Cell_base.tscn" id="1_38ubh"]
+[ext_resource type="Script" path="res://dev-features/CameraFree.cs" id="1_o5m5o"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_bwinc"]
 
@@ -29,68 +30,72 @@ environment = SubResource("Environment_fh11p")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.87538, 0.483435, 0, -0.483435, 0.87538, 0, 12.9057, 21.1724)
 
+[node name="FreeCamera" type="Camera3D" parent="."]
+transform = Transform3D(-4.2222e-08, -0.258819, 0.965926, -1.13133e-08, 0.965926, 0.258819, -1, 4.61853e-14, -4.37114e-08, 31.0653, 22.1442, 0)
+script = ExtResource("1_o5m5o")
+
 [node name="Row9_" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 0)
 
 [node name="Cell_test" parent="Row9_" instance=ExtResource("1_38ubh")]
 
 [node name="Cell_test2" parent="Row9_" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 10)
 
 [node name="Cell_test3" parent="Row9_" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 20)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 20)
 
 [node name="Cell_test4" parent="Row9_" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 30)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 30)
 
 [node name="Cell_test5" parent="Row9_" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 40)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 40)
 
 [node name="Cell_test6" parent="Row9_" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -10)
 
 [node name="Cell_test7" parent="Row9_" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -20)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -20)
 
 [node name="Cell_test8" parent="Row9_" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -30)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -30)
 
 [node name="Cell_test9" parent="Row9_" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -40)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -40)
 
 [node name="Row11_" type="Node3D" parent="."]
 
 [node name="Cell_test" parent="Row11_" instance=ExtResource("1_38ubh")]
 
 [node name="Cell_test2" parent="Row11_" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 10)
 
 [node name="Cell_test3" parent="Row11_" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 20)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 20)
 
 [node name="Cell_test4" parent="Row11_" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 30)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 30)
 
 [node name="Cell_test5" parent="Row11_" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 40)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 40)
 
 [node name="Cell_test6" parent="Row11_" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -10)
 
 [node name="Cell_test7" parent="Row11_" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -20)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -20)
 
 [node name="Cell_test8" parent="Row11_" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -30)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -30)
 
 [node name="Cell_test9" parent="Row11_" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -40)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -40)
 
 [node name="Cell_test10" parent="Row11_" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -50)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -50)
 
 [node name="Cell_test11" parent="Row11_" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 50)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 50)
 
 [node name="Row11_2" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, 0)
@@ -98,34 +103,34 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, 0)
 [node name="Cell_test" parent="Row11_2" instance=ExtResource("1_38ubh")]
 
 [node name="Cell_test2" parent="Row11_2" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 10)
 
 [node name="Cell_test3" parent="Row11_2" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 20)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 20)
 
 [node name="Cell_test4" parent="Row11_2" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 30)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 30)
 
 [node name="Cell_test5" parent="Row11_2" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 40)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 40)
 
 [node name="Cell_test6" parent="Row11_2" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -10)
 
 [node name="Cell_test7" parent="Row11_2" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -20)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -20)
 
 [node name="Cell_test8" parent="Row11_2" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -30)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -30)
 
 [node name="Cell_test9" parent="Row11_2" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -40)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -40)
 
 [node name="Cell_test10" parent="Row11_2" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -50)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -50)
 
 [node name="Cell_test11" parent="Row11_2" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 50)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 50)
 
 [node name="Row11_3" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, 0)
@@ -133,34 +138,34 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, 0)
 [node name="Cell_test" parent="Row11_3" instance=ExtResource("1_38ubh")]
 
 [node name="Cell_test2" parent="Row11_3" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 10)
 
 [node name="Cell_test3" parent="Row11_3" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 20)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 20)
 
 [node name="Cell_test4" parent="Row11_3" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 30)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 30)
 
 [node name="Cell_test5" parent="Row11_3" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 40)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 40)
 
 [node name="Cell_test6" parent="Row11_3" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -10)
 
 [node name="Cell_test7" parent="Row11_3" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -20)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -20)
 
 [node name="Cell_test8" parent="Row11_3" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -30)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -30)
 
 [node name="Cell_test9" parent="Row11_3" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -40)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -40)
 
 [node name="Cell_test10" parent="Row11_3" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -50)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -50)
 
 [node name="Cell_test11" parent="Row11_3" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 50)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 50)
 
 [node name="Row11_4" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0, 0)
@@ -168,34 +173,34 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0, 0)
 [node name="Cell_test" parent="Row11_4" instance=ExtResource("1_38ubh")]
 
 [node name="Cell_test2" parent="Row11_4" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 10)
 
 [node name="Cell_test3" parent="Row11_4" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 20)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 20)
 
 [node name="Cell_test4" parent="Row11_4" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 30)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 30)
 
 [node name="Cell_test5" parent="Row11_4" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 40)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 40)
 
 [node name="Cell_test6" parent="Row11_4" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -10)
 
 [node name="Cell_test7" parent="Row11_4" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -20)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -20)
 
 [node name="Cell_test8" parent="Row11_4" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -30)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -30)
 
 [node name="Cell_test9" parent="Row11_4" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -40)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -40)
 
 [node name="Cell_test10" parent="Row11_4" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -50)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -50)
 
 [node name="Cell_test11" parent="Row11_4" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 50)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 50)
 
 [node name="Row11_5" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40, 0, 0)
@@ -203,34 +208,34 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40, 0, 0)
 [node name="Cell_test" parent="Row11_5" instance=ExtResource("1_38ubh")]
 
 [node name="Cell_test2" parent="Row11_5" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 10)
 
 [node name="Cell_test3" parent="Row11_5" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 20)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 20)
 
 [node name="Cell_test4" parent="Row11_5" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 30)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 30)
 
 [node name="Cell_test5" parent="Row11_5" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 40)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 40)
 
 [node name="Cell_test6" parent="Row11_5" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -10)
 
 [node name="Cell_test7" parent="Row11_5" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -20)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -20)
 
 [node name="Cell_test8" parent="Row11_5" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -30)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -30)
 
 [node name="Cell_test9" parent="Row11_5" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -40)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -40)
 
 [node name="Cell_test10" parent="Row11_5" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -50)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -50)
 
 [node name="Cell_test11" parent="Row11_5" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 50)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 50)
 
 [node name="Row11_6" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50, 0, 0)
@@ -238,34 +243,34 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50, 0, 0)
 [node name="Cell_test" parent="Row11_6" instance=ExtResource("1_38ubh")]
 
 [node name="Cell_test2" parent="Row11_6" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 10)
 
 [node name="Cell_test3" parent="Row11_6" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 20)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 20)
 
 [node name="Cell_test4" parent="Row11_6" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 30)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 30)
 
 [node name="Cell_test5" parent="Row11_6" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 40)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 40)
 
 [node name="Cell_test6" parent="Row11_6" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -10)
 
 [node name="Cell_test7" parent="Row11_6" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -20)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -20)
 
 [node name="Cell_test8" parent="Row11_6" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -30)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -30)
 
 [node name="Cell_test9" parent="Row11_6" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -40)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -40)
 
 [node name="Cell_test10" parent="Row11_6" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -50)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -50)
 
 [node name="Cell_test11" parent="Row11_6" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 50)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 50)
 
 [node name="Row11_7" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60, 0, 0)
@@ -273,34 +278,34 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60, 0, 0)
 [node name="Cell_test" parent="Row11_7" instance=ExtResource("1_38ubh")]
 
 [node name="Cell_test2" parent="Row11_7" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 10)
 
 [node name="Cell_test3" parent="Row11_7" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 20)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 20)
 
 [node name="Cell_test4" parent="Row11_7" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 30)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 30)
 
 [node name="Cell_test5" parent="Row11_7" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 40)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 40)
 
 [node name="Cell_test6" parent="Row11_7" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -10)
 
 [node name="Cell_test7" parent="Row11_7" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -20)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -20)
 
 [node name="Cell_test8" parent="Row11_7" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -30)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -30)
 
 [node name="Cell_test9" parent="Row11_7" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -40)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -40)
 
 [node name="Cell_test10" parent="Row11_7" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -50)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -50)
 
 [node name="Cell_test11" parent="Row11_7" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 50)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 50)
 
 [node name="Row11_8" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -70, 0, 0)
@@ -308,34 +313,34 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -70, 0, 0)
 [node name="Cell_test" parent="Row11_8" instance=ExtResource("1_38ubh")]
 
 [node name="Cell_test2" parent="Row11_8" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 10)
 
 [node name="Cell_test3" parent="Row11_8" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 20)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 20)
 
 [node name="Cell_test4" parent="Row11_8" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 30)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 30)
 
 [node name="Cell_test5" parent="Row11_8" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 40)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 40)
 
 [node name="Cell_test6" parent="Row11_8" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -10)
 
 [node name="Cell_test7" parent="Row11_8" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -20)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -20)
 
 [node name="Cell_test8" parent="Row11_8" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -30)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -30)
 
 [node name="Cell_test9" parent="Row11_8" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -40)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -40)
 
 [node name="Cell_test10" parent="Row11_8" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -50)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -50)
 
 [node name="Cell_test11" parent="Row11_8" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 50)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 50)
 
 [node name="Row11_9" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -80, 0, 0)
@@ -343,34 +348,34 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -80, 0, 0)
 [node name="Cell_test" parent="Row11_9" instance=ExtResource("1_38ubh")]
 
 [node name="Cell_test2" parent="Row11_9" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 10)
 
 [node name="Cell_test3" parent="Row11_9" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 20)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 20)
 
 [node name="Cell_test4" parent="Row11_9" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 30)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 30)
 
 [node name="Cell_test5" parent="Row11_9" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 40)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 40)
 
 [node name="Cell_test6" parent="Row11_9" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -10)
 
 [node name="Cell_test7" parent="Row11_9" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -20)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -20)
 
 [node name="Cell_test8" parent="Row11_9" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -30)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -30)
 
 [node name="Cell_test9" parent="Row11_9" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -40)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -40)
 
 [node name="Cell_test10" parent="Row11_9" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -50)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -50)
 
 [node name="Cell_test11" parent="Row11_9" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 50)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 50)
 
 [node name="Row11_10" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -90, 0, 0)
@@ -378,34 +383,34 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -90, 0, 0)
 [node name="Cell_test" parent="Row11_10" instance=ExtResource("1_38ubh")]
 
 [node name="Cell_test2" parent="Row11_10" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 10)
 
 [node name="Cell_test3" parent="Row11_10" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 20)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 20)
 
 [node name="Cell_test4" parent="Row11_10" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 30)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 30)
 
 [node name="Cell_test5" parent="Row11_10" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 40)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 40)
 
 [node name="Cell_test6" parent="Row11_10" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -10)
 
 [node name="Cell_test7" parent="Row11_10" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -20)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -20)
 
 [node name="Cell_test8" parent="Row11_10" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -30)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -30)
 
 [node name="Cell_test9" parent="Row11_10" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -40)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -40)
 
 [node name="Cell_test10" parent="Row11_10" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -50)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -50)
 
 [node name="Cell_test11" parent="Row11_10" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 50)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 50)
 
 [node name="Row9_2" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -100, 0, 0)
@@ -413,25 +418,25 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -100, 0, 0)
 [node name="Cell_test" parent="Row9_2" instance=ExtResource("1_38ubh")]
 
 [node name="Cell_test2" parent="Row9_2" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 10)
 
 [node name="Cell_test3" parent="Row9_2" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 20)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 20)
 
 [node name="Cell_test4" parent="Row9_2" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 30)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 30)
 
 [node name="Cell_test5" parent="Row9_2" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 40)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 40)
 
 [node name="Cell_test6" parent="Row9_2" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -10)
 
 [node name="Cell_test7" parent="Row9_2" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -20)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -20)
 
 [node name="Cell_test8" parent="Row9_2" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -30)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -30)
 
 [node name="Cell_test9" parent="Row9_2" instance=ExtResource("1_38ubh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -40)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -40)

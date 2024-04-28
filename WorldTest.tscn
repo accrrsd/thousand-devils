@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://dy8kur3grffc1"]
 
-[ext_resource type="PackedScene" uid="uid://bdt6b0la6nj55" path="res://cell.tscn" id="1_38ubh"]
+[ext_resource type="PackedScene" uid="uid://bdt6b0la6nj55" path="res://CellBase.tscn" id="1_38ubh"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_bwinc"]
 

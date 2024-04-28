@@ -2,7 +2,7 @@
 
 [ext_resource type="MeshLibrary" uid="uid://ds7xg3mgo2jwe" path="res://AllInOne.tres" id="1_5js25"]
 
-[node name="Cell_test" type="Node3D"]
+[node name="CellMap" type="Node3D"]
 
 [node name="GridMap" type="GridMap" parent="."]
 mesh_library = ExtResource("1_5js25")

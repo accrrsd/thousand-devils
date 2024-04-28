@@ -16,16 +16,16 @@ public partial class CameraFree : Camera3D
 
 	private Vector3 _velocity = Vector3.Zero;
 	private Vector2 _lookAngles = Vector2.Zero;
-	private bool showMouse = false;
+	private bool _showMouse = false;
 
 	public override void _Ready()
 	{
-		if (!showMouse) Input.MouseMode = Input.MouseModeEnum.Captured;
+		if (!_showMouse) Input.MouseMode = Input.MouseModeEnum.Captured;
 	}
 
 	public override void _Process(double delta)
 	{
-		if (!showMouse)
+		if (!_showMouse)
 		{
 			_lookAngles[1] = (float)Math.Clamp(_lookAngles[1], Math.PI / -2, Math.PI / 2);
 			Rotation = new Vector3(_lookAngles[1], _lookAngles[0], 0);
@@ -43,10 +43,11 @@ public partial class CameraFree : Camera3D
 		base._Input(@event);
 		if (@event is InputEventMouseMotion mouseMotion)
 		{
+			// todo fix mouse twitching
 			_lookAngles -= mouseMotion.Relative / MouseSensitivity;
 		}
-		UpdateCameraLock();
 		UpdateCameraSpeed();
+		if (Input.IsActionJustPressed("free_cam_lock")) UpdateCameraLock();
 		if (Input.IsActionJustPressed("lmb_click")) ShootRay();
 	}
 
@@ -68,8 +69,8 @@ public partial class CameraFree : Camera3D
 
 	private void UpdateCameraLock()
 	{
-		if (Input.IsActionJustPressed("free_cam_lock")) showMouse = !showMouse;
-		if (!showMouse)
+		_showMouse = !_showMouse;
+		if (!_showMouse)
 		{
 			Input.MouseMode = Input.MouseModeEnum.Captured;
 		}
@@ -88,7 +89,7 @@ public partial class CameraFree : Camera3D
 	// dev function for click on the cells
 	private void ShootRay()
 	{
-		if (!showMouse) return;
+		if (!_showMouse) return;
 		Vector2 mousePos = GetViewport().GetMousePosition();
 		Vector3 from = ProjectRayOrigin(mousePos);
 		Vector3 to = from + ProjectRayNormal(mousePos) * rayLength;

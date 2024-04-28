@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://cpj05qa507fbb"]
+
+[ext_resource type="PackedScene" uid="uid://b5hdtc1bdhpu5" path="res://features/Game/components/cell/scenes/base/@Map_base.tscn" id="1_ey6vh"]
+
+[node name="Map" instance=ExtResource("1_ey6vh")]
+
+[node name="GridRandom" type="GridMap" parent="." index="0"]

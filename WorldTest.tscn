@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://dy8kur3grffc1"]
+[gd_scene load_steps=11 format=3 uid="uid://dy8kur3grffc1"]
 
-[ext_resource type="PackedScene" uid="uid://bdt6b0la6nj55" path="res://features/Game/components/cell/scenes/base/@Cell_base.tscn" id="1_38ubh"]
+[ext_resource type="PackedScene" uid="uid://bdt6b0la6nj55" path="res://features/Game/components/cell/scenes/base/Cell_base.tscn" id="1_38ubh"]
 [ext_resource type="Script" path="res://features/devOnly/CameraFree/CameraFree.cs" id="1_o5m5o"]
 [ext_resource type="Script" path="res://features/Game/components/field/code/Field.cs" id="2_c8w5x"]
 [ext_resource type="PackedScene" uid="uid://b5l24udgnstuk" path="res://features/Game/components/cell/scenes/Cell_ocean.tscn" id="3_ytjbb"]
+[ext_resource type="PackedScene" uid="uid://djasx8ulcp2cy" path="res://features/Game/components/cell/scenes/Cell_Player.tscn" id="5_ni85h"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_bwinc"]
 
@@ -32,27 +33,224 @@ environment = SubResource("Environment_fh11p")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.87538, 0.483435, 0, -0.483435, 0.87538, 0, 12.9057, 21.1724)
 
-[node name="FreeCamera" type="Camera3D" parent="."]
+[node name="FreeCamera" type="Camera3D" parent="." node_paths=PackedStringArray("Field")]
 transform = Transform3D(-4.2222e-08, -0.258819, 0.965926, -1.13133e-08, 0.965926, 0.258819, -1, 4.61853e-14, -4.37114e-08, 1.0653, 22.1442, 0)
 script = ExtResource("1_o5m5o")
+Field = NodePath("../Field")
 
 [node name="Field" type="Node3D" parent="."]
 script = ExtResource("2_c8w5x")
 
-[node name="Cell" parent="Field" instance=ExtResource("3_ytjbb")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 60)
+[node name="WaterLine" type="Node3D" parent="Field"]
 
-[node name="Cell2" parent="Field" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -110, -1, 60)
-_visibleCellElem = NodePath("../Cell/Map")
+[node name="Cell5" parent="Field/WaterLine" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, 60)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
 
-[node name="Cell3" parent="Field" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -110, -1, -50)
-_visibleCellElem = NodePath("../Cell/Map")
+[node name="Cell6" parent="Field/WaterLine" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, 50)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
 
-[node name="Cell4" parent="Field" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -50)
-_visibleCellElem = NodePath("../Cell/Map")
+[node name="Cell7" parent="Field/WaterLine" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, 40)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="Cell8" parent="Field/WaterLine" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, 30)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="Cell9" parent="Field/WaterLine" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, 20)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="Cell11" parent="Field/WaterLine" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, 0)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="Cell12" parent="Field/WaterLine" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, -10)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="Cell13" parent="Field/WaterLine" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, -20)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="Cell14" parent="Field/WaterLine" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, -30)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="Cell15" parent="Field/WaterLine" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, -40)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="Cell16" parent="Field/WaterLine" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, -50)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="Cell17" parent="Field/WaterLine" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, 70)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="WaterLine2" type="Node3D" parent="Field"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -50, 0, 60)
+
+[node name="Cell5" parent="Field/WaterLine2" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, 60)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="Cell6" parent="Field/WaterLine2" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, 50)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="Cell7" parent="Field/WaterLine2" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, 40)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="Cell8" parent="Field/WaterLine2" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, 30)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="Cell9" parent="Field/WaterLine2" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, 20)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="Cell10" parent="Field/WaterLine2" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, 10)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="Cell11" parent="Field/WaterLine2" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, 0)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="Cell12" parent="Field/WaterLine2" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, -10)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="Cell13" parent="Field/WaterLine2" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, -20)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="Cell14" parent="Field/WaterLine2" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, -30)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="Cell15" parent="Field/WaterLine2" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, -40)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="Cell16" parent="Field/WaterLine2" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, -50)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="Cell17" parent="Field/WaterLine2" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, 70)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="WaterLine3" type="Node3D" parent="Field"]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, -110, 0, 10)
+
+[node name="Cell5" parent="Field/WaterLine3" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, 60)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="Cell6" parent="Field/WaterLine3" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, 50)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="Cell7" parent="Field/WaterLine3" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, 40)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="Cell8" parent="Field/WaterLine3" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, 30)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="Cell9" parent="Field/WaterLine3" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, 20)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="Cell10" parent="Field/WaterLine3" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, 10)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="Cell12" parent="Field/WaterLine3" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, -10)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="Cell13" parent="Field/WaterLine3" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, -20)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="Cell14" parent="Field/WaterLine3" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, -30)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="Cell15" parent="Field/WaterLine3" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, -40)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="Cell16" parent="Field/WaterLine3" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, -50)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="Cell17" parent="Field/WaterLine3" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, 70)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="WaterLine4" type="Node3D" parent="Field"]
+transform = Transform3D(1.31134e-07, 0, 1, 0, 1, 0, -1, 0, 1.31134e-07, -60, 0, -50)
+
+[node name="Cell5" parent="Field/WaterLine4" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, 60)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="Cell6" parent="Field/WaterLine4" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, 50)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="Cell7" parent="Field/WaterLine4" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, 40)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="Cell8" parent="Field/WaterLine4" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, 30)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="Cell9" parent="Field/WaterLine4" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, 20)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="Cell10" parent="Field/WaterLine4" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, 10)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="Cell11" parent="Field/WaterLine4" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, 0)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="Cell12" parent="Field/WaterLine4" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, -10)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="Cell13" parent="Field/WaterLine4" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, -20)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="Cell14" parent="Field/WaterLine4" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, -30)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="Cell15" parent="Field/WaterLine4" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, -40)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="Cell16" parent="Field/WaterLine4" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, -50)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
+
+[node name="Cell17" parent="Field/WaterLine4" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, 70)
+_visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
 
 [node name="row10" type="Node3D" parent="Field"]
 
@@ -508,3 +706,27 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -30)
 
 [node name="Cell_test9" parent="Field/Row9_2" instance=ExtResource("1_38ubh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -40)
+
+[node name="WaterEdges" type="Node3D" parent="Field"]
+
+[node name="Cell" parent="Field/WaterEdges" instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 60)
+
+[node name="Cell2" parent="Field/WaterEdges" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -110, -1, 60)
+_visibleCellElem = NodePath("../Cell/Map")
+
+[node name="Cell3" parent="Field/WaterEdges" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -110, -1, -50)
+_visibleCellElem = NodePath("../Cell/Map")
+
+[node name="Cell4" parent="Field/WaterEdges" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -50)
+_visibleCellElem = NodePath("../Cell/Map")
+
+[node name="PlayerCell" parent="Field" instance=ExtResource("5_ni85h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, 10)
+
+[node name="PlayerCell2" parent="Field" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("5_ni85h")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -120, -1, 10)
+_visibleCellElem = NodePath("../PlayerCell/Map")

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://b5l24udgnstuk"]
 
-[ext_resource type="PackedScene" uid="uid://bdt6b0la6nj55" path="res://features/Game/components/cell/scenes/base/@Cell_base.tscn" id="1_lod74"]
+[ext_resource type="PackedScene" uid="uid://bdt6b0la6nj55" path="res://features/Game/components/cell/scenes/base/Cell_base.tscn" id="1_lod74"]
 
 [node name="Cell" instance=ExtResource("1_lod74")]
 Type = 3

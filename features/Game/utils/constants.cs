@@ -5,6 +5,7 @@ public enum CellType
   Empty,
   Arrow,
   Ocean,
+  Player,
 }
 public enum PawnItems
 {

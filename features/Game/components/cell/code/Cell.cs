@@ -5,6 +5,7 @@ using GameSpace.Constants;
 using GameSpace.PawnSpace;
 using static UtilsSpace.UtilsFunctions;
 using GameSpace.CellSpace.modules.logic;
+using GameSpace.FieldSpace;
 
 namespace GameSpace.CellSpace;
 
@@ -14,12 +15,17 @@ public interface ICell
   bool IsHighlighted { get; set; }
   CellType Type { get; }
   BaseLogic Logic { get; }
-  Vector2 GridCords { get; }
+  Vector2I GridCords { get; }
   List<Pawn> Pawns { get; }
 
-  void UpdateGridCords(Vector2 newCords);
+  void UpdateGridCords(Vector2I newCords);
 }
 
+/*
+В теории это можно переписать на абстрактный класс и реализовывать логику клеток прямо внутри клетки, просто наследуясь от Cell. Тогда будет много классов типа Cell_ocean, Cell_Arrow и т.п, что кажется логичным.
+Но у моего метода есть одно сильное преимущество - логика клетки совершенно не зависит от ее внешнего вида, ведь она вынесена в отдельный модульный класс. Вместе с тем, в редакторе не приходится выставлять для каждой клетки новый скрипт, что тоже удобно.
+У моего текущего метода только один недостаток - он менее понятный и слегка менее производительный из за switch. Но он невероятно выигрывает в гибкости и модульности, сохраняя базовый функционал Cell нетронутым.
+*/
 public partial class Cell : Node3D, ICell
 {
   // random by default and can be changed inside editor, if it still random - forceful change.
@@ -57,19 +63,21 @@ public partial class Cell : Node3D, ICell
     }
   }
 
-  // after type was generated, we should find and set logic based on type.
-  public BaseLogic Logic { get; private set; }
-  public Vector2 GridCords { get; private set; }
+  public Vector2I GridCords { get; private set; }
   public List<Pawn> Pawns { get; private set; } = new();
+  public Field Field { get; private set; }
+
+  // after type was generated, we should find and set logic based on Type.
+  public BaseLogic Logic { get; private set; }
 
   public override void _Ready()
   {
     base._Ready();
     _invisibleCellElem = UnpackInvisibleScene();
-    ChangeTypeWhenRandom();
-    FindModifierByType();
+    ChangeTypeIfRandom();
+    Logic = FindLogicByType();
     // if ocean - cell visible by default
-    ChangeMapsVisibility(Type == CellType.Ocean);
+    ChangeMapsVisibility(Type == CellType.Ocean || Type == CellType.Player);
     AddChild(_invisibleCellElem);
     HighlightBorder = GetNode<MeshInstance3D>("HighlightBorder");
   }
@@ -88,10 +96,10 @@ public partial class Cell : Node3D, ICell
     }
   }
 
-  private void ChangeTypeWhenRandom()
+  private void ChangeTypeIfRandom()
   {
     if (Type != CellType.Random) return;
-    Type = GetRandomEnumValueExcluding(CellType.Random, CellType.Ocean);
+    Type = GetRandomEnumValueExcluding(CellType.Random, CellType.Ocean, CellType.Player);
   }
 
   private GridMap UnpackInvisibleScene()
@@ -101,15 +109,20 @@ public partial class Cell : Node3D, ICell
     return instance as GridMap;
   }
 
-  private BaseLogic FindModifierByType()
+  private BaseLogic FindLogicByType()
   {
     return Type switch
     {
-      CellType.Ocean => new OceanLogic(),
-      CellType.Arrow => new ArrowLogic(),
+      CellType.Ocean => new OceanLogic(this),
+      CellType.Arrow => new ArrowLogic(this),
+      CellType.Player => new PlayerLogic(this),
       _ => null,
     };
   }
 
-  public void UpdateGridCords(Vector2 newCords) => GridCords = newCords;
+  public void UpdateGridCords(Vector2I newCords) => GridCords = newCords;
+  public void SetField(Field field)
+  {
+    Field = field;
+  }
 }

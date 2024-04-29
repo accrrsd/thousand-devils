@@ -1,6 +1,11 @@
 using GameSpace.CellSpace;
+using GameSpace.CellSpace.modules.logic;
+using GameSpace.Constants;
+using GameSpace.FieldSpace;
 using Godot;
 using System;
+using System.Collections.Generic;
+using static UtilsSpace.GdUtilsFunctions;
 
 public partial class CameraFree : Camera3D
 {
@@ -16,6 +21,10 @@ public partial class CameraFree : Camera3D
 	private Vector3 _velocity = Vector3.Zero;
 	private Vector2 _lookAngles = Vector2.Zero;
 	private bool _showMouse = false;
+
+	// dev only
+	[Export]
+	public Field Field;
 
 	public override void _Ready()
 	{
@@ -85,6 +94,12 @@ public partial class CameraFree : Camera3D
 		if (Input.IsActionJustPressed("free_cam_decrease_speed")) Speed -= Speed / 2;
 	}
 
+
+	// dev only variables
+	Cell firstCell = null;
+	List<Cell> highlightedNeighbors = new List<Cell>();
+
+
 	// dev function for click on the cells
 	private void ShootRay()
 	{
@@ -99,13 +114,32 @@ public partial class CameraFree : Camera3D
 			To = to
 		};
 		Godot.Collections.Dictionary res = space.IntersectRay(ray_query);
-		if (res.Count == 0) return;
-		if (res.ContainsKey("collider"))
+		if (res.Count == 0 || !res.ContainsKey("collider")) return;
+		StaticBody3D staticBody = (StaticBody3D)res["collider"];
+		Cell cell = staticBody.GetParent() as Cell;
+
+
+		// DEV ONLY below - govnocode
+		// cell.IsOpen = !cell.IsOpen;
+
+		if (cell.Type == CellType.Player)
 		{
-			StaticBody3D staticBody = (StaticBody3D)res["collider"];
-			Cell cell = staticBody.GetParent() as Cell;
-			cell.IsOpen = !cell.IsOpen;
-			GD.Print(cell.GridCords);
+			highlightedNeighbors = Field.HighlightSelected(cell, true, (Cell cell) => cell.Type == CellType.Ocean);
+			firstCell = cell;
+			return;
+		}
+		if (highlightedNeighbors.Contains(cell) && firstCell != null && firstCell.Type == CellType.Player)
+		{
+			Field.HighlightSelected(firstCell, false);
+			(firstCell.Logic as PlayerLogic).SwitchPlacesWithCell(cell);
+			firstCell = null;
+			highlightedNeighbors = new List<Cell>();
+		}
+		else
+		{
+			Field.HighlightSelected(firstCell, false);
+			firstCell = null;
+			highlightedNeighbors = new List<Cell>();
 		}
 	}
 }

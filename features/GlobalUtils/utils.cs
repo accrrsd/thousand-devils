@@ -23,7 +23,7 @@ public static class UtilsFunctions
 
   public static T[][] ListTo2DArray<T>(List<T> list, int rows, int cols)
   {
-    if (list.Count != rows * cols) throw new ArgumentException("List size does not match array dimensions " + "Array size: " + cols * rows + "List size: " + list.Count + "Cols: " + cols + "Rows: " + rows);
+    if (list.Count != rows * cols) throw new ArgumentException("List size does not match array dimensions " + "Array size: " + cols * rows + " List size: " + list.Count + " Cols: " + cols + " Rows: " + rows);
 
     T[][] arr = new T[rows][];
     for (int i = 0; i < rows; i++)

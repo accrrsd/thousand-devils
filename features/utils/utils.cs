@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 namespace UtilsSpace;
 
@@ -18,5 +19,31 @@ public static class UtilsFunctions
     T[] resultValues = Enum.GetValues<T>().Where(x => !excludedValues.Contains(x)).ToArray();
     int randomIndex = random.Next(resultValues.Length);
     return resultValues[randomIndex];
+  }
+
+  public static T[][] ListTo2DArray<T>(List<T> list, int rows, int cols)
+  {
+    if (list.Count != rows * cols)
+    {
+      throw new ArgumentException("List size does not match array dimensions " + "Array size: " + cols * rows, "List size: " + list.Count);
+    }
+
+    T[][] arr = new T[rows][];
+    for (int i = 0; i < rows; i++)
+    {
+      arr[i] = new T[cols];
+    }
+
+    int index = 0;
+    for (int i = 0; i < rows; i++)
+    {
+      for (int j = 0; j < cols; j++)
+      {
+        arr[i][j] = list[index];
+        index++;
+      }
+    }
+
+    return arr;
   }
 }

@@ -17,3 +17,7 @@ public enum PawnType
   Friday,
   Missioner
 }
+public static class Variables
+{
+  public static int CELL_SIZE = 10;
+}

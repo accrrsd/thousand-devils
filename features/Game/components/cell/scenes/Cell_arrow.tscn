@@ -3,3 +3,6 @@
 [ext_resource type="PackedScene" uid="uid://bdt6b0la6nj55" path="res://features/Game/components/cell/scenes/base/@Cell_base.tscn" id="1_qu82v"]
 
 [node name="Cell" instance=ExtResource("1_qu82v")]
+Type = 2
+
+[editable path="Map"]

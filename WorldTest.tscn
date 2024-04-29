@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://dy8kur3grffc1"]
+[gd_scene load_steps=10 format=3 uid="uid://dy8kur3grffc1"]
 
 [ext_resource type="PackedScene" uid="uid://bdt6b0la6nj55" path="res://features/Game/components/cell/scenes/base/@Cell_base.tscn" id="1_38ubh"]
 [ext_resource type="Script" path="res://features/devOnly/CameraFree/CameraFree.cs" id="1_o5m5o"]
 [ext_resource type="Script" path="res://features/Game/components/field/code/Field.cs" id="2_c8w5x"]
+[ext_resource type="PackedScene" uid="uid://b5l24udgnstuk" path="res://features/Game/components/cell/scenes/Cell_ocean.tscn" id="3_ytjbb"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_bwinc"]
 
@@ -38,32 +39,47 @@ script = ExtResource("1_o5m5o")
 [node name="Field" type="Node3D" parent="."]
 script = ExtResource("2_c8w5x")
 
-[node name="Row9_" type="Node3D" parent="Field"]
+[node name="Cell" parent="Field" instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 60)
 
-[node name="Cell_test" parent="Field/Row9_" instance=ExtResource("1_38ubh")]
+[node name="Cell2" parent="Field" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -110, -1, 60)
+_visibleCellElem = NodePath("../Cell/Map")
 
-[node name="Cell_test2" parent="Field/Row9_" instance=ExtResource("1_38ubh")]
+[node name="Cell3" parent="Field" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -110, -1, -50)
+_visibleCellElem = NodePath("../Cell/Map")
+
+[node name="Cell4" parent="Field" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -50)
+_visibleCellElem = NodePath("../Cell/Map")
+
+[node name="row10" type="Node3D" parent="Field"]
+
+[node name="Cell_test" parent="Field/row10" instance=ExtResource("1_38ubh")]
+
+[node name="Cell_test2" parent="Field/row10" instance=ExtResource("1_38ubh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 10)
 
-[node name="Cell_test3" parent="Field/Row9_" instance=ExtResource("1_38ubh")]
+[node name="Cell_test3" parent="Field/row10" instance=ExtResource("1_38ubh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 20)
 
-[node name="Cell_test4" parent="Field/Row9_" instance=ExtResource("1_38ubh")]
+[node name="Cell_test4" parent="Field/row10" instance=ExtResource("1_38ubh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 30)
 
-[node name="Cell_test5" parent="Field/Row9_" instance=ExtResource("1_38ubh")]
+[node name="Cell_test5" parent="Field/row10" instance=ExtResource("1_38ubh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 40)
 
-[node name="Cell_test6" parent="Field/Row9_" instance=ExtResource("1_38ubh")]
+[node name="Cell_test6" parent="Field/row10" instance=ExtResource("1_38ubh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -10)
 
-[node name="Cell_test7" parent="Field/Row9_" instance=ExtResource("1_38ubh")]
+[node name="Cell_test7" parent="Field/row10" instance=ExtResource("1_38ubh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -20)
 
-[node name="Cell_test8" parent="Field/Row9_" instance=ExtResource("1_38ubh")]
+[node name="Cell_test8" parent="Field/row10" instance=ExtResource("1_38ubh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -30)
 
-[node name="Cell_test9" parent="Field/Row9_" instance=ExtResource("1_38ubh")]
+[node name="Cell_test9" parent="Field/row10" instance=ExtResource("1_38ubh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -40)
 
 [node name="Row11_" type="Node3D" parent="Field"]
@@ -206,6 +222,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -50)
 [node name="Cell_test11" parent="Field/Row11_4" instance=ExtResource("1_38ubh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 50)
 
+[node name="Cell_test12" parent="Field/Row11_4" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("1_38ubh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, -1, 60)
+_visibleCellElem = NodePath("../Cell_test11/Map")
+
 [node name="Row11_5" type="Node3D" parent="Field"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50, 0, 0)
 
@@ -240,6 +260,18 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -50)
 
 [node name="Cell_test11" parent="Field/Row11_5" instance=ExtResource("1_38ubh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 50)
+
+[node name="Cell_test12" parent="Field/Row11_5" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("1_38ubh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, -1, 60)
+_visibleCellElem = NodePath("../Cell_test11/Map")
+
+[node name="Cell_test13" parent="Field/Row11_5" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("1_38ubh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, -1, 60)
+_visibleCellElem = NodePath("../Cell_test11/Map")
+
+[node name="Cell_test14" parent="Field/Row11_5" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("1_38ubh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, -1, 60)
+_visibleCellElem = NodePath("../Cell_test11/Map")
 
 [node name="Row11_6" type="Node3D" parent="Field"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60, 0, 0)
@@ -276,6 +308,18 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -50)
 [node name="Cell_test11" parent="Field/Row11_6" instance=ExtResource("1_38ubh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 50)
 
+[node name="Cell_test12" parent="Field/Row11_6" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("1_38ubh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, -1, 60)
+_visibleCellElem = NodePath("../Cell_test11/Map")
+
+[node name="Cell_test13" parent="Field/Row11_6" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("1_38ubh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, -1, 60)
+_visibleCellElem = NodePath("../Cell_test11/Map")
+
+[node name="Cell_test14" parent="Field/Row11_6" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("1_38ubh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, -1, 60)
+_visibleCellElem = NodePath("../Cell_test11/Map")
+
 [node name="Row11_7" type="Node3D" parent="Field"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -70, 0, 0)
 
@@ -310,6 +354,18 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -50)
 
 [node name="Cell_test11" parent="Field/Row11_7" instance=ExtResource("1_38ubh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 50)
+
+[node name="Cell_test14" parent="Field/Row11_7" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("1_38ubh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, -1, 60)
+_visibleCellElem = NodePath("../Cell_test11/Map")
+
+[node name="Cell_test12" parent="Field/Row11_7" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("1_38ubh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 70, -1, 50)
+_visibleCellElem = NodePath("../Cell_test11/Map")
+
+[node name="Cell_test13" parent="Field/Row11_7" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("1_38ubh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40, -1, 50)
+_visibleCellElem = NodePath("../Cell_test11/Map")
 
 [node name="Row11_8" type="Node3D" parent="Field"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -80, 0, 0)
@@ -346,6 +402,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -50)
 [node name="Cell_test11" parent="Field/Row11_8" instance=ExtResource("1_38ubh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 50)
 
+[node name="Cell_test12" parent="Field/Row11_8" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("1_38ubh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, -1, 60)
+_visibleCellElem = NodePath("../Cell_test11/Map")
+
 [node name="Row11_9" type="Node3D" parent="Field"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -90, 0, 0)
 
@@ -380,6 +440,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -50)
 
 [node name="Cell_test11" parent="Field/Row11_9" instance=ExtResource("1_38ubh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 50)
+
+[node name="Cell_test12" parent="Field/Row11_9" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("1_38ubh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, -1, 60)
+_visibleCellElem = NodePath("../Cell_test11/Map")
 
 [node name="Row11_10" type="Node3D" parent="Field"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -100, 0, 0)

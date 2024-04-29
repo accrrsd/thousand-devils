@@ -4,6 +4,7 @@ public enum CellType
   Random,
   Empty,
   Arrow,
+  Ocean,
 }
 public enum PawnItems
 {
@@ -19,5 +20,5 @@ public enum PawnType
 }
 public static class Variables
 {
-  public static int CELL_SIZE = 10;
+  public const int CELL_SIZE = 10;
 }

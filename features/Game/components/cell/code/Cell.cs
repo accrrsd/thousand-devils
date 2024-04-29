@@ -37,7 +37,7 @@ public partial class Cell : Node3D, ICell
     }
   }
 
-  public Vector2 FieldCords { get; set; }
+  public Vector2 GridCords { get; set; }
   public List<Pawn> Pawns = new();
 
   public override void _Ready()

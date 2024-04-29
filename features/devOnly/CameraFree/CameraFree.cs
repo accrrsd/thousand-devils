@@ -105,6 +105,7 @@ public partial class CameraFree : Camera3D
 			StaticBody3D staticBody = (StaticBody3D)res["collider"];
 			Cell cell = staticBody.GetParent() as Cell;
 			cell.IsOpen = !cell.IsOpen;
+			GD.Print(cell.GridCords);
 		}
 	}
 }

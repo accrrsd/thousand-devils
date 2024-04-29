@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://dy8kur3grffc1"]
+[gd_scene load_steps=9 format=3 uid="uid://dy8kur3grffc1"]
 
 [ext_resource type="PackedScene" uid="uid://bdt6b0la6nj55" path="res://features/Game/components/cell/scenes/base/@Cell_base.tscn" id="1_38ubh"]
 [ext_resource type="Script" path="res://features/devOnly/CameraFree/CameraFree.cs" id="1_o5m5o"]
+[ext_resource type="Script" path="res://features/Game/components/field/code/Field.cs" id="2_c8w5x"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_bwinc"]
 
@@ -35,6 +36,7 @@ transform = Transform3D(-4.2222e-08, -0.258819, 0.965926, -1.13133e-08, 0.965926
 script = ExtResource("1_o5m5o")
 
 [node name="Field" type="Node3D" parent="."]
+script = ExtResource("2_c8w5x")
 
 [node name="Row9_" type="Node3D" parent="Field"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 0)

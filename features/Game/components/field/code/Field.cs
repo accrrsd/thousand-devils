@@ -46,8 +46,7 @@ public partial class Field : Node3D
 		width = width / CELL_SIZE + 1;
 		height = height / CELL_SIZE + 1;
 
-		CellsGrid = ListTo2DArray(Cells, width, height);
-		for (int i = 0; i < CellsGrid.Length; i++) for (int j = 0; j < CellsGrid[i].Length; j++) CellsGrid[i][j].UpdateGridCords(new Vector2I(i, j));
+		CellsGrid = ListTo2DArray(Cells, width, height, (Cell cell, int index, int i, int j) => cell.UpdateGridCords(new Vector2I(i, j)));
 	}
 
 	public override void _Ready()
@@ -67,16 +66,17 @@ public partial class Field : Node3D
 	// dev only all below
 
 	// Возвращает подсвеченных соседей
-	public List<Cell> HighlightSelected(Cell cell, bool value, Func<Cell, bool> predicate = null)
+	public void HighlightSelected(Cell cell, bool value)
 	{
 		int x = cell.GridCords[0];
 		int y = cell.GridCords[1];
 		CellsGrid[x][y].IsHighlighted = value;
-		return HighlightNeighbors(x, y, value, predicate);
 	}
 
-	private List<Cell> HighlightNeighbors(int x, int y, bool value, Func<Cell, bool> predicate = null)
+	public List<Cell> HighlightNeighbors(Cell cell, bool value, Func<Cell, bool> predicate = null)
 	{
+		int x = cell.GridCords[0];
+		int y = cell.GridCords[1];
 		List<Cell> neighbors = new List<Cell>();
 		for (int dx = -1; dx <= 1; dx++)
 		{

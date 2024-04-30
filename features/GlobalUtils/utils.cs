@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Godot;
 namespace UtilsSpace;
 
 public static class UtilsFunctions
@@ -21,7 +22,8 @@ public static class UtilsFunctions
     return resultValues[randomIndex];
   }
 
-  public static T[][] ListTo2DArray<T>(List<T> list, int rows, int cols)
+  /// <param name="onEachFunc">Addition function to call each elem: fist param - elem, second index in list, third - column, fourth - row</param>
+  public static T[][] ListTo2DArray<T>(List<T> list, int rows, int cols, Action<T, int, int, int> onEachFunc = null)
   {
     if (list.Count != rows * cols) throw new ArgumentException("List size does not match array dimensions " + "Array size: " + cols * rows + " List size: " + list.Count + " Cols: " + cols + " Rows: " + rows);
 
@@ -36,11 +38,11 @@ public static class UtilsFunctions
     {
       for (int j = 0; j < cols; j++)
       {
+        onEachFunc?.Invoke(list[index], index, i, j);
         arr[i][j] = list[index];
         index++;
       }
     }
-
     return arr;
   }
 }

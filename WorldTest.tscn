@@ -201,7 +201,7 @@ _visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
 transform = Transform3D(1.31134e-07, 0, 1, 0, 1, 0, -1, 0, 1.31134e-07, -60, 0, -50)
 
 [node name="Cell5" parent="Field/WaterLine4" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, 60)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60, -1, 70)
 _visibleCellElem = NodePath("../../WaterEdges/Cell/Map")
 
 [node name="Cell6" parent="Field/WaterLine4" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("3_ytjbb")]
@@ -725,7 +725,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, -50)
 _visibleCellElem = NodePath("../Cell/Map")
 
 [node name="PlayerCell" parent="Field" instance=ExtResource("5_ni85h")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -1, 10)
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, -1, -60)
 
 [node name="PlayerCell2" parent="Field" node_paths=PackedStringArray("_visibleCellElem") instance=ExtResource("5_ni85h")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -120, -1, 10)

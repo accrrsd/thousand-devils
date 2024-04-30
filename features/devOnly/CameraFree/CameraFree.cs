@@ -78,24 +78,18 @@ public partial class CameraFree : Camera3D
 	private void UpdateCameraLock()
 	{
 		_showMouse = !_showMouse;
-		if (!_showMouse)
-		{
-			Input.MouseMode = Input.MouseModeEnum.Captured;
-		}
-		else
-		{
-			Input.MouseMode = Input.MouseModeEnum.Visible;
-		}
+		Input.MouseMode = _showMouse ? Input.MouseModeEnum.Visible : Input.MouseModeEnum.Captured;
 	}
 
 	private void UpdateCameraSpeed()
 	{
 		if (Input.IsActionJustPressed("free_cam_increase_speed")) Speed += Speed / 2;
 		if (Input.IsActionJustPressed("free_cam_decrease_speed")) Speed -= Speed / 2;
+		if (Speed < 0.5) Speed = 0.5f;
 	}
 
 
-	// dev only variables
+	// dev only variables - for player movement
 	Cell firstCell = null;
 	List<Cell> highlightedNeighbors = new List<Cell>();
 
@@ -119,27 +113,34 @@ public partial class CameraFree : Camera3D
 		Cell cell = staticBody.GetParent() as Cell;
 
 
-		// DEV ONLY below - govnocode
-		// cell.IsOpen = !cell.IsOpen;
+		// cell.IsOpen = !cell.IsOpen; -- dev checking maps visibility
 
+		// DEV ONLY below - player movement
+		// if click on player
 		if (cell.Type == CellType.Player)
 		{
-			highlightedNeighbors = Field.HighlightSelected(cell, true, (Cell cell) => cell.Type == CellType.Ocean);
+			highlightedNeighbors = Field.HighlightNeighbors(cell, true, (Cell cell) => cell.Type == CellType.Ocean);
 			firstCell = cell;
 			return;
 		}
+		// if click on highlighted cell
 		if (highlightedNeighbors.Contains(cell) && firstCell != null && firstCell.Type == CellType.Player)
 		{
-			Field.HighlightSelected(firstCell, false);
+			Field.HighlightNeighbors(firstCell, false);
 			(firstCell.Logic as PlayerLogic).SwitchPlacesWithCell(cell);
+			firstCell = null;
+			highlightedNeighbors = new List<Cell>();
+		}
+		// if click on non highlighted cell
+		else if (firstCell != null)
+		{
+			Field.HighlightNeighbors(firstCell, false);
 			firstCell = null;
 			highlightedNeighbors = new List<Cell>();
 		}
 		else
 		{
-			Field.HighlightSelected(firstCell, false);
-			firstCell = null;
-			highlightedNeighbors = new List<Cell>();
+			GD.Print(cell.GridCords);
 		}
 	}
 }

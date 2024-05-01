@@ -2,6 +2,8 @@
 .godot/
 .vscode/
 localDev/
+.idea/.idea.ThousandDevils/.idea/sonarlint/
+
 
 # Godot-specific ignores
 .import/

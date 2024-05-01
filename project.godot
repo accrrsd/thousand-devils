@@ -10,14 +10,14 @@ config_version=5
 
 [application]
 
-config/name="GameWithoutName"
+config/name="ThousandDevils"
 run/main_scene="res://WorldTest.tscn"
 config/features=PackedStringArray("4.2", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
 [dotnet]
 
-project/assembly_name="GameWithoutName"
+project/assembly_name="ThousandDevils"
 
 [input]
 

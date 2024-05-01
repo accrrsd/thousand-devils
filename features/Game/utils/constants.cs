@@ -1,25 +1,30 @@
-namespace GameSpace.Constants;
+namespace ThousandDevils.features.Game.utils;
+
 public enum CellType
 {
   Random,
   Empty,
   Arrow,
   Ocean,
-  Player,
+  Ship,
+  PossibleShip
 }
+
 public enum PawnItems
 {
   None,
   Money,
   Chest
 }
+
 public enum PawnType
 {
   Basic,
   Friday,
   Missioner
 }
+
 public static class Variables
 {
-  public const int CELL_SIZE = 10;
+  public const int CellSize = 10;
 }

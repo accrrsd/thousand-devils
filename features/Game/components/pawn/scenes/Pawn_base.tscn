@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://ccnhg8pk4ln7x"]
+
+[ext_resource type="Script" path="res://features/Game/components/pawn/code/Pawn.cs" id="1_qp3p6"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_u12w1"]
+
+[node name="PawnBase" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+script = ExtResource("1_qp3p6")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_u12w1")

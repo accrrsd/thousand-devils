@@ -27,15 +27,12 @@ public partial class CameraFree : Camera3D
   // maybe dev only
   [Export] public Field Field { get; private set; }
 
-  public override void _Ready()
-  {
+  public override void _Ready() {
     if (!_showMouse) Input.MouseMode = Input.MouseModeEnum.Captured;
   }
 
-  public override void _Process(double delta)
-  {
-    if (!_showMouse)
-    {
+  public override void _Process(double delta) {
+    if (!_showMouse) {
       _lookAngles[1] = (float)Math.Clamp(_lookAngles[1], Math.PI / -2, Math.PI / 2);
       Rotation = new Vector3(_lookAngles[1], _lookAngles[0], 0);
     }
@@ -45,8 +42,7 @@ public partial class CameraFree : Camera3D
     Translate(_velocity * (float)delta * Speed);
   }
 
-  public override void _Input(InputEvent @event)
-  {
+  public override void _Input(InputEvent @event) {
     base._Input(@event);
     if (@event is InputEventMouseMotion mouseMotion)
       // todo fix mouse twitching
@@ -56,8 +52,7 @@ public partial class CameraFree : Camera3D
     if (Input.IsActionJustPressed("lmb_click")) ShootRay();
   }
 
-  private Vector3 UpdateDirection()
-  {
+  private Vector3 UpdateDirection() {
     Vector3 dir = new();
     if (Input.IsActionPressed("free_cam_forward")) dir += Vector3.Forward;
     if (Input.IsActionPressed("free_cam_backward")) dir += Vector3.Back;
@@ -69,29 +64,25 @@ public partial class CameraFree : Camera3D
     return dir.Normalized();
   }
 
-  private void UpdateCameraLock()
-  {
+  private void UpdateCameraLock() {
     _showMouse = !_showMouse;
     Input.MouseMode = _showMouse ? Input.MouseModeEnum.Visible : Input.MouseModeEnum.Captured;
   }
 
-  private void UpdateCameraSpeed()
-  {
+  private void UpdateCameraSpeed() {
     if (Input.IsActionJustPressed("free_cam_increase_speed")) Speed += Speed / 2;
     if (Input.IsActionJustPressed("free_cam_decrease_speed")) Speed -= Speed / 2;
     if (Speed < 0.5) Speed = 0.5f;
   }
 
   // dev function for click on the cells
-  private void ShootRay()
-  {
+  private void ShootRay() {
     if (!_showMouse) return;
     Vector2 mousePos = GetViewport().GetMousePosition();
     Vector3 from = ProjectRayOrigin(mousePos);
     Vector3 to = from + ProjectRayNormal(mousePos) * RayLength;
     PhysicsDirectSpaceState3D space = GetWorld3D().DirectSpaceState;
-    PhysicsRayQueryParameters3D rayQuery = new()
-    {
+    PhysicsRayQueryParameters3D rayQuery = new() {
       From = from,
       To = to
     };
@@ -105,32 +96,30 @@ public partial class CameraFree : Camera3D
 
     // DEV ONLY below - player movement
     // if click on player that have turn
-    if (cell.GetPawns().Any(pawn => pawn.OwnerPlayer.IsTurn))
-    {
-      _highlightedNeighbors = cell.Type == CellType.Ship ? Field.HighlightNeighbors(cell, true) : Field.HighlightNeighbors(cell, true, pCell => pCell.Type != CellType.Ocean);
+    if (cell.GetPawns().Any(pawn => pawn.OwnerPlayer.IsTurn)) {
+      _highlightedNeighbors = cell.Type == CellType.Ship
+        ? Field.HighlightNeighbors(cell, true)
+        : Field.HighlightNeighbors(cell, true, pCell => pCell.Type != CellType.Ocean);
       _firstCell = cell;
       return;
     }
 
     // if click on highlighted cell
-    if (_highlightedNeighbors.Contains(cell))
-    {
+    if (_highlightedNeighbors.Contains(cell)) {
       Field.HighlightNeighbors(_firstCell, false);
       if (cell.Type == CellType.Ocean && _firstCell.Type is CellType.Ship) ((ShipLogic)_firstCell.Logic).SwitchPlacesWithCell(cell);
-      else _firstCell.GetPawns()[0].MoveToCell(cell);
+      else if (cell.CanAcceptPawns) _firstCell.GetPawns()[0].MoveToCell(cell);
 
       _firstCell = null;
       _highlightedNeighbors = new List<Cell>();
     }
     // if click on non highlighted cell
-    else if (_firstCell != null)
-    {
+    else if (_firstCell != null) {
       Field.HighlightNeighbors(_firstCell, false);
       _firstCell = null;
       _highlightedNeighbors = new List<Cell>();
     }
-    else
-    {
+    else {
       // if any click on map
       GD.Print(cell.GridCords);
     }

@@ -7,8 +7,7 @@ namespace ThousandDevils.features.Game.components.cell.code.modules.logic;
 
 public class ShipLogic : BaseLogic
 {
-  public ShipLogic(Cell cell) : base(cell)
-  {
+  public ShipLogic(Cell cell) : base(cell) {
     Cell.IsOpen = true;
     // late todo: 3 by default - but we need to think about it as parameter in editor but only if cell type is ship
     Cell.AddPawn(DefaultPawnNodeScene.Instantiate<Pawn>(), false);
@@ -16,8 +15,7 @@ public class ShipLogic : BaseLogic
     Cell.AddPawn(DefaultPawnNodeScene.Instantiate<Pawn>(), false);
   }
 
-  public void SwitchPlacesWithCell(Cell otherCell)
-  {
+  public void SwitchPlacesWithCell(Cell otherCell) {
     Field field = Cell.Field;
     Vector2I currentCords = Cell.GridCords;
     Vector2I otherCellCords = otherCell.GridCords;
@@ -30,6 +28,6 @@ public class ShipLogic : BaseLogic
     Cell.GlobalPosition = otherCellGlobalPos;
     otherCell.GlobalPosition = currentGlobalPos;
 
-    field.Game.TurnSystem.CurrentTurn++;
+    field.Game.TurnModule.CurrentTurn++;
   }
 }

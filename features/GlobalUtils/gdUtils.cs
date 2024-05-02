@@ -6,48 +6,45 @@ namespace ThousandDevils.features.GlobalUtils;
 
 public static class GdUtilsFunctions
 {
-  public static List<T> FindChildsByType<T>(Node parent, Func<T, bool> predicate = null) where T : Node
-  {
+  public static List<T> GetChildsByType<T>(Node parent, Predicate<T> predicate = null) where T : Node {
     List<T> childs = new();
-    foreach (Node child in parent.GetChildren())
-    {
+    foreach (Node child in parent.GetChildren()) {
       if (child is T childT && (predicate == null || predicate(childT))) childs.Add(childT);
-      childs.AddRange(FindChildsByType(child, predicate));
+      childs.AddRange(GetChildsByType(child, predicate));
     }
 
     return childs;
   }
 
-  // todo check if it works
-  public static T FindFirstChildByType<T>(Node parent, Func<T, bool> predicate = null) where T : Node
-  {
-    foreach (Node child in parent.GetChildren())
-      if (child is T childT && (predicate == null || predicate(childT)))
-        return childT;
-    return null;
-  }
-
-  // todo check if it works
-  public static T FindFirstParentByType<T>(Node child, Func<T, bool> predicate = null) where T : Node
-  {
-    while (child != null)
-    {
-      if (child is T parentT && (predicate == null || predicate(parentT))) return parentT;
-      child = child.GetParent();
+  public static T GetFirstChildByType<T>(Node parent, Predicate<T> predicate = null) where T : Node {
+    foreach (Node child in parent.GetChildren()) {
+      if (child is T childT && (predicate == null || predicate(childT))) return childT;
+      T foundChild = GetFirstChildByType(child, predicate);
+      if (foundChild != null) return foundChild;
     }
 
     return null;
   }
 
-  public static List<T> FindParentsByType<T>(Node child, Func<T, bool> predicate = null) where T : Node
-  {
+  public static T GetFirstParentByType<T>(Node parent, Predicate<T> predicate = null) where T : Node {
+    while (parent != null) {
+      if (parent is T parentT && (predicate == null || predicate(parentT))) return parentT;
+      parent = parent.GetParent();
+    }
+
+    return null;
+  }
+
+  public static List<T> GetParentsByType<T>(Node parent, Predicate<T> predicate = null) where T : Node {
     List<T> parents = new();
-    while (child != null)
-    {
-      if (child is T parentT && (predicate == null || predicate(parentT))) parents.Add(parentT);
-      child = child.GetParent();
+    while (parent != null) {
+      if (parent is T parentT && (predicate == null || predicate(parentT))) parents.Add(parentT);
+      parent = parent.GetParent();
     }
 
     return parents;
   }
+
+  public static T UnpackSceneWithDefault<T>(PackedScene targetScene, PackedScene defaultScene) where T : Node =>
+    targetScene?.Instantiate<T>() ?? defaultScene.Instantiate<T>();
 }

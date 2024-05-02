@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://bdt6b0la6nj55"]
+[gd_scene load_steps=7 format=3 uid="uid://bdt6b0la6nj55"]
 
 [ext_resource type="Script" path="res://features/Game/components/cell/code/Cell.cs" id="1_itkon"]
-[ext_resource type="PackedScene" uid="uid://b5hdtc1bdhpu5" path="res://features/Game/components/cell/scenes/base/Map_base.tscn" id="2_be0vg"]
+[ext_resource type="PackedScene" uid="uid://4j7w3x31mcv3" path="res://features/Game/components/cell/scenes/visible_maps/@visible_map.tscn" id="2_mlqk0"]
+[ext_resource type="PackedScene" uid="uid://bqv3ad2xh0dn5" path="res://features/Game/components/cell/scenes/invisible_maps/@invisible_map.tscn" id="3_w8jys"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_fpomw"]
 size = Vector3(10, 1, 10)
@@ -11,12 +12,14 @@ size = Vector3(10, 1, 10)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5p7we"]
 albedo_color = Color(1, 0.247059, 1, 1)
 
-[node name="Cell" type="Node3D" node_paths=PackedStringArray("_visibleCellElem")]
+[node name="Cell" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
 script = ExtResource("1_itkon")
-_visibleCellElem = NodePath("Map")
 
-[node name="Map" parent="." instance=ExtResource("2_be0vg")]
+[node name="VisibleMap" parent="." instance=ExtResource("2_mlqk0")]
+
+[node name="InvisibleMap" parent="." instance=ExtResource("3_w8jys")]
+visible = false
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
 
@@ -31,4 +34,5 @@ gi_mode = 0
 mesh = SubResource("PlaneMesh_ddxe6")
 surface_material_override/0 = SubResource("StandardMaterial3D_5p7we")
 
-[editable path="Map"]
+[editable path="VisibleMap"]
+[editable path="InvisibleMap"]

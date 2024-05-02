@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using Godot;
 
 namespace ThousandDevils.features.GlobalUtils;
 
@@ -8,14 +10,12 @@ public static class UtilsFunctions
 {
   private static readonly Random Random = new();
 
-  public static T GetRandomEnumValue<T>() where T : struct, Enum
-  {
+  public static T GetRandomEnumValue<T>() where T : struct, Enum {
     if (Enum.GetValues(typeof(T)).Length == 0) throw new ArgumentException("Enum type has no values");
     return (T)Enum.GetValues(typeof(T)).GetValue(Random.Next(Enum.GetValues(typeof(T)).Length))!;
   }
 
-  public static T GetRandomEnumValueExcluding<T>(params T[] excludedValues) where T : struct, Enum
-  {
+  public static T GetRandomEnumValueExcluding<T>(params T[] excludedValues) where T : struct, Enum {
     if (!typeof(T).IsEnum) throw new ArgumentException($"{typeof(T)} is not an enum type");
 
     T[] resultValues = Enum.GetValues<T>().Where(x => !excludedValues.Contains(x)).ToArray();
@@ -30,8 +30,7 @@ public static class UtilsFunctions
   /// </param>
   /// <param name="cols"></param>
   /// <param name="rows"></param>
-  public static T[][] ListTo2DArray<T>(List<T> list, int rows, int cols, Action<T, int, int, int> onEachFunc = null)
-  {
+  public static T[][] ListTo2DArray<T>(List<T> list, int rows, int cols, Action<T, int, int, int> onEachFunc = null) {
     if (list.Count != rows * cols)
       throw new ArgumentException("List size does not match array dimensions " + "Array size: " + cols * rows +
                                   " List size: " + list.Count + " Cols: " + cols + " Rows: " + rows);
@@ -41,8 +40,7 @@ public static class UtilsFunctions
 
     int index = 0;
     for (int i = 0; i < rows; i++)
-      for (int j = 0; j < cols; j++)
-      {
+      for (int j = 0; j < cols; j++) {
         onEachFunc?.Invoke(list[index], index, i, j);
         arr[i][j] = list[index];
         index++;
@@ -51,8 +49,43 @@ public static class UtilsFunctions
     return arr;
   }
 
-  public static bool IsIn2DArrayBounds<T>(int x, int y, T[][] arr)
-  {
-    return x >= 0 && x < arr.Length && y >= 0 && y < arr[0].Length;
+  public static bool IsIn2DArrayBounds<T>(int x, int y, T[][] arr) => x >= 0 && x < arr.Length && y >= 0 && y < arr[0].Length;
+  public static bool IsIn2DArrayBounds<T>(Vector2I vector, T[][] arr) => IsIn2DArrayBounds(vector[0], vector[1], arr);
+
+  public static PropertyInfo GetPropertyWithPredicate(Type type, Predicate<PropertyInfo> predicate) {
+    PropertyInfo[] properties = type.GetProperties();
+    return Array.Find(properties, p => predicate(p));
   }
+
+  public static MethodInfo GetMethodWithPredicate(Type type, Predicate<MethodInfo> predicate) {
+    MethodInfo[] methods = type.GetMethods();
+    return Array.Find(methods, p => predicate(p));
+  }
+
+  /// <summary>
+  ///   Prop parent class to child class or child class to parent class
+  /// </summary>
+  /// <param name="parentClass"></param>
+  /// <param name="childClass"></param>
+  /// <param name="parentInChild">if true - prop parent class to child class</param>
+  public static bool AssociateClassesByAttribute<T1, T2>(T1 parentClass, T2 childClass, bool parentInChild) where T1 : class where T2 : class {
+    MethodInfo setterMethod = parentInChild
+      ? GetMethodWithPredicate(childClass.GetType(), p => p.GetCustomAttribute<MyAttributes.ParentSetterAttribute>() != null)
+      : GetMethodWithPredicate(parentClass.GetType(), p => p.GetCustomAttribute<MyAttributes.ChildSetterAttribute>() != null);
+    if (setterMethod == null || setterMethod.GetParameters()[0].ParameterType != (parentInChild ? parentClass.GetType() : childClass.GetType())) return false;
+    setterMethod.Invoke(parentInChild ? childClass : parentClass, new object[] { parentInChild ? parentClass : childClass });
+    return true;
+  }
+
+  ///<summary>Prop parent class to multiple child classes</summary>
+  public static bool AssociateListOfChilds<T1, T2>(T1 parentClass, List<T2> childClasses) where T1 : class where T2 : class {
+    MethodInfo parentSetterInChild = GetMethodWithPredicate(childClasses[0].GetType(), p => p.GetCustomAttribute<MyAttributes.ParentSetterAttribute>() != null);
+    if (parentSetterInChild == null || parentSetterInChild.GetParameters()[0].ParameterType != parentClass.GetType()) return false;
+    foreach (T2 childClass in childClasses) parentSetterInChild.Invoke(childClass, new object[] { parentClass });
+    return true;
+  }
+
+  //Prop both, parent and child class connect to each other by attribute mark.
+  public static bool AssociateParentAndChild<T1, T2>(T1 parentClass, T2 childClass) where T1 : class where T2 : class =>
+    AssociateClassesByAttribute(parentClass, childClass, true) && AssociateClassesByAttribute(parentClass, childClass, false);
 }

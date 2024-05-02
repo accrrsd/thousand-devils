@@ -9,8 +9,7 @@ namespace ThousandDevils.features.Game.components.player.code;
 
 public class Player
 {
-  public Player(Cell shipCell, Game.code.Game game)
-  {
+  public Player(Cell shipCell, Game.code.Game game) {
     if (shipCell.Logic is not ShipLogic) throw new ArgumentException("Cell must have Logic.Ship");
     Ship = shipCell;
     foreach (Pawn pawn in Ship.GetPawns()) UpdatePawnControl(pawn);
@@ -27,8 +26,7 @@ public class Player
   public int MaxPawns { get; set; }
   public List<Pawn> ControlledPawns { get; set; } = new();
 
-  public void UpdatePawnControl(Pawn newPawn)
-  {
+  public void UpdatePawnControl(Pawn newPawn) {
     ControlledPawns.Add(newPawn);
     newPawn.OwnerPlayer = this;
   }

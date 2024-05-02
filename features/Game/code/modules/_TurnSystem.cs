@@ -30,6 +30,7 @@ public class TurnModule
     }
   }
 
+  //todo нужно сделать передачу хода по часовой стрелке.
   private void UpdateActivePlayerIndex(int currentTurn) {
     ActivePlayerIndex = ActivePlayerIndex + 1 > _game.Players.Count - 1 ? 0 : ActivePlayerIndex + 1;
   }

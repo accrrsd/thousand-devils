@@ -26,7 +26,7 @@ public partial class Field : Node3D
   [MyAttributes.ParentSetter]
   public void UpdateParentAssociation(Game.code.Game game) => Game = game;
 
-  //late todo Для корректной работы требуется чтобы "поле" было прижато одним своим краем к globalPosition = new VectorZero(). В будущем нужно будет это учитывать.
+  // todo Нужно срочно фиксить определение позиции у клеток, т.к работает через раз.
   private void ArrangeCellsBasedOnMapPosition() {
     Cells.Sort((cell1, cell2) => {
       int compareX = cell1.GlobalPosition[0].CompareTo(cell2.GlobalPosition[0]);

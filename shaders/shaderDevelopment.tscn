@@ -1,0 +1,513 @@
+[gd_scene load_steps=71 format=3 uid="uid://b2byf0vesmh8q"]
+
+[ext_resource type="Shader" path="res://shaders/Water1.gdshader" id="1_tgt61"]
+[ext_resource type="Shader" path="res://shaders/Water2.gdshader" id="2_tfne4"]
+[ext_resource type="Shader" path="res://shaders/Water3.gdshader" id="3_xg4w1"]
+[ext_resource type="Shader" path="res://shaders/Water4.gdshader" id="4_5iolc"]
+[ext_resource type="Shader" path="res://shaders/Water5.gdshader" id="5_06qmu"]
+[ext_resource type="Shader" path="res://shaders/Water6.gdshader" id="6_yniiv"]
+[ext_resource type="Shader" path="res://shaders/Water7.gdshader" id="7_yqm6i"]
+[ext_resource type="Shader" path="res://shaders/Water8.gdshader" id="8_05171"]
+[ext_resource type="Shader" path="res://shaders/Water9.gdshader" id="9_4117t"]
+[ext_resource type="Shader" path="res://shaders/CoolWater.gdshader" id="10_126jk"]
+[ext_resource type="Shader" path="res://shaders/MyWater.gdshader" id="11_v5xup"]
+[ext_resource type="Shader" uid="uid://5hmiq2mskjpj" path="res://shaders/fuckingTest.tres" id="12_qdeyy"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_kn0wi"]
+subdivide_width = 10
+subdivide_height = 10
+subdivide_depth = 10
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_4j207"]
+noise_type = 3
+fractal_type = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_xhd78"]
+seamless = true
+as_normal_map = true
+bump_strength = 5.5
+noise = SubResource("FastNoiseLite_4j207")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_cj734"]
+noise_type = 3
+fractal_type = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_gc568"]
+seamless = true
+as_normal_map = true
+bump_strength = 7.5
+noise = SubResource("FastNoiseLite_cj734")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_lvfgv"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_7t6r4"]
+seamless = true
+noise = SubResource("FastNoiseLite_lvfgv")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hs7li"]
+render_priority = 0
+shader = ExtResource("1_tgt61")
+shader_parameter/albedo = Color(0, 0.321569, 0.431373, 1)
+shader_parameter/albedo2 = Color(0, 0.47451, 0.764706, 1)
+shader_parameter/metallic = 0.0
+shader_parameter/roughness = 0.02
+shader_parameter/wave_direction = Vector2(2, 0)
+shader_parameter/wave_direction2 = Vector2(0, 1)
+shader_parameter/time_scale = 0.025
+shader_parameter/noise_scale = 10.0
+shader_parameter/height_scale = 0.15
+shader_parameter/color_deep = Color(5.29438e-07, 0.320784, 0.526731, 1)
+shader_parameter/color_shallow = Color(0, 0.47451, 0.764706, 1)
+shader_parameter/beers_law = 2.0
+shader_parameter/depth_offset = -0.75
+shader_parameter/edge_scale = 0.1
+shader_parameter/near = 1.0
+shader_parameter/far = 100.0
+shader_parameter/edge_color = Color(0.796243, 0.796243, 0.796243, 1)
+shader_parameter/wave = SubResource("NoiseTexture2D_7t6r4")
+shader_parameter/texture_normal = SubResource("NoiseTexture2D_xhd78")
+shader_parameter/texture_normal2 = SubResource("NoiseTexture2D_gc568")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_xuv5w"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_rkfpn"]
+seamless = true
+as_normal_map = true
+noise = SubResource("FastNoiseLite_xuv5w")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qlqqk"]
+render_priority = 0
+shader = ExtResource("2_tfne4")
+shader_parameter/albedo = Color(0.0470588, 0.317647, 0.466667, 0.513726)
+shader_parameter/point_size = 1.0
+shader_parameter/roughness = 0.0
+shader_parameter/metallic_texture_channel = null
+shader_parameter/specular = 0.5
+shader_parameter/metallic = 0.0
+shader_parameter/refraction = 0.05
+shader_parameter/refraction_texture_channel = null
+shader_parameter/normal_scale = 1.0
+shader_parameter/uv1_blend_sharpness = 1.0
+shader_parameter/uv1_scale = Vector3(0.3, 0.3, 0.3)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(1, 1, 1)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+shader_parameter/texture_refraction = SubResource("NoiseTexture2D_rkfpn")
+shader_parameter/texture_normal = SubResource("NoiseTexture2D_rkfpn")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_dcr5w"]
+noise_type = 4
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ddqdc"]
+seamless = true
+as_normal_map = true
+noise = SubResource("FastNoiseLite_dcr5w")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_shpyl"]
+render_priority = 0
+shader = ExtResource("3_xg4w1")
+shader_parameter/albedo = Color(0.0627451, 0.368627, 0.568627, 0.615686)
+shader_parameter/proximity_fade_distance = 0.25
+shader_parameter/point_size = 1.0
+shader_parameter/roughness = 0.5
+shader_parameter/metallic_texture_channel = null
+shader_parameter/specular = 0.5
+shader_parameter/metallic = 0.0
+shader_parameter/refraction = 0.05
+shader_parameter/refraction_texture_channel = null
+shader_parameter/normal_scale = 1.0
+shader_parameter/uv1_scale = Vector3(1, 1, 1)
+shader_parameter/uv1_offset = Vector3(0, 0, 0)
+shader_parameter/uv2_scale = Vector3(1, 1, 1)
+shader_parameter/uv2_offset = Vector3(0, 0, 0)
+shader_parameter/texture_refraction = SubResource("NoiseTexture2D_ddqdc")
+shader_parameter/texture_normal = SubResource("NoiseTexture2D_ddqdc")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_4xjj0"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_6y2h1"]
+seamless = true
+as_normal_map = true
+noise = SubResource("FastNoiseLite_4xjj0")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6c880"]
+render_priority = 0
+shader = ExtResource("4_5iolc")
+shader_parameter/surface_color = Color(0.0627451, 0.368627, 0.611765, 1)
+shader_parameter/depth_color = Color(0, 0, 1, 1)
+shader_parameter/opacity = 0.5
+shader_parameter/normal_scale = 1.0
+shader_parameter/beer_factor = 0.1
+shader_parameter/_roughness = 0.0
+shader_parameter/_refraction = 0.2
+shader_parameter/_uv_scale = 1.0
+shader_parameter/_foam_strength = null
+shader_parameter/_foam_size = null
+shader_parameter/normal_map = SubResource("NoiseTexture2D_6y2h1")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_4870e"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_0bk1b"]
+noise = SubResource("FastNoiseLite_4870e")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fkbww"]
+shader = ExtResource("5_06qmu")
+shader_parameter/zoom_out = 1.0
+shader_parameter/border_decay = 0.6
+shader_parameter/shield_tint = Color(0.407843, 0.564706, 0.729412, 0.768627)
+shader_parameter/shield_saturation = Color(1, 1, 1, 0.76)
+shader_parameter/attack_angle = 0.0
+shader_parameter/attack_penetration = 0.2
+shader_parameter/attack_radius = 0.2
+shader_parameter/attack_amplitude = 0.1
+shader_parameter/wave_speed = 16.0
+shader_parameter/wave_num = 17.0
+shader_parameter/noise_speed = 3.0
+shader_parameter/noise_amplitude = 0.89
+shader_parameter/noise_deformation = 100.0
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_0bk1b")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_astbn"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_f87rr"]
+seamless = true
+noise = SubResource("FastNoiseLite_astbn")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_m1kg7"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_dhcsl"]
+seamless = true
+noise = SubResource("FastNoiseLite_m1kg7")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ixxkx"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_275vs"]
+seamless = true
+as_normal_map = true
+noise = SubResource("FastNoiseLite_ixxkx")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8ru6y"]
+render_priority = 0
+shader = ExtResource("6_yniiv")
+shader_parameter/speed = 0.0
+shader_parameter/color = Color(0.100439, 0.337708, 1, 1)
+shader_parameter/deep_water = Color(0, 0.566671, 0.483841, 1)
+shader_parameter/beer_law_factor = 2.0
+shader_parameter/_distance = 0.0
+shader_parameter/edge_color = Color(0, 0, 0.854902, 1)
+shader_parameter/edge_scale = 0.25
+shader_parameter/near = 0.1
+shader_parameter/far = 100.0
+shader_parameter/wave_strength = Vector2(0.5, 0.25)
+shader_parameter/wave_frequ = Vector2(12, 12)
+shader_parameter/time_factor = Vector2(1, 2)
+shader_parameter/noise1 = SubResource("NoiseTexture2D_f87rr")
+shader_parameter/noise2 = SubResource("NoiseTexture2D_dhcsl")
+shader_parameter/normalmap = SubResource("NoiseTexture2D_275vs")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_kpjbt"]
+noise_type = 3
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_1fiwj"]
+as_normal_map = true
+noise = SubResource("FastNoiseLite_kpjbt")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_55iqs"]
+noise_type = 3
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_6l4tf"]
+as_normal_map = true
+noise = SubResource("FastNoiseLite_55iqs")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_akv5y"]
+noise_type = 3
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_qqn2u"]
+seamless = true
+noise = SubResource("FastNoiseLite_akv5y")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_aa677"]
+render_priority = 0
+shader = ExtResource("7_yqm6i")
+shader_parameter/albedo = Color(0, 0.322, 0.431, 1)
+shader_parameter/albedo2 = Color(0, 0.475, 0.765, 1)
+shader_parameter/metallic = 0.0
+shader_parameter/roughness = 0.02
+shader_parameter/wave_direction = Vector2(2, 0)
+shader_parameter/wave_direction2 = Vector2(0, 1)
+shader_parameter/time_scale = 0.025
+shader_parameter/noise_scale = 10.0
+shader_parameter/height_scale = 0.15
+shader_parameter/color_deep = Color(0.106, 0.294, 0.329, 1)
+shader_parameter/color_shallow = Color(0, 0.553, 0.651, 1)
+shader_parameter/beers_law = 2.0
+shader_parameter/depth_offset = -0.75
+shader_parameter/edge_scale = 0.1
+shader_parameter/near = 1.0
+shader_parameter/far = 100.0
+shader_parameter/edge_color = Color(1, 1, 1, 1)
+shader_parameter/wave = SubResource("NoiseTexture2D_qqn2u")
+shader_parameter/texture_normal = SubResource("NoiseTexture2D_1fiwj")
+shader_parameter/texture_normal2 = SubResource("NoiseTexture2D_6l4tf")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_k2w7c"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_tk7yf"]
+seamless = true
+noise = SubResource("FastNoiseLite_k2w7c")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_iygk2"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ko3ta"]
+as_normal_map = true
+noise = SubResource("FastNoiseLite_iygk2")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_o50x1"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_3kqju"]
+as_normal_map = true
+noise = SubResource("FastNoiseLite_o50x1")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_455uj"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_vjr7j"]
+seamless = true
+noise = SubResource("FastNoiseLite_455uj")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_egfto"]
+render_priority = 0
+shader = ExtResource("8_05171")
+shader_parameter/depth_fade_distance = 1.0
+shader_parameter/absorbance = 2.0
+shader_parameter/shallow_color = Color(0.22, 0.66, 1, 1)
+shader_parameter/deep_color = Color(0, 0.25, 0.45, 1)
+shader_parameter/foam_amount = 0.2
+shader_parameter/foam_color = Color(1, 1, 1, 1)
+shader_parameter/roughness = 0.05
+shader_parameter/wave_scale = 4.0
+shader_parameter/height_scale = 0.15
+shader_parameter/wave_dir1 = Vector2(1, 0)
+shader_parameter/wave_dir2 = Vector2(0, 1)
+shader_parameter/wave_speed = 0.015
+shader_parameter/foam_noise = SubResource("NoiseTexture2D_tk7yf")
+shader_parameter/wave_texture = SubResource("NoiseTexture2D_vjr7j")
+shader_parameter/normal1 = SubResource("NoiseTexture2D_ko3ta")
+shader_parameter/normal2 = SubResource("NoiseTexture2D_3kqju")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1v1xl"]
+render_priority = 0
+shader = ExtResource("9_4117t")
+shader_parameter/out_color = Color(0, 0.2, 1, 1)
+shader_parameter/amount = 0.8
+shader_parameter/speed = 1.0
+shader_parameter/beer_factor = 0.2
+shader_parameter/metallic = 0.6
+shader_parameter/specular = 0.5
+shader_parameter/roughness = 0.2
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_vdnae"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_4d3wm"]
+noise = SubResource("FastNoiseLite_vdnae")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_nnsa4"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_3dymm"]
+noise = SubResource("FastNoiseLite_nnsa4")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_af67v"]
+render_priority = 0
+shader = ExtResource("10_126jk")
+shader_parameter/freeze_time = false
+shader_parameter/albedo = Color(0, 0, 0.839216, 0.568627)
+shader_parameter/albedo_fresnel = Color(0, 0, 0.564706, 1)
+shader_parameter/specular = 0.5
+shader_parameter/roughness = 0.2
+shader_parameter/metallic = 0.0
+shader_parameter/vertex_displace_from_mesh_normal = false
+shader_parameter/normal_wave_from_mesh_normal = false
+shader_parameter/texture_albedo = SubResource("NoiseTexture2D_4d3wm")
+shader_parameter/refraction = null
+shader_parameter/refraction_texture_channel = null
+shader_parameter/refraction_opacity = null
+shader_parameter/shore_start_blend = 0.0
+shader_parameter/shore_end_blend = 0.0
+shader_parameter/texture_foam = SubResource("NoiseTexture2D_3dymm")
+shader_parameter/distance_fade_min = null
+shader_parameter/distance_fade_max = null
+shader_parameter/near_fade_min = null
+shader_parameter/near_fade_max = null
+shader_parameter/foam_fade_min = null
+shader_parameter/foam_fade_max = null
+shader_parameter/shore_fade_min = null
+shader_parameter/shore_fade_max = null
+shader_parameter/vertex_wave_fade_min = null
+shader_parameter/vertex_wave_fade_max = null
+shader_parameter/depth_fog_fade_min = null
+shader_parameter/depth_fog_fade_max = null
+shader_parameter/refraction_scaling_distance_min = null
+shader_parameter/uv_blend_sharpness = null
+shader_parameter/uv_tri_scale = null
+shader_parameter/uv_tri_offset = null
+shader_parameter/color_deep = Color(0, 0, 0.690196, 1)
+shader_parameter/color_shallow = Color(0, 0, 0.603922, 1)
+shader_parameter/beers_law = 2.0
+shader_parameter/depth_offset = -0.75
+shader_parameter/albedo_snell = Color(0, 0, 0.788235, 1)
+shader_parameter/snell_direction = Vector3(0, 1, 0)
+shader_parameter/snell_tightness = 0.7
+shader_parameter/WaveCount = 3
+shader_parameter/WaveSteepnesses = null
+shader_parameter/WaveAmplitudes = null
+shader_parameter/WaveDirectionsDegrees = null
+shader_parameter/WaveFrequencies = null
+shader_parameter/WaveSpeeds = null
+shader_parameter/WavePhases = null
+shader_parameter/FoamWaveCount = 0
+shader_parameter/FoamWaveSteepnesses = null
+shader_parameter/FoamWaveAmplitudes = null
+shader_parameter/FoamWaveDirectionsDegrees = null
+shader_parameter/FoamWaveFrequencies = null
+shader_parameter/FoamWaveSpeeds = null
+shader_parameter/FoamWavePhases = null
+shader_parameter/UVWaveCount = 0
+shader_parameter/UVWaveSteepnesses = null
+shader_parameter/UVWaveAmplitudes = null
+shader_parameter/UVWaveDirectionsDegrees = null
+shader_parameter/UVWaveFrequencies = null
+shader_parameter/UVWaveSpeeds = null
+shader_parameter/UVWavePhases = null
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_vrm4u"]
+noise_type = 3
+fractal_type = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_lta6g"]
+seamless = true
+as_normal_map = true
+noise = SubResource("FastNoiseLite_vrm4u")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ed568"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_x0jrg"]
+seamless = true
+as_normal_map = true
+noise = SubResource("FastNoiseLite_ed568")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_a2hic"]
+noise_type = 3
+fractal_type = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_w5j0o"]
+seamless = true
+noise = SubResource("FastNoiseLite_a2hic")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ml8d6"]
+render_priority = 0
+shader = ExtResource("11_v5xup")
+shader_parameter/albedo = Color(0, 0.322, 0.431, 0.8)
+shader_parameter/metallic = 0.0
+shader_parameter/roughness = 0.06
+shader_parameter/wave_size = 4.0
+shader_parameter/wave_height_offset = 0.05
+shader_parameter/wave_coverage_offset = 0.0
+shader_parameter/wave_dir1 = Vector2(1, 0)
+shader_parameter/wave_dir2 = Vector2(0, 1)
+shader_parameter/wave_speed = 0.015
+shader_parameter/noise_normal = SubResource("NoiseTexture2D_lta6g")
+shader_parameter/noise_normal2 = SubResource("NoiseTexture2D_x0jrg")
+shader_parameter/wave_texture = SubResource("NoiseTexture2D_w5j0o")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_u1tvj"]
+render_priority = 0
+shader = ExtResource("12_qdeyy")
+
+[sub_resource type="BoxMesh" id="BoxMesh_kuuoq"]
+size = Vector3(1, 1, 5)
+
+[node name="shaderDevelopment" type="Node3D"]
+
+[node name="WaterBlock1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
+cast_shadow = 0
+mesh = SubResource("BoxMesh_kn0wi")
+surface_material_override/0 = SubResource("ShaderMaterial_hs7li")
+
+[node name="WaterBlock2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 11.3868)
+mesh = SubResource("BoxMesh_kn0wi")
+skeleton = NodePath("../WaterBlock1")
+surface_material_override/0 = SubResource("ShaderMaterial_qlqqk")
+
+[node name="WaterBlock3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 12.9378)
+mesh = SubResource("BoxMesh_kn0wi")
+skeleton = NodePath("../WaterBlock1")
+surface_material_override/0 = SubResource("ShaderMaterial_shpyl")
+
+[node name="WaterBlock4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 14.4583)
+mesh = SubResource("BoxMesh_kn0wi")
+skeleton = NodePath("../WaterBlock1")
+surface_material_override/0 = SubResource("ShaderMaterial_6c880")
+
+[node name="WaterBlock5" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 16.0409)
+mesh = SubResource("BoxMesh_kn0wi")
+skeleton = NodePath("../WaterBlock1")
+surface_material_override/0 = SubResource("ShaderMaterial_fkbww")
+
+[node name="WaterBlock6" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 17.6357)
+mesh = SubResource("BoxMesh_kn0wi")
+skeleton = NodePath("../WaterBlock1")
+surface_material_override/0 = SubResource("ShaderMaterial_8ru6y")
+
+[node name="WaterBlock7" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 19.5294)
+mesh = SubResource("BoxMesh_kn0wi")
+skeleton = NodePath("../WaterBlock1")
+surface_material_override/0 = SubResource("ShaderMaterial_aa677")
+
+[node name="WaterBlock8" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 21.6349)
+mesh = SubResource("BoxMesh_kn0wi")
+skeleton = NodePath("../WaterBlock1")
+surface_material_override/0 = SubResource("ShaderMaterial_egfto")
+
+[node name="WaterBlock9" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 24.0667)
+mesh = SubResource("BoxMesh_kn0wi")
+skeleton = NodePath("../WaterBlock1")
+surface_material_override/0 = SubResource("ShaderMaterial_1v1xl")
+
+[node name="WaterBlock10" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 26.1859)
+visible = false
+mesh = SubResource("BoxMesh_kn0wi")
+skeleton = NodePath("../WaterBlock1")
+surface_material_override/0 = SubResource("ShaderMaterial_af67v")
+
+[node name="WaterBlock12" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.999998, 0, 0, 0, 0.999999, 0, 0, 0, 0.999999, -2.78881, 0.0495041, 26.4836)
+mesh = SubResource("BoxMesh_kn0wi")
+skeleton = NodePath("../WaterBlock1")
+surface_material_override/0 = SubResource("ShaderMaterial_ml8d6")
+
+[node name="WaterBlock13" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7729, 0, 23.7634)
+mesh = SubResource("BoxMesh_kn0wi")
+skeleton = NodePath("../WaterBlock1")
+surface_material_override/0 = SubResource("ShaderMaterial_u1tvj")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.35447, 0, 12.7239)
+mesh = SubResource("BoxMesh_kuuoq")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.35447, 0, 19.1878)
+mesh = SubResource("BoxMesh_kuuoq")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.35447, 0, 25.4678)
+mesh = SubResource("BoxMesh_kuuoq")

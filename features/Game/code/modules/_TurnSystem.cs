@@ -37,6 +37,9 @@ public class TurnModule
 
   public Player GetActivePlayer() => _game.Players[ActivePlayerIndex];
 
+  //props current turn 
   public event Action<int> OnTurnChange;
+
+  //props current player index
   public event Action<int> OnActivePlayerIndexChange;
 }

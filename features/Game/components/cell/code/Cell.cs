@@ -21,6 +21,9 @@ public interface ICell
   void AddPawn(Pawn pawn, bool callEvent = true);
   void RemovePawn(Pawn pawn, bool callEvent = true);
   IReadOnlyList<Pawn> GetPawns();
+
+  event Action<Cell, Pawn> PawnWasAdded;
+  event Action<Cell, Pawn> PawnWasRemoved;
 }
 
 public partial class Cell : Node3D, ICell
@@ -85,11 +88,11 @@ public partial class Cell : Node3D, ICell
 
   public IReadOnlyList<Pawn> GetPawns() => PawnsInside.AsReadOnly();
 
-  [MyAttributes.ParentSetter]
-  public void SetField(Field field) => Field = field;
-
   public event Action<Cell, Pawn> PawnWasAdded;
   public event Action<Cell, Pawn> PawnWasRemoved;
+
+  [MyAttributes.ParentSetter]
+  public void SetField(Field field) => Field = field;
 
   public override void _Ready() {
     base._Ready();
@@ -130,9 +133,11 @@ public partial class Cell : Node3D, ICell
   private BaseLogic CreateLogicByType() {
     return Type switch {
       CellType.Ocean => new OceanLogic(this),
+      CellType.Ice => new IceLogic(this),
       CellType.Arrow => new ArrowLogic(this),
       CellType.Ship => new ShipLogic(this),
       CellType.PossibleShip => new PossibleShipLogic(this),
+      CellType.Trap => new TrapLogic(this),
       _ => new BaseLogic(this)
     };
   }

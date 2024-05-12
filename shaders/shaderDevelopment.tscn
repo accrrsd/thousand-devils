@@ -1,4 +1,4 @@
-[gd_scene load_steps=71 format=3 uid="uid://b2byf0vesmh8q"]
+[gd_scene load_steps=73 format=3 uid="uid://b2byf0vesmh8q"]
 
 [ext_resource type="Shader" path="res://shaders/Water1.gdshader" id="1_tgt61"]
 [ext_resource type="Shader" path="res://shaders/Water2.gdshader" id="2_tfne4"]
@@ -12,6 +12,7 @@
 [ext_resource type="Shader" path="res://shaders/CoolWater.gdshader" id="10_126jk"]
 [ext_resource type="Shader" path="res://shaders/MyWater.gdshader" id="11_v5xup"]
 [ext_resource type="Shader" uid="uid://5hmiq2mskjpj" path="res://shaders/fuckingTest.tres" id="12_qdeyy"]
+[ext_resource type="Shader" path="res://shaders/oldMyWater.gdshader" id="13_xpmst"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_kn0wi"]
 subdivide_width = 10
@@ -422,6 +423,21 @@ shader_parameter/wave_texture = SubResource("NoiseTexture2D_w5j0o")
 render_priority = 0
 shader = ExtResource("12_qdeyy")
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dtd1m"]
+render_priority = 0
+shader = ExtResource("13_xpmst")
+shader_parameter/albedo = Color(0, 0.322, 0.431, 1)
+shader_parameter/metallic = 0.0
+shader_parameter/roughness = 0.02
+shader_parameter/offset = 0.5
+shader_parameter/fade = 0.1
+shader_parameter/wave_size = 4.0
+shader_parameter/wave_amount_offset = 0.0
+shader_parameter/wave_offset = 0.05
+shader_parameter/wave_dir1 = Vector2(1, 0)
+shader_parameter/wave_dir2 = Vector2(0, 1)
+shader_parameter/wave_speed = 0.015
+
 [sub_resource type="BoxMesh" id="BoxMesh_kuuoq"]
 size = Vector3(1, 1, 5)
 
@@ -499,6 +515,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.7729, 0, 23.7634)
 mesh = SubResource("BoxMesh_kn0wi")
 skeleton = NodePath("../WaterBlock1")
 surface_material_override/0 = SubResource("ShaderMaterial_u1tvj")
+
+[node name="WaterBlock14" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.826884, -0.41024, 0.384662, 0.562372, 0.603197, -0.565589, 0, 0.684, 0.729482, -5.8117, -0.00435281, 23.7634)
+mesh = SubResource("BoxMesh_kn0wi")
+skeleton = NodePath("../WaterBlock1")
+surface_material_override/0 = SubResource("ShaderMaterial_dtd1m")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.35447, 0, 12.7239)

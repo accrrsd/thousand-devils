@@ -31,4 +31,9 @@ public partial class Pawn : Node3D
 
     if (increaseTurn) CurrentCell.Field.Game.TurnModule.CurrentTurn++;
   }
+
+  public void Die() {
+    CurrentCell.RemovePawn(this);
+    QueueFree();
+  }
 }

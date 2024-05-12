@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using ThousandDevils.features.Game.code.modules;
+using ThousandDevils.features.Game.components.camera.code;
 using ThousandDevils.features.Game.components.cell.code;
 using ThousandDevils.features.Game.components.cell.code.modules.logic;
 using ThousandDevils.features.Game.components.field.code;
@@ -18,13 +19,18 @@ public partial class Game : Node3D
   public TurnModule TurnModule { get; private set; }
   public List<Player> Players { get; set; } = new();
   public Field Field { get; private set; }
+  public Camera Camera { get; private set; }
 
   [MyAttributes.ChildSetter]
-  public void UpdateField(Field field) => Field = field;
+  private void UpdateField(Field field) => Field = field;
+
+  [MyAttributes.ChildSetter]
+  private void UpdateCamera(Camera camera) => Camera = camera;
 
   public override void _Ready() {
     base._Ready();
     AssociateParentAndChild(this, GdUtilsFunctions.GetFirstChildByType<Field>(this));
+    AssociateParentAndChild(this, GdUtilsFunctions.GetFirstChildByType<Camera>(this));
     FillPlayers();
     TurnModule = new TurnModule(this);
     UpdatePlayersTurn(TurnModule.ActivePlayerIndex);

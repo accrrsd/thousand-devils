@@ -5,9 +5,17 @@ public enum CellType
   Random,
   Empty,
   Arrow,
+  Trap,
+  Ice,
   Ocean,
   Ship,
   PossibleShip
+}
+
+public enum CameraModeType
+{
+  Free,
+  Fixed
 }
 
 public enum PawnItems

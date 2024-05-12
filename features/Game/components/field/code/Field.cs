@@ -13,8 +13,9 @@ namespace ThousandDevils.features.Game.components.field.code;
 public partial class Field : Node3D
 {
   public Game.code.Game Game { get; private set; }
+  public List<Cell> HighlightedCells { get; set; } = new();
   public List<Cell> Cells { get; private set; } = new();
-  public Cell[][] CellsGrid { get; set; }
+  public Cell[][] CellsGrid { get; private set; }
 
   public override void _Ready() {
     Cells = GetChildsByType<Cell>(this);
@@ -23,8 +24,11 @@ public partial class Field : Node3D
     AssociateListOfChilds(this, Cells);
   }
 
+  public Cell GetCellFromCellsGrid(Vector2I gridCords) => CellsGrid[gridCords[0]][gridCords[1]];
+  public Cell GetCellFromCellsGrid(int x, int y) => CellsGrid[x][y];
+
   [MyAttributes.ParentSetter]
-  public void UpdateParentAssociation(Game.code.Game game) => Game = game;
+  public void UpdateGame(Game.code.Game game) => Game = game;
 
   // todo Нужно срочно фиксить определение позиции у клеток, т.к работает через раз.
   private void ArrangeCellsBasedOnMapPosition() {
@@ -59,32 +63,47 @@ public partial class Field : Node3D
     cell.GridCords = newCords;
   }
 
-  // dev only all below
-
-  // Возвращает подсвеченных соседей
-  public void HighlightSelected(Cell cell, bool value) {
+  //sonarlint: disable 
+  public void SwitchHighlightNeighbors(Cell cell, bool value, Predicate<Cell> predicate = null, bool affectInsteadOfReplace = false) {
     int x = cell.GridCords[0];
     int y = cell.GridCords[1];
-    CellsGrid[x][y].IsHighlighted = value;
-  }
-
-  public List<Cell> HighlightNeighbors(Cell cell, bool value, Func<Cell, bool> predicate = null) {
-    int x = cell.GridCords[0];
-    int y = cell.GridCords[1];
-    List<Cell> neighbors = new();
+    List<Cell> affectedCells = new();
     for (int dx = -1; dx <= 1; dx++)
       for (int dy = -1; dy <= 1; dy++) {
         int neighborX = x + dx;
         int neighborY = y + dy;
-
         if (!IsIn2DArrayBounds(neighborX, neighborY, CellsGrid)) continue;
         Cell currentCell = CellsGrid[neighborX][neighborY];
         if (currentCell == cell) continue;
         if (predicate != null && !predicate(currentCell)) continue;
         currentCell.IsHighlighted = value;
-        neighbors.Add(currentCell);
+        affectedCells.Add(currentCell);
       }
 
-    return neighbors;
+    if (value) {
+      if (affectInsteadOfReplace) HighlightedCells.AddRange(affectedCells);
+      else HighlightedCells = affectedCells;
+    }
+    else {
+      if (affectInsteadOfReplace) HighlightedCells.RemoveAll(cell1 => affectedCells.Contains(cell1));
+      else HighlightedCells.Clear();
+    }
+  }
+
+  public void SwitchHighlightByCords(bool value, List<Vector2I> cords, bool affectInsteadOfReplace = false) {
+    List<Cell> affectedCells = new();
+    foreach (Vector2I cord in cords.Where(cord => IsIn2DArrayBounds(cord[0], cord[1], CellsGrid))) {
+      CellsGrid[cord[0]][cord[1]].IsHighlighted = value;
+      affectedCells.Add(CellsGrid[cord[0]][cord[1]]);
+    }
+
+    if (value) {
+      if (affectInsteadOfReplace) HighlightedCells.AddRange(affectedCells);
+      else HighlightedCells = affectedCells;
+    }
+    else {
+      if (affectInsteadOfReplace) HighlightedCells.RemoveAll(cell1 => affectedCells.Contains(cell1));
+      else HighlightedCells.Clear();
+    }
   }
 }

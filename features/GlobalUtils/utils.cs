@@ -54,12 +54,12 @@ public static class UtilsFunctions
 
   public static PropertyInfo GetPropertyWithPredicate(Type type, Predicate<PropertyInfo> predicate) {
     PropertyInfo[] properties = type.GetProperties();
-    return Array.Find(properties, p => predicate(p));
+    return Array.Find(properties, predicate);
   }
 
-  public static MethodInfo GetMethodWithPredicate(Type type, Predicate<MethodInfo> predicate) {
+  private static IEnumerable<MethodInfo> GetMethodsWithPredicate(Type type, Predicate<MethodInfo> predicate) {
     MethodInfo[] methods = type.GetMethods();
-    return Array.Find(methods, p => predicate(p));
+    return methods.Where(p => predicate(p));
   }
 
   /// <summary>
@@ -69,19 +69,24 @@ public static class UtilsFunctions
   /// <param name="childClass"></param>
   /// <param name="parentInChild">if true - prop parent class to child class</param>
   public static bool AssociateClassesByAttribute<T1, T2>(T1 parentClass, T2 childClass, bool parentInChild) where T1 : class where T2 : class {
-    MethodInfo setterMethod = parentInChild
-      ? GetMethodWithPredicate(childClass.GetType(), p => p.GetCustomAttribute<MyAttributes.ParentSetterAttribute>() != null)
-      : GetMethodWithPredicate(parentClass.GetType(), p => p.GetCustomAttribute<MyAttributes.ChildSetterAttribute>() != null);
-    if (setterMethod == null || setterMethod.GetParameters()[0].ParameterType != (parentInChild ? parentClass.GetType() : childClass.GetType())) return false;
-    setterMethod.Invoke(parentInChild ? childClass : parentClass, new object[] { parentInChild ? parentClass : childClass });
+    IEnumerable<MethodInfo> methods = parentInChild
+      ? GetMethodsWithPredicate(childClass.GetType(), p => p.GetCustomAttribute<MyAttributes.ParentSetterAttribute>() != null)
+      : GetMethodsWithPredicate(parentClass.GetType(), p => p.GetCustomAttribute<MyAttributes.ChildSetterAttribute>() != null);
+    List<MethodInfo> setterMethods = methods
+      .Where(mInfo => mInfo.GetParameters()[0].ParameterType == (parentInChild ? parentClass.GetType() : childClass.GetType()))
+      .ToList();
+    if (setterMethods.Count == 0) return false;
+    setterMethods[0].Invoke(parentInChild ? childClass : parentClass, new object[] { parentInChild ? parentClass : childClass });
     return true;
   }
 
   ///<summary>Prop parent class to multiple child classes</summary>
   public static bool AssociateListOfChilds<T1, T2>(T1 parentClass, List<T2> childClasses) where T1 : class where T2 : class {
-    MethodInfo parentSetterInChild = GetMethodWithPredicate(childClasses[0].GetType(), p => p.GetCustomAttribute<MyAttributes.ParentSetterAttribute>() != null);
-    if (parentSetterInChild == null || parentSetterInChild.GetParameters()[0].ParameterType != parentClass.GetType()) return false;
-    foreach (T2 childClass in childClasses) parentSetterInChild.Invoke(childClass, new object[] { parentClass });
+    IEnumerable<MethodInfo> methods =
+      GetMethodsWithPredicate(childClasses[0].GetType(), p => p.GetCustomAttribute<MyAttributes.ParentSetterAttribute>() != null);
+    List<MethodInfo> parentSettersInChild = methods.Where(mInfo => mInfo.GetParameters()[0].ParameterType == parentClass.GetType()).ToList();
+    if (parentSettersInChild.Count == 0) return false;
+    foreach (T2 childClass in childClasses) parentSettersInChild[0].Invoke(childClass, new object[] { parentClass });
     return true;
   }
 

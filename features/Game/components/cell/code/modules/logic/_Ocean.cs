@@ -5,6 +5,7 @@ public class OceanLogic : BaseLogic
   public OceanLogic(Cell cell) : base(cell) {
     Cell.PawnWasAdded -= DiscoverCell;
     Cell.IsOpen = true;
-    Cell.CanAcceptPawns = false;
+    // todo Должна быть дичайшая обработка океана, пешка за бортом!
+    // Cell.CanAcceptPawns = false;
   }
 }

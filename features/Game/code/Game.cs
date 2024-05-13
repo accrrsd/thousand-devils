@@ -21,10 +21,10 @@ public partial class Game : Node3D
   public Field Field { get; private set; }
   public Camera Camera { get; private set; }
 
-  [MyAttributes.ChildSetter]
+  [AssociateAttributes.ChildSetter]
   private void UpdateField(Field field) => Field = field;
 
-  [MyAttributes.ChildSetter]
+  [AssociateAttributes.ChildSetter]
   private void UpdateCamera(Camera camera) => Camera = camera;
 
   public override void _Ready() {

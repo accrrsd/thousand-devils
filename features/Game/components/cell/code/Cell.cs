@@ -24,6 +24,7 @@ public interface ICell
 
   event Action<Cell, Pawn> PawnWasAdded;
   event Action<Cell, Pawn> PawnWasRemoved;
+  event Action<Cell> wasDiscovered;
 }
 
 public partial class Cell : Node3D, ICell
@@ -56,6 +57,7 @@ public partial class Cell : Node3D, ICell
     set {
       _isOpen = value;
       ChangeMapsVisibility(value);
+      if (value) wasDiscovered?.Invoke(this);
     }
   }
 
@@ -90,14 +92,15 @@ public partial class Cell : Node3D, ICell
 
   public event Action<Cell, Pawn> PawnWasAdded;
   public event Action<Cell, Pawn> PawnWasRemoved;
+  public event Action<Cell> wasDiscovered;
 
-  [MyAttributes.ParentSetter]
+  [AssociateAttributes.ParentSetter]
   public void SetField(Field field) => Field = field;
 
   public override void _Ready() {
     base._Ready();
-    _visibleCellMap = DefineMap("VisibleMap", _visibleCellScene);
-    _invisibleCellMap = DefineMap("InvisibleMap", _invisibleCellScene);
+    _visibleCellMap = DefineMap(CellMapName.Visible, _visibleCellScene);
+    _invisibleCellMap = DefineMap(CellMapName.Invisible, _invisibleCellScene);
     ChangeTypeIfRandom();
     // default is false, but logic will set it if needed.
     ChangeMapsVisibility(false);
@@ -110,14 +113,25 @@ public partial class Cell : Node3D, ICell
     _invisibleCellMap.Visible = !value;
   }
 
+  public void ReplaceCellMapScene(CellMapName name, PackedScene newScene) {
+    if (name == CellMapName.Visible) {
+      _visibleCellScene = newScene;
+      _visibleCellMap = DefineMap(CellMapName.Visible, _visibleCellScene);
+    }
+    else {
+      _invisibleCellScene = newScene;
+      _invisibleCellMap = DefineMap(CellMapName.Invisible, _invisibleCellScene);
+    }
+  }
+
   private void ChangeTypeIfRandom() {
     if (Type != CellType.Random) return;
     Type = UtilsFunctions.GetRandomEnumValueExcluding(CellType.Random, CellType.Ocean, CellType.Ship, CellType.PossibleShip);
   }
 
-  private Node3D DefineMap(string mapPathInCell, PackedScene sceneForMap) {
+  private Node3D DefineMap(CellMapName name, PackedScene sceneForMap) {
     Node3D resultMap;
-    Node3D mapInCell = GetNode<Node3D>(mapPathInCell);
+    Node3D mapInCell = GetNode<Node3D>(name.ToString());
     if (sceneForMap == null) {
       resultMap = mapInCell;
     }
@@ -138,6 +152,9 @@ public partial class Cell : Node3D, ICell
       CellType.Ship => new ShipLogic(this),
       CellType.PossibleShip => new PossibleShipLogic(this),
       CellType.Trap => new TrapLogic(this),
+      CellType.Crocodile => new CrocodileLogic(this),
+      CellType.Ogre => new OgreLogic(this),
+      CellType.Balloon => new BalloonLogic(this),
       _ => new BaseLogic(this)
     };
   }

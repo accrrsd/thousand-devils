@@ -32,8 +32,29 @@ public partial class Pawn : Node3D
     if (increaseTurn) CurrentCell.Field.Game.TurnModule.CurrentTurn++;
   }
 
+  public Cell HighlightMove() {
+    if (!CanMove) return null;
+    if (CurrentCell.Type == CellType.Ship) {
+      bool GetPossibleCell(Cell targetCell) {
+        if (!targetCell.CanAcceptPawns) return false;
+        int dx = CurrentCell.GridCords[0] - targetCell.GridCords[0];
+        int dy = CurrentCell.GridCords[1] - targetCell.GridCords[1];
+        Vector2I vectorToTargetCell = new(dx, dy);
+        if (vectorToTargetCell[0] != vectorToTargetCell[1]) return true;
+        return false;
+      }
+
+      CurrentCell.Field.SwitchHighlightNeighbors(CurrentCell, true, GetPossibleCell);
+    }
+    else {
+      CurrentCell.Field.SwitchHighlightNeighbors(CurrentCell, true, pCell => pCell.Type != CellType.Ocean && pCell.CanAcceptPawns);
+    }
+    return CurrentCell;
+  }
+
   public void Die() {
     CurrentCell.RemovePawn(this);
+    OwnerPlayer.ControlledPawns.Remove(this);
     QueueFree();
   }
 }

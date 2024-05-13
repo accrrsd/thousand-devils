@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://4j7w3x31mcv3"]
 
-[ext_resource type="MeshLibrary" uid="uid://ds7xg3mgo2jwe" path="res://AllInOne.tres" id="1_m4cn5"]
+[ext_resource type="MeshLibrary" uid="uid://ds7xg3mgo2jwe" path="res://MeshPacks/AllInOne.tres" id="1_m4cn5"]
 
 [node name="VisibleMap" type="Node3D"]
 

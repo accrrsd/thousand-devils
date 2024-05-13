@@ -6,6 +6,9 @@ public enum CellType
   Empty,
   Arrow,
   Trap,
+  Balloon,
+  Ogre,
+  Crocodile,
   Ice,
   Ocean,
   Ship,
@@ -35,4 +38,10 @@ public enum PawnType
 public static class Variables
 {
   public const int CellSize = 10;
+}
+
+public enum CellMapName
+{
+  Visible,
+  Invisible
 }

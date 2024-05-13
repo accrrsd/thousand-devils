@@ -70,8 +70,8 @@ public static class UtilsFunctions
   /// <param name="parentInChild">if true - prop parent class to child class</param>
   public static bool AssociateClassesByAttribute<T1, T2>(T1 parentClass, T2 childClass, bool parentInChild) where T1 : class where T2 : class {
     IEnumerable<MethodInfo> methods = parentInChild
-      ? GetMethodsWithPredicate(childClass.GetType(), p => p.GetCustomAttribute<MyAttributes.ParentSetterAttribute>() != null)
-      : GetMethodsWithPredicate(parentClass.GetType(), p => p.GetCustomAttribute<MyAttributes.ChildSetterAttribute>() != null);
+      ? GetMethodsWithPredicate(childClass.GetType(), p => p.GetCustomAttribute<AssociateAttributes.ParentSetterAttribute>() != null)
+      : GetMethodsWithPredicate(parentClass.GetType(), p => p.GetCustomAttribute<AssociateAttributes.ChildSetterAttribute>() != null);
     List<MethodInfo> setterMethods = methods
       .Where(mInfo => mInfo.GetParameters()[0].ParameterType == (parentInChild ? parentClass.GetType() : childClass.GetType()))
       .ToList();
@@ -83,7 +83,7 @@ public static class UtilsFunctions
   ///<summary>Prop parent class to multiple child classes</summary>
   public static bool AssociateListOfChilds<T1, T2>(T1 parentClass, List<T2> childClasses) where T1 : class where T2 : class {
     IEnumerable<MethodInfo> methods =
-      GetMethodsWithPredicate(childClasses[0].GetType(), p => p.GetCustomAttribute<MyAttributes.ParentSetterAttribute>() != null);
+      GetMethodsWithPredicate(childClasses[0].GetType(), p => p.GetCustomAttribute<AssociateAttributes.ParentSetterAttribute>() != null);
     List<MethodInfo> parentSettersInChild = methods.Where(mInfo => mInfo.GetParameters()[0].ParameterType == parentClass.GetType()).ToList();
     if (parentSettersInChild.Count == 0) return false;
     foreach (T2 childClass in childClasses) parentSettersInChild[0].Invoke(childClass, new object[] { parentClass });

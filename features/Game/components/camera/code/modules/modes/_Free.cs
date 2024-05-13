@@ -100,13 +100,9 @@ public class FreeMode : BaseMode
 
   private void DefaultCameraLogic(Cell targetCell) {
     // if click on player that have turn
-    if (targetCell.GetPawns().Any(pawn => pawn.OwnerPlayer.IsTurn)) {
-      if (targetCell.Type == CellType.Ship)
-        Camera.Game.Field.SwitchHighlightNeighbors(targetCell, true);
-      else
-        Camera.Game.Field.SwitchHighlightNeighbors(targetCell, true, pCell => pCell.Type != CellType.Ocean);
-      _firstCell = targetCell;
-      return;
+    Pawn currentPawn = targetCell.GetPawns().FirstOrDefault(p => p.OwnerPlayer.IsTurn);
+    if (currentPawn != null) {
+      _firstCell = currentPawn.HighlightMove();
     }
 
     // if click on highlighted cell

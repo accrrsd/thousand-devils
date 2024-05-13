@@ -20,10 +20,11 @@ public class Camera : Camera3D
     }
   }
 
-  public void AskForRayCast(Action<Node> onRayCastCallback, bool pauseDefaultRayCast = true) {
+  public void AskForRayCast(Action<Node> onRayCastCallback, Predicate<Node> predicate = null, bool pauseDefaultRayCast = true) {
     if (pauseDefaultRayCast) CameraMode.ProcessDefaultRayCast = false;
 
     void Wrapper(Node node) {
+      if (predicate != null && !predicate(node)) return;
       onRayCastCallback(node);
       CameraMode.OnRayCast -= Wrapper;
       if (pauseDefaultRayCast) CameraMode.ProcessDefaultRayCast = true;
@@ -32,7 +33,7 @@ public class Camera : Camera3D
     CameraMode.OnRayCast += Wrapper;
   }
 
-  [MyAttributes.ParentSetter]
+  [AssociateAttributes.ParentSetter]
   private void UpdateGame(Game.code.Game game) => Game = game;
 
   public override void _Ready() {

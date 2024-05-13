@@ -1,4 +1,4 @@
-[gd_resource type="VisualShader" load_steps=8 format=3 uid="uid://5hmiq2mskjpj"]
+[gd_resource type="VisualShader" load_steps=14 format=3 uid="uid://5hmiq2mskjpj"]
 
 [sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_81vos"]
 input_name = "time"
@@ -16,43 +16,94 @@ default_input_values = [0, Vector3(0, 0, 0), 1, Vector3(0, 1, 0)]
 
 [sub_resource type="VisualShaderNodeTransformDecompose" id="VisualShaderNodeTransformDecompose_nwwjx"]
 
+[sub_resource type="VisualShaderNodeTransformVecMult" id="VisualShaderNodeTransformVecMult_umd7o"]
+
+[sub_resource type="VisualShaderNodeVaryingGetter" id="VisualShaderNodeVaryingGetter_buh83"]
+varying_name = "Model_x_Normal"
+varying_type = 5
+
 [sub_resource type="VisualShaderNodeTransformDecompose" id="VisualShaderNodeTransformDecompose_yp3aj"]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_dhimm"]
+input_name = "normal"
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_paf2h"]
+input_name = "inv_projection_matrix"
+
+[sub_resource type="VisualShaderNodeTransformVecMult" id="VisualShaderNodeTransformVecMult_i4oj4"]
+
+[sub_resource type="VisualShaderNodeVaryingSetter" id="VisualShaderNodeVaryingSetter_bnjpf"]
+varying_name = "Model_x_Normal"
+varying_type = 5
 
 [resource]
 code = "shader_type spatial;
 render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_lambert, specular_schlick_ggx;
 
 
+// Varyings
+varying vec4 Model_x_Normal;
 
 
-void fragment() {
+
+
+void vertex() {
+// Input:4
+	mat4 n_out4p0 = INV_PROJECTION_MATRIX;
+
+
 // Input:3
 	vec3 n_out3p0 = NORMAL;
 
 
-// DotProduct:6
-	vec3 n_in6p1 = vec3(0.00000, 1.00000, 0.00000);
-	float n_out6p0 = dot(n_out3p0, n_in6p1);
+// TransformVectorMult:5
+	vec3 n_out5p0 = (n_out4p0 * vec4(n_out3p0, 1.0)).xyz;
+
+
+// VaryingSetter:6
+	Model_x_Normal = vec4(n_out5p0, 0.0);
+
+
+}
+
+void fragment() {
+// VaryingGetter:9
+	vec4 n_out9p0 = Model_x_Normal;
 
 
 // Output:0
-	ALBEDO = vec3(n_out6p0);
+	ALBEDO = vec3(n_out9p0.xyz);
 
 
 }
 "
+graph_offset = Vector2(-2271.24, -95.8968)
+varyings/Model_x_Normal = "0,5"
 nodes/vertex/2/node = SubResource("VisualShaderNodeTransformDecompose_yp3aj")
-nodes/vertex/2/position = Vector2(-100, 200)
+nodes/vertex/2/position = Vector2(-300, 360)
+nodes/vertex/3/node = SubResource("VisualShaderNodeInput_dhimm")
+nodes/vertex/3/position = Vector2(-378.09, 123.79)
+nodes/vertex/4/node = SubResource("VisualShaderNodeInput_paf2h")
+nodes/vertex/4/position = Vector2(-320, 0)
+nodes/vertex/5/node = SubResource("VisualShaderNodeTransformVecMult_i4oj4")
+nodes/vertex/5/position = Vector2(40, 40)
+nodes/vertex/6/node = SubResource("VisualShaderNodeVaryingSetter_bnjpf")
+nodes/vertex/6/position = Vector2(323.71, -65.41)
+nodes/vertex/connections = PackedInt32Array(4, 0, 5, 0, 3, 0, 5, 1, 5, 0, 6, 0)
 nodes/fragment/2/node = SubResource("VisualShaderNodeInput_81vos")
-nodes/fragment/2/position = Vector2(-340, 140)
+nodes/fragment/2/position = Vector2(260, 0)
 nodes/fragment/3/node = SubResource("VisualShaderNodeInput_dachv")
-nodes/fragment/3/position = Vector2(-300, 260)
+nodes/fragment/3/position = Vector2(-680, 640)
 nodes/fragment/4/node = SubResource("VisualShaderNodeTransformVecMult_6xml2")
-nodes/fragment/4/position = Vector2(100, 260)
+nodes/fragment/4/position = Vector2(-20, 700)
 nodes/fragment/5/node = SubResource("VisualShaderNodeInput_pn3w0")
-nodes/fragment/5/position = Vector2(-380, -40)
+nodes/fragment/5/position = Vector2(-560, 360)
 nodes/fragment/6/node = SubResource("VisualShaderNodeDotProduct_v8ami")
-nodes/fragment/6/position = Vector2(0, -40)
+nodes/fragment/6/position = Vector2(-100, 280)
 nodes/fragment/7/node = SubResource("VisualShaderNodeTransformDecompose_nwwjx")
-nodes/fragment/7/position = Vector2(-595.6, 151.853)
-nodes/fragment/connections = PackedInt32Array(3, 0, 4, 1, 3, 0, 6, 0, 6, 0, 0, 0)
+nodes/fragment/7/position = Vector2(-700, 480)
+nodes/fragment/8/node = SubResource("VisualShaderNodeTransformVecMult_umd7o")
+nodes/fragment/8/position = Vector2(-200, 580)
+nodes/fragment/9/node = SubResource("VisualShaderNodeVaryingGetter_buh83")
+nodes/fragment/9/position = Vector2(-20, 100)
+nodes/fragment/connections = PackedInt32Array(3, 0, 4, 1, 3, 0, 6, 0, 5, 0, 8, 0, 3, 0, 8, 1, 9, 0, 0, 0)

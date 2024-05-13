@@ -27,7 +27,7 @@ public partial class Field : Node3D
   public Cell GetCellFromCellsGrid(Vector2I gridCords) => CellsGrid[gridCords[0]][gridCords[1]];
   public Cell GetCellFromCellsGrid(int x, int y) => CellsGrid[x][y];
 
-  [MyAttributes.ParentSetter]
+  [AssociateAttributes.ParentSetter]
   public void UpdateGame(Game.code.Game game) => Game = game;
 
   // todo Нужно срочно фиксить определение позиции у клеток, т.к работает через раз.
@@ -63,7 +63,20 @@ public partial class Field : Node3D
     cell.GridCords = newCords;
   }
 
-  //sonarlint: disable 
+  public void ResetHighlightedCells(List<Cell> CellsToRemove = null) {
+    if (CellsToRemove?.Count > 0) {
+      HighlightedCells.RemoveAll(cell => {
+        if (!CellsToRemove.Contains(cell)) return false;
+        cell.IsHighlighted = false;
+        return true;
+      });
+    }
+    else {
+      HighlightedCells.ForEach(cell => cell.IsHighlighted = false);
+      HighlightedCells.Clear();
+    }
+  }
+
   public void SwitchHighlightNeighbors(Cell cell, bool value, Predicate<Cell> predicate = null, bool affectInsteadOfReplace = false) {
     int x = cell.GridCords[0];
     int y = cell.GridCords[1];
@@ -82,12 +95,12 @@ public partial class Field : Node3D
 
     if (value) {
       if (affectInsteadOfReplace) HighlightedCells.AddRange(affectedCells);
-      else HighlightedCells = affectedCells;
+      else {
+        ResetHighlightedCells();
+        HighlightedCells = affectedCells;
+      }
     }
-    else {
-      if (affectInsteadOfReplace) HighlightedCells.RemoveAll(cell1 => affectedCells.Contains(cell1));
-      else HighlightedCells.Clear();
-    }
+    else ResetHighlightedCells(affectInsteadOfReplace ? affectedCells : null);
   }
 
   public void SwitchHighlightByCords(bool value, List<Vector2I> cords, bool affectInsteadOfReplace = false) {

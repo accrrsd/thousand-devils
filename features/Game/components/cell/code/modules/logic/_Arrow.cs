@@ -48,13 +48,19 @@ public class ArrowLogic : BaseLogic
   private void MultipleDirectionLogic(Pawn pawn) {
     Cell.Field.SwitchHighlightByCords(true, _possibleDirections);
 
-    Cell targetCell = null;
-    if (targetCell.Logic is ArrowLogic) pawn.MoveToCell(targetCell, false);
-    pawn.MoveToCell(targetCell);
+    void OnCellWasClicked(Node node) {
+      if (node is Cell targetCell) {
+        if (targetCell.Logic is ArrowLogic) pawn.MoveToCell(targetCell, false);
+        pawn.MoveToCell(targetCell);
+      }
+    }
 
-    //todo Сейчас проблема в том, что MoveToCell() выполняется в камере и если нужна какая-то дополнительная логика, то из камеры нужно вернуть это каким-то образом сюда (каллбек может быть)
+    bool OnCellWasClickedPredicate(Node node) {
+      if (node is Cell targetCell && Cell.Field.HighlightedCells.Contains(targetCell)) return true;
+      return false;
+    }
 
-    // todo Отследить куда нажал игрок и получить клетку, чтобы потом ее передать в MoveToCell()
+    Cell.Field.Game.Camera.AskForRayCast(OnCellWasClicked, OnCellWasClickedPredicate);
   }
 
   private void OnPawnWasAdded(Cell _, Pawn pawn) {

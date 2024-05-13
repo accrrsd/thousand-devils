@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://brvatmu8076ue"]
+
+[ext_resource type="PackedScene" uid="uid://dngkqey82o8sm" path="res://models/gltf/bed.glb" id="1_v6jnc"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="bed2" parent="." instance=ExtResource("1_v6jnc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0708451, 0, 0.126862)

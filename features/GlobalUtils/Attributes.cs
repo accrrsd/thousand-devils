@@ -2,7 +2,7 @@
 
 namespace ThousandDevils.features.GlobalUtils;
 
-public static class MyAttributes
+public static class AssociateAttributes
 {
   [AttributeUsage(AttributeTargets.Method)]
   public class ChildSetterAttribute : Attribute

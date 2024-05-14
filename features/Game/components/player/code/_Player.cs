@@ -20,7 +20,7 @@ public class Player
   public Cell Ship { get; }
 
   public int MoneyCount { get; set; }
-  public int RomeCount { get; set; }
+  public int RumCount { get; set; }
   public bool IsTurn { get; set; }
 
   public int MaxPawns { get; set; }

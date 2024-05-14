@@ -10,6 +10,8 @@ public enum CellType
   Ogre,
   Crocodile,
   Ice,
+  Rum,
+  RumTrap,
   Ocean,
   Ship,
   PossibleShip

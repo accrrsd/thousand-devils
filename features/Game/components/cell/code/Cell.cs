@@ -155,6 +155,8 @@ public partial class Cell : Node3D, ICell
       CellType.Crocodile => new CrocodileLogic(this),
       CellType.Ogre => new OgreLogic(this),
       CellType.Balloon => new BalloonLogic(this),
+      CellType.RumTrap => new RumTrapLogic(this),
+      CellType.Rum => new RumLogic(this),
       _ => new BaseLogic(this)
     };
   }

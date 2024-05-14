@@ -25,11 +25,11 @@ public partial class Game : Node3D
   public Camera Camera { get; private set; }
 
   public bool BasicReady {
-    get => _basicReady;
-    private set {
-      _basicReady = value;
-      if (_basicReady) BasicWasReady?.Invoke();
-    }
+	get => _basicReady;
+	private set {
+	  _basicReady = value;
+	  if (_basicReady) BasicWasReady?.Invoke();
+	}
   }
 
   private event Action BasicWasReady;
@@ -41,77 +41,63 @@ public partial class Game : Node3D
   public void UpdateCamera(Camera camera) => Camera = camera;
 
   public override void _Ready() {
-    base._Ready();
-    AssociateParentAndChild(this, GdUtilsFunctions.GetFirstChildByType<Field>(this));
-    AssociateParentAndChild(this, GdUtilsFunctions.GetFirstChildByType<Camera>(this));
-    TurnModule = new TurnModule(this);
-    BasicReady = true;
+	base._Ready();
+	AssociateParentAndChild(this, GdUtilsFunctions.GetFirstChildByType<Field>(this));
+	AssociateParentAndChild(this, GdUtilsFunctions.GetFirstChildByType<Camera>(this));
+	TurnModule = new TurnModule(this);
+	BasicReady = true;
 
-    FillPlayers();
-    UpdatePlayersTurn(TurnModule.ActivePlayerIndex);
-    TurnModule.OnActivePlayerIndexChange += UpdatePlayersTurn;
+	FillPlayers();
+	UpdatePlayersTurn(TurnModule.ActivePlayerIndex);
+	TurnModule.OnActivePlayerIndexChange += UpdatePlayersTurn;
   }
 
   //Calls callback when game gets based variables setup
 
   public void AskForBasicReady(Action callback) {
-    if (BasicReady) {
-      callback();
-    }
-    else {
-      void Wrapper() {
-        callback();
-        BasicWasReady -= Wrapper;
-      }
+	if (BasicReady) {
+	  callback();
+	}
+	else {
+	  void Wrapper() {
+		callback();
+		BasicWasReady -= Wrapper;
+	  }
 
-      BasicWasReady += Wrapper;
-    }
+	  BasicWasReady += Wrapper;
+	}
   }
-
-  // todo нужно сделать передачу хода по часовой стрелке.
+  
   private List<Player> SortPlayersClockwise(List<Player> players) {
-    int minPlayerY = 0;
-    for (int i = 0; i < players.Count; i++)
-      if (players[i].Ship.GridCords[1] < minPlayerY)
-        minPlayerY = players[i].Ship.GridCords[1];
-    List<Player> minPlayers = new();
-    foreach (Player player in players)
-      if (player.Ship.GridCords[1] == minPlayerY)
-        minPlayers.Add(player);
+	int minPlayerY = players.Min(player => player.Ship.GridCords[1]);
+	
+	List<Player> minPlayers = players.Where(player => player.Ship.GridCords[1] == minPlayerY).ToList();
 
-    Player originPlayer = minPlayers[0];
-    if (minPlayers.Count > 0)
-      foreach (Player player in players)
-        if (player.Ship.GridCords[0] > originPlayer.Ship.GridCords[0])
-          originPlayer = player;
+	Player originPlayer = minPlayers.MinBy(player => player.Ship.GridCords[0]);
 
-    Tuple<Player, double, double> CalculatePolarAngleAndDistance(Player player) {
-      int dx = player.Ship.GridCords[0] - originPlayer.Ship.GridCords[0];
-      int dy = player.Ship.GridCords[1] - originPlayer.Ship.GridCords[1];
-      return new Tuple<Player, double, double>(player, Math.Atan2(dy, dx), Math.Sqrt(dx * dx + dy * dy));
-    }
+	List<Tuple<Player, double, double>> playerPolarAngleDistance = new ();
 
-    List<Tuple<Player, double, double>> playerPolarAngleDistance = new();
-    foreach (Player player in players) playerPolarAngleDistance.Add(CalculatePolarAngleAndDistance(player));
+	foreach (Player player in players) {
+	  int dx = player.Ship.GridCords[0] - originPlayer.Ship.GridCords[0];
+	  int dy = player.Ship.GridCords[1] - originPlayer.Ship.GridCords[1];
+	  playerPolarAngleDistance.Add(new Tuple<Player, double, double>(player, Math.Atan2(dy, dx), Math.Sqrt(dx * dx + dy * dy)));
+	}
 
-    playerPolarAngleDistance.Sort((piecePPD1, piecePPD2) =>
-      piecePPD1.Item2.CompareTo(piecePPD2.Item2) != 0 ? piecePPD1.Item2.CompareTo(piecePPD2.Item2) : piecePPD1.Item3.CompareTo(piecePPD2.Item3)
-    );
-    return playerPolarAngleDistance.Select(piecePPD => piecePPD.Item1).ToList();
+	return playerPolarAngleDistance.OrderBy(player => player.Item2).ThenBy(player => player.Item3).Select(player => player.Item1).ToList();
   }
 
   private void UpdatePlayersTurn(int activePlayerIndex) {
-    for (int i = 0; i < Players.Count; i++) Players[i].IsTurn = i == activePlayerIndex;
+	for (int i = 0; i < Players.Count; i++) Players[i].IsTurn = i == activePlayerIndex;
   }
 
   private void FillPlayers() {
-    if (Field == null || Field.Cells.Count == 0) throw new MyExceptions.EmptyExportException("Field is null or not have cells");
-    // late todo Тут мы должны заполнять игроков по необходимому количеству (которое будет передваться из начала игры), а не по количеству возможных спавнов (оно лишь ограничивает возможное количество игроков).
-    foreach (Cell cell in Field.Cells.Where(cell => cell.Type == CellType.PossibleShip)) {
-      if (cell.Logic is not PossibleShipLogic currentCellLogic) continue;
-      Cell shipCell = DefaultShipNodeScene.Instantiate<Cell>();
-      currentCellLogic.ReplaceByShip(shipCell);
-      Players.Add(new Player(shipCell, this));
-    }
+	if (Field == null || Field.Cells.Count == 0) throw new MyExceptions.EmptyExportException("Field is null or not have cells");
+	// late todo Тут мы должны заполнять игроков по необходимому количеству (которое будет передваться из начала игры), а не по количеству возможных спавнов (оно лишь ограничивает возможное количество игроков).
+	foreach (Cell cell in Field.Cells.Where(cell => cell.Type == CellType.PossibleShip)) {
+	  if (cell.Logic is not PossibleShipLogic currentCellLogic) continue;
+	  Cell shipCell = DefaultShipNodeScene.Instantiate<Cell>();
+	  currentCellLogic.ReplaceByShip(shipCell);
+	  Players.Add(new Player(shipCell, this));
+	}
   }
 }

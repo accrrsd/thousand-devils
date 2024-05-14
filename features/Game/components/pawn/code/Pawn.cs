@@ -1,3 +1,4 @@
+using System;
 using Godot;
 using ThousandDevils.features.Game.components.cell.code;
 using ThousandDevils.features.Game.components.player.code;
@@ -56,8 +57,7 @@ public partial class Pawn : Node3D
         if (!targetCell.CanAcceptPawns) return false;
         int dx = CurrentCell.GridCords[0] - targetCell.GridCords[0];
         int dy = CurrentCell.GridCords[1] - targetCell.GridCords[1];
-        Vector2I vectorToTargetCell = new(dx, dy);
-        return vectorToTargetCell[0] != vectorToTargetCell[1];
+        return Math.Abs(dx) != Math.Abs(dy);
       });
     else CurrentCell.Field.SwitchHighlightNeighbors(CurrentCell, true, pCell => pCell.Type != CellType.Ocean && pCell.CanAcceptPawns);
 

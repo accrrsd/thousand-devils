@@ -14,7 +14,9 @@ public enum CellType
   RumTrap,
   Ocean,
   Ship,
-  PossibleShip
+  PossibleShip,
+  Jungles,
+  Fortress
 }
 
 public enum CameraModeType

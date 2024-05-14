@@ -18,10 +18,11 @@ public partial class Field : Node3D
   public Cell[][] CellsGrid { get; private set; }
 
   public override void _Ready() {
-    Cells = GetChildsByType<Cell>(this);
-    ArrangeCellsBasedOnMapPosition();
-    ConvertCellListIntoGrid();
-    AssociateListOfChilds(this, Cells);
+	Cells = GetChildsByType<Cell>(this);
+	// ArrangeCellsBasedOnMapPosition();
+	// ConvertCellListIntoGrid();
+	ConvertCellListIntoGrid_test();
+	AssociateListOfChilds(this, Cells);
   }
 
   public Cell GetCellFromCellsGrid(Vector2I gridCords) => CellsGrid[gridCords[0]][gridCords[1]];
@@ -32,96 +33,135 @@ public partial class Field : Node3D
 
   // todo Нужно срочно фиксить определение позиции у клеток, т.к работает через раз.
   private void ArrangeCellsBasedOnMapPosition() {
-    Cells.Sort((cell1, cell2) => {
-      int compareX = cell1.GlobalPosition[0].CompareTo(cell2.GlobalPosition[0]);
-      return compareX != 0 ? compareX : cell1.GlobalPosition[2].CompareTo(cell2.GlobalPosition[2]);
-    });
+	Cells.Sort((cell1, cell2) => {
+	  int compareX = cell1.GlobalPosition[0].CompareTo(cell2.GlobalPosition[0]);
+	  return compareX != 0 ? compareX : cell1.GlobalPosition[2].CompareTo(cell2.GlobalPosition[2]);
+	});
   }
 
   private void ConvertCellListIntoGrid() {
-    float minX = Cells[0].GlobalPosition[0], maxX = minX;
-    float minZ = Cells[0].GlobalPosition[2], maxZ = minZ;
+	float minX = Cells[0].GlobalPosition[0], maxX = minX;
+	float minZ = Cells[0].GlobalPosition[2], maxZ = minZ;
 
-    foreach (Vector3 globalPos in Cells.Select(cell => cell.GlobalPosition)) {
-      minX = Math.Min(minX, globalPos[0]);
-      maxX = Math.Max(maxX, globalPos[0]);
-      minZ = Math.Min(minZ, globalPos[2]);
-      maxZ = Math.Max(maxZ, globalPos[2]);
-    }
+	foreach (Vector3 globalPos in Cells.Select(cell => cell.GlobalPosition)) {
+	  minX = Math.Min(minX, globalPos[0]);
+	  maxX = Math.Max(maxX, globalPos[0]);
+	  minZ = Math.Min(minZ, globalPos[2]);
+	  maxZ = Math.Max(maxZ, globalPos[2]);
+	}
 
-    int width = (int)(maxX - minX);
-    int height = (int)(maxZ - minZ);
-    // magic idk how + 1 works, maybe it will broke on small maps.
-    width = width / CellSize + 1;
-    height = height / CellSize + 1;
+	int width = (int)(maxX - minX);
+	int height = (int)(maxZ - minZ);
+	// magic idk how + 1 works, maybe it will broke on small maps.
+	width = width / CellSize + 1;
+	height = height / CellSize + 1;
 
-    CellsGrid = ListTo2DArray(Cells, width, height, (cell, _, col, row) => cell.GridCords = new Vector2I(col, row));
+	CellsGrid = ListTo2DArray(Cells, width, height, (cell, _, col, row) => cell.GridCords = new Vector2I(col, row));
   }
 
+  private void ConvertCellListIntoGrid_test() {
+	float maxX = Int32.MinValue, maxZ = Int32.MinValue;
+	float minX = Int32.MaxValue, minZ = Int32.MaxValue;
+
+	foreach (Vector3 globalPos in Cells.Select(cell => cell.GlobalPosition)) {
+	  float x = globalPos[0] / CellSize;
+	  float z = globalPos[2] / CellSize;
+	  maxX = Math.Max(maxX, x);
+	  maxZ = Math.Max(maxZ, z);
+	  minX = Math.Min(minX, x);
+	  minZ = Math.Min(minZ, z);
+  }
+  float offsetX = 0 - minX;
+  float offsetZ = 0 - minZ;
+  
+  float sizeX = maxX - minX + 1;
+  float sizeZ = maxZ - minZ + 1;
+
+
+  CellsGrid = new Cell[(int)sizeX][];
+	for (int i = 0; i < (int)sizeX; i++) {
+	  CellsGrid[i] = new Cell[(int)sizeZ];
+	}
+
+  foreach (Cell cell in Cells) {
+	  float x = cell.GlobalPosition[0] / CellSize;
+	  float z = cell.GlobalPosition[2] / CellSize;
+	float newX = x + offsetX; 
+	float newZ = z + offsetZ; 
+	CellsGrid[(int)newX][(int)newZ] = cell;
+	cell.GridCords = new Vector2I((int)newX, (int)newZ);
+  }
+}
+
+
   public void UpdateCellGridCords(Cell cell, Vector2I newCords) {
-    CellsGrid[newCords[0]][newCords[1]] = cell;
-    cell.GridCords = newCords;
+	CellsGrid[newCords[0]][newCords[1]] = cell;
+	cell.GridCords = newCords;
   }
 
   public void ResetHighlightedCells(List<Cell> cellsToRemove = null) {
-    if (cellsToRemove?.Count > 0) {
-      HighlightedCells.RemoveAll(cell => {
-        if (!cellsToRemove.Contains(cell)) return false;
-        cell.IsHighlighted = false;
-        return true;
-      });
-    }
-    else {
-      HighlightedCells.ForEach(cell => cell.IsHighlighted = false);
-      HighlightedCells.Clear();
-    }
+	if (cellsToRemove?.Count > 0) {
+	  HighlightedCells.RemoveAll(cell => {
+		if (!cellsToRemove.Contains(cell)) return false;
+		cell.IsHighlighted = false;
+		return true;
+	  });
+	}
+	else {
+	  HighlightedCells.ForEach(cell => cell.IsHighlighted = false);
+	  HighlightedCells.Clear();
+	}
   }
 
   public void SwitchHighlightNeighbors(Cell cell, bool value, Predicate<Cell> predicate = null, bool affectInsteadOfReplace = false) {
-    GD.Print("HN");
-    int x = cell.GridCords[0];
-    int y = cell.GridCords[1];
-    List<Cell> affectedCells = new();
-    for (int dx = -1; dx <= 1; dx++)
-      for (int dy = -1; dy <= 1; dy++) {
-        int neighborX = x + dx;
-        int neighborY = y + dy;
-        if (!IsIn2DArrayBounds(neighborX, neighborY, CellsGrid)) continue;
-        Cell targetCell = CellsGrid[neighborX][neighborY];
-        if (targetCell == cell) continue;
-        if (predicate != null && !predicate(targetCell)) continue;
-        targetCell.IsHighlighted = value;
-        affectedCells.Add(targetCell);
-      }
+	GD.Print("HN");
+	int x = cell.GridCords[0];
+	int y = cell.GridCords[1];
+	List<Cell> affectedCells = new();
+	for (int dx = -1; dx <= 1; dx++)
+	  for (int dy = -1; dy <= 1; dy++) {
+		int neighborX = x + dx;
+		int neighborY = y + dy;
+		if (!IsIn2DArrayBounds(neighborX, neighborY, CellsGrid)) continue;
+		Cell targetCell = CellsGrid[neighborX][neighborY];
+		if (targetCell == cell) continue;
+		if (predicate != null && !predicate(targetCell)) continue;
+		targetCell.IsHighlighted = value;
+		affectedCells.Add(targetCell);
+	  }
 
-    if (value) {
-      if (affectInsteadOfReplace) {
-        HighlightedCells.AddRange(affectedCells);
-      }
-      else {
-        ResetHighlightedCells();
-        HighlightedCells = affectedCells;
-      }
-    }
-    else {
-      ResetHighlightedCells(affectInsteadOfReplace ? affectedCells : null);
-    }
+	if (value) {
+	  if (affectInsteadOfReplace) {
+		HighlightedCells.AddRange(affectedCells);
+	  }
+	  else {
+		ResetHighlightedCells();
+		HighlightedCells = affectedCells;
+	  }
+	}
+	else {
+	  ResetHighlightedCells(affectInsteadOfReplace ? affectedCells : null);
+	}
   }
 
   public void SwitchHighlightByCords(bool value, List<Vector2I> cords, bool affectInsteadOfReplace = false) {
-    List<Cell> affectedCells = new();
-    foreach (Vector2I cord in cords.Where(cord => IsIn2DArrayBounds(cord[0], cord[1], CellsGrid))) {
-      CellsGrid[cord[0]][cord[1]].IsHighlighted = value;
-      affectedCells.Add(CellsGrid[cord[0]][cord[1]]);
-    }
+	List<Cell> affectedCells = new();
+	foreach (Vector2I cord in cords.Where(cord => IsIn2DArrayBounds(cord[0], cord[1], CellsGrid))) {
+	  CellsGrid[cord[0]][cord[1]].IsHighlighted = value;
+	  affectedCells.Add(CellsGrid[cord[0]][cord[1]]);
+	}
 
-    if (value) {
-      if (affectInsteadOfReplace) HighlightedCells.AddRange(affectedCells);
-      else HighlightedCells = affectedCells;
-    }
-    else {
-      if (affectInsteadOfReplace) HighlightedCells.RemoveAll(cell1 => affectedCells.Contains(cell1));
-      else HighlightedCells.Clear();
-    }
+	if (value) {
+	  if (affectInsteadOfReplace) {
+		HighlightedCells.AddRange(affectedCells);
+	  }
+	  else {
+		ResetHighlightedCells();
+		HighlightedCells = affectedCells;
+	  }
+	}
+	else {
+	  ResetHighlightedCells(affectInsteadOfReplace ? affectedCells : null);
+	}
   }
 }

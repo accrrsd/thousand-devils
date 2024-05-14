@@ -163,6 +163,8 @@ public partial class Cell : Node3D, ICell
       CellType.Balloon => new BalloonLogic(this),
       CellType.RumTrap => new RumTrapLogic(this),
       CellType.Rum => new RumLogic(this),
+      CellType.Jungles => new JunglesLogic(this),
+      CellType.Fortress => new FortressLogic(this),
       _ => new BaseLogic(this)
     };
   }

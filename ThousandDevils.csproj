@@ -9,4 +9,7 @@
         <PackageId>ThousandDevils</PackageId>
         <Product>ThousandDevils</Product>
     </PropertyGroup>
+    <ItemGroup>
+      <Folder Include="features\devOnly\" />
+    </ItemGroup>
 </Project>

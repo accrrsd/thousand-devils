@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://bdt6b0la6nj55" path="res://features/Game/components/cell/scenes/@Cell.tscn" id="1_ltd7g"]
 
 [node name="Cell" instance=ExtResource("1_ltd7g")]
-Type = 5
+Type = 12
 
 [node name="GridMap" parent="VisibleMap" index="0"]
 data = {

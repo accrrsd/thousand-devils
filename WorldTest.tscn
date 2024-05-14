@@ -1,8 +1,8 @@
 [gd_scene load_steps=12 format=3 uid="uid://dy8kur3grffc1"]
 
 [ext_resource type="Script" path="res://features/Game/code/Game.cs" id="1_ktgh3"]
-[ext_resource type="Script" path="res://features/devOnly/CameraFree/CameraFree.cs" id="1_o5m5o"]
 [ext_resource type="Script" path="res://features/Game/components/field/code/Field.cs" id="2_c8w5x"]
+[ext_resource type="Script" path="res://features/Game/components/camera/code/Camera.cs" id="2_tbvmi"]
 [ext_resource type="PackedScene" uid="uid://b5l24udgnstuk" path="res://features/Game/components/cell/scenes/Cell_ocean.tscn" id="3_ytjbb"]
 [ext_resource type="PackedScene" uid="uid://cn8ocwpfjxpqf" path="res://features/Game/components/cell/scenes/Cell_possible_ship.tscn" id="6_k2nyk"]
 [ext_resource type="PackedScene" uid="uid://duvv5g71kads3" path="res://features/Game/components/cell/scenes/Cell_basic.tscn" id="6_uhj5r"]
@@ -35,10 +35,9 @@ environment = SubResource("Environment_fh11p")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.87538, 0.483435, 0, -0.483435, 0.87538, 0, 32.9057, -128.828)
 
-[node name="FreeCamera" type="Camera3D" parent="." node_paths=PackedStringArray("Field")]
-transform = Transform3D(-4.2222e-08, -0.258819, 0.965926, -1.13133e-08, 0.965926, 0.258819, -1, 4.61853e-14, -4.37114e-08, -148.935, 22.1442, -80)
-script = ExtResource("1_o5m5o")
-Field = NodePath("../Field")
+[node name="FreeCamera" type="Camera3D" parent="."]
+transform = Transform3D(-3.78552e-08, 0.5, -0.866025, 2.18557e-08, 0.866025, 0.5, 1, 1.95399e-14, -4.37114e-08, -148.973, 29.1585, -80.0888)
+script = ExtResource("2_tbvmi")
 
 [node name="Field" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, -75)

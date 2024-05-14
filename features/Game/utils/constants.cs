@@ -20,7 +20,7 @@ public enum CellType
 public enum CameraModeType
 {
   Free,
-  Fixed
+  VerticalPinned
 }
 
 public enum PawnItems

@@ -103,6 +103,7 @@ public class FreeMode : BaseMode
     Pawn currentPawn = targetCell.GetPawns().FirstOrDefault(p => p.OwnerPlayer.IsTurn);
     if (currentPawn != null) {
       _firstCell = currentPawn.HighlightMove();
+      return;
     }
 
     // if click on highlighted cell
@@ -115,8 +116,9 @@ public class FreeMode : BaseMode
       Camera.Game.Field.SwitchHighlightNeighbors(_firstCell, false);
       _firstCell = null;
     }
+    // if any click on map
     else {
-      // if any click on map
+      GD.Print(targetCell.Logic.GetType());
       GD.Print(targetCell.GridCords);
     }
   }

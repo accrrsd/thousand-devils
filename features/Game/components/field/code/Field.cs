@@ -63,10 +63,10 @@ public partial class Field : Node3D
     cell.GridCords = newCords;
   }
 
-  public void ResetHighlightedCells(List<Cell> CellsToRemove = null) {
-    if (CellsToRemove?.Count > 0) {
+  public void ResetHighlightedCells(List<Cell> cellsToRemove = null) {
+    if (cellsToRemove?.Count > 0) {
       HighlightedCells.RemoveAll(cell => {
-        if (!CellsToRemove.Contains(cell)) return false;
+        if (!cellsToRemove.Contains(cell)) return false;
         cell.IsHighlighted = false;
         return true;
       });
@@ -78,6 +78,7 @@ public partial class Field : Node3D
   }
 
   public void SwitchHighlightNeighbors(Cell cell, bool value, Predicate<Cell> predicate = null, bool affectInsteadOfReplace = false) {
+    GD.Print("HN");
     int x = cell.GridCords[0];
     int y = cell.GridCords[1];
     List<Cell> affectedCells = new();
@@ -86,21 +87,25 @@ public partial class Field : Node3D
         int neighborX = x + dx;
         int neighborY = y + dy;
         if (!IsIn2DArrayBounds(neighborX, neighborY, CellsGrid)) continue;
-        Cell currentCell = CellsGrid[neighborX][neighborY];
-        if (currentCell == cell) continue;
-        if (predicate != null && !predicate(currentCell)) continue;
-        currentCell.IsHighlighted = value;
-        affectedCells.Add(currentCell);
+        Cell targetCell = CellsGrid[neighborX][neighborY];
+        if (targetCell == cell) continue;
+        if (predicate != null && !predicate(targetCell)) continue;
+        targetCell.IsHighlighted = value;
+        affectedCells.Add(targetCell);
       }
 
     if (value) {
-      if (affectInsteadOfReplace) HighlightedCells.AddRange(affectedCells);
+      if (affectInsteadOfReplace) {
+        HighlightedCells.AddRange(affectedCells);
+      }
       else {
         ResetHighlightedCells();
         HighlightedCells = affectedCells;
       }
     }
-    else ResetHighlightedCells(affectInsteadOfReplace ? affectedCells : null);
+    else {
+      ResetHighlightedCells(affectInsteadOfReplace ? affectedCells : null);
+    }
   }
 
   public void SwitchHighlightByCords(bool value, List<Vector2I> cords, bool affectInsteadOfReplace = false) {

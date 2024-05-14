@@ -77,7 +77,6 @@ void fragment() {
 
 }
 "
-graph_offset = Vector2(-2271.24, -95.8968)
 varyings/Model_x_Normal = "0,5"
 nodes/vertex/2/node = SubResource("VisualShaderNodeTransformDecompose_yp3aj")
 nodes/vertex/2/position = Vector2(-300, 360)

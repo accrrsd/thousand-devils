@@ -24,7 +24,7 @@ public interface ICell
 
   event Action<Cell, Pawn> PawnWasAdded;
   event Action<Cell, Pawn> PawnWasRemoved;
-  event Action<Cell> wasDiscovered;
+  event Action<Cell, Pawn> WasDiscovered;
 }
 
 public partial class Cell : Node3D, ICell
@@ -57,7 +57,7 @@ public partial class Cell : Node3D, ICell
     set {
       _isOpen = value;
       ChangeMapsVisibility(value);
-      if (value) wasDiscovered?.Invoke(this);
+      if (value) WasDiscovered?.Invoke(this, GetPawns()[0]);
     }
   }
 
@@ -78,6 +78,7 @@ public partial class Cell : Node3D, ICell
     if (PawnsInside.Contains(pawn)) return;
     PawnsInside.Add(pawn);
     AddChild(pawn);
+    IsOpen = true;
     if (callEvent) PawnWasAdded?.Invoke(this, pawn);
   }
 
@@ -89,10 +90,9 @@ public partial class Cell : Node3D, ICell
   }
 
   public IReadOnlyList<Pawn> GetPawns() => PawnsInside.AsReadOnly();
-
   public event Action<Cell, Pawn> PawnWasAdded;
   public event Action<Cell, Pawn> PawnWasRemoved;
-  public event Action<Cell> wasDiscovered;
+  public event Action<Cell, Pawn> WasDiscovered;
 
   [AssociateAttributes.ParentSetter]
   public void SetField(Field field) => Field = field;
@@ -102,10 +102,16 @@ public partial class Cell : Node3D, ICell
     _visibleCellMap = DefineMap(CellMapName.Visible, _visibleCellScene);
     _invisibleCellMap = DefineMap(CellMapName.Invisible, _invisibleCellScene);
     ChangeTypeIfRandom();
-    // default is false, but logic will set it if needed.
     ChangeMapsVisibility(false);
-    Logic = CreateLogicByType();
     _highlightBorder = GetNode<MeshInstance3D>("HighlightBorder");
+    AdvancedReady();
+  }
+
+  //Calls callback when game gets based variables setup
+  private void AdvancedReady() {
+    Game.code.Game gameNode = GdUtilsFunctions.GetFirstChildByType<Game.code.Game>(GetTree().Root);
+    if (gameNode != null) gameNode.AskForBasicReady(() => Logic = CreateLogicByType());
+    else throw new MyExceptions.NotExistingElemException(typeof(Game.code.Game));
   }
 
   private void ChangeMapsVisibility(bool value) {
@@ -131,7 +137,7 @@ public partial class Cell : Node3D, ICell
 
   private Node3D DefineMap(CellMapName name, PackedScene sceneForMap) {
     Node3D resultMap;
-    Node3D mapInCell = GetNode<Node3D>(name.ToString());
+    Node3D mapInCell = GetNode<Node3D>(name == CellMapName.Visible ? "VisibleMap" : "InvisibleMap");
     if (sceneForMap == null) {
       resultMap = mapInCell;
     }

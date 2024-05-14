@@ -12,7 +12,7 @@ public class BaseMode
     Camera = camera;
   }
 
-  public bool ProcessDefaultRayCast { get; set; } = false;
+  public bool ProcessDefaultRayCast { get; set; } = true;
 
   public virtual void OnProcess(double delta) { }
   public virtual void OnInput(InputEvent @event) { }

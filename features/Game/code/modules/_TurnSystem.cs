@@ -7,8 +7,8 @@ public class TurnModule
 {
   private readonly Game _game;
   private int _activePlayerIndex;
-  private int _currentTurn = 1;
   private int _currentCircle = 1;
+  private int _currentTurn = 1;
 
   public TurnModule(Game game) {
     _game = game;
@@ -23,12 +23,7 @@ public class TurnModule
       OnTurnChange?.Invoke(value);
     }
   }
-  
-  private void CalculateCurrentCircle(int currentTurn) {
-    int calculatedCircle = currentTurn / _game.Players.Count;
-    if (calculatedCircle != CurrentCircle) CurrentCircle = calculatedCircle;
-  }
-  
+
   public int CurrentCircle {
     get => _currentCircle;
     set {
@@ -44,7 +39,12 @@ public class TurnModule
       OnActivePlayerIndexChange?.Invoke(_activePlayerIndex);
     }
   }
-  
+
+  private void CalculateCurrentCircle(int currentTurn) {
+    int calculatedCircle = currentTurn / _game.Players.Count;
+    if (calculatedCircle != CurrentCircle) CurrentCircle = calculatedCircle;
+  }
+
   private void UpdateActivePlayerIndex(int currentTurn) {
     ActivePlayerIndex = ActivePlayerIndex + 1 > _game.Players.Count - 1 ? 0 : ActivePlayerIndex + 1;
   }
@@ -53,7 +53,7 @@ public class TurnModule
 
   //props current turn
   public event Action<int> OnTurnChange;
-  
+
   //props current circle
   public event Action<int> OnCircleChange;
 

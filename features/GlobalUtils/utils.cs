@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Godot;
+using static ThousandDevils.features.GlobalUtils.AssociateAttributes;
 
 namespace ThousandDevils.features.GlobalUtils;
 
@@ -10,14 +11,14 @@ public static class UtilsFunctions
 {
   private static readonly Random Random = new();
 
-  public static T GetRandomEnumValue<T>() where T : struct, Enum {
-    if (Enum.GetValues(typeof(T)).Length == 0) throw new ArgumentException("Enum type has no values");
-    return (T)Enum.GetValues(typeof(T)).GetValue(Random.Next(Enum.GetValues(typeof(T)).Length))!;
-  }
+  public static Color GenerateColorFromRgb(float r, float g, float b, float a = 255) => new(r / 255, g / 255, b / 255, a / 255);
+
+  //Dev only
+  public static Color GenerateRandomColor() => GenerateColorFromRgb(Random.Next(0, 256), Random.Next(0, 256), Random.Next(0, 256));
 
   public static T GetRandomEnumValueExcluding<T>(params T[] excludedValues) where T : struct, Enum {
     if (!typeof(T).IsEnum) throw new ArgumentException($"{typeof(T)} is not an enum type");
-
+    if (Enum.GetValues<T>().Length == 0) throw new ArgumentException("Enum type has no values");
     T[] resultValues = Enum.GetValues<T>().Where(x => !excludedValues.Contains(x)).ToArray();
     int randomIndex = Random.Next(resultValues.Length);
     return resultValues[randomIndex];
@@ -62,35 +63,35 @@ public static class UtilsFunctions
     return methods.Where(p => predicate(p));
   }
 
-  /// <summary>
-  ///   Prop parent class to child class or child class to parent class
-  /// </summary>
+  /// <summary>Prop parent class to child class or child class to parent class</summary>
   /// <param name="parentClass"></param>
   /// <param name="childClass"></param>
   /// <param name="parentInChild">if true - prop parent class to child class</param>
   public static bool AssociateClassesByAttribute<T1, T2>(T1 parentClass, T2 childClass, bool parentInChild) where T1 : class where T2 : class {
-    IEnumerable<MethodInfo> methods = parentInChild
-      ? GetMethodsWithPredicate(childClass.GetType(), p => p.GetCustomAttribute<AssociateAttributes.ParentSetterAttribute>() != null)
-      : GetMethodsWithPredicate(parentClass.GetType(), p => p.GetCustomAttribute<AssociateAttributes.ChildSetterAttribute>() != null);
-    List<MethodInfo> setterMethods = methods
-      .Where(mInfo => mInfo.GetParameters()[0].ParameterType == (parentInChild ? parentClass.GetType() : childClass.GetType()))
-      .ToList();
-    if (setterMethods.Count == 0) return false;
-    setterMethods[0].Invoke(parentInChild ? childClass : parentClass, new object[] { parentInChild ? parentClass : childClass });
+    List<MethodInfo> neededMethods = GetMethodsWithPredicate(parentInChild ? childClass.GetType() : parentClass.GetType(),
+      pMethod =>
+        pMethod.GetCustomAttribute(parentInChild ? typeof(ParentSetterAttribute) : typeof(ChildSetterAttribute)) !=
+        null && pMethod.GetParameters()[0].ParameterType == (parentInChild ? parentClass.GetType() : childClass.GetType())).ToList();
+    if (neededMethods.Count == 0) {
+      GD.Print("Error on methods: ", parentInChild ? childClass.GetType() : parentClass.GetType());
+      return false;
+    }
+
+    neededMethods[0].Invoke(parentInChild ? childClass : parentClass, new object[] { parentInChild ? parentClass : childClass });
     return true;
   }
 
-  ///<summary>Prop parent class to multiple child classes</summary>
+  /// <summary>Prop parent class to multiple child classes</summary>
   public static bool AssociateListOfChilds<T1, T2>(T1 parentClass, List<T2> childClasses) where T1 : class where T2 : class {
-    IEnumerable<MethodInfo> methods =
-      GetMethodsWithPredicate(childClasses[0].GetType(), p => p.GetCustomAttribute<AssociateAttributes.ParentSetterAttribute>() != null);
-    List<MethodInfo> parentSettersInChild = methods.Where(mInfo => mInfo.GetParameters()[0].ParameterType == parentClass.GetType()).ToList();
-    if (parentSettersInChild.Count == 0) return false;
-    foreach (T2 childClass in childClasses) parentSettersInChild[0].Invoke(childClass, new object[] { parentClass });
+    List<MethodInfo> neededMethods = GetMethodsWithPredicate(childClasses[0].GetType(),
+      pMethod => pMethod.GetCustomAttribute<ParentSetterAttribute>() != null &&
+                 pMethod.GetParameters()[0].ParameterType == parentClass.GetType()).ToList();
+    if (neededMethods.Count == 0) return false;
+    foreach (T2 childClass in childClasses) neededMethods[0].Invoke(childClass, new object[] { parentClass });
     return true;
   }
 
-  //Prop both, parent and child class connect to each other by attribute mark.
+  /// <summary>Prop both, parent and child class connect to each other by attribute mark.</summary>
   public static bool AssociateParentAndChild<T1, T2>(T1 parentClass, T2 childClass) where T1 : class where T2 : class =>
     AssociateClassesByAttribute(parentClass, childClass, true) && AssociateClassesByAttribute(parentClass, childClass, false);
 }

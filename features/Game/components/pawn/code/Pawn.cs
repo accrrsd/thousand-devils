@@ -32,7 +32,7 @@ public partial class Pawn : Node3D
   }
 
   public void MoveToCell(Cell targetCell, bool increaseTurn = true) {
-    if (!CanMove || !targetCell.CanAcceptPawns) return;
+    if (!CanMove || !targetCell.CanAcceptPawns || !targetCell.Logic.CanAcceptThatPawn(this)) return;
 
     CurrentCell.RemovePawn(this);
     PrevCell = CurrentCell;
@@ -54,7 +54,7 @@ public partial class Pawn : Node3D
     if (!CanMove) return null;
     if (CurrentCell.Type == CellType.Ship)
       CurrentCell.Field.SwitchHighlightNeighbors(CurrentCell, true, targetCell => {
-        if (!targetCell.CanAcceptPawns) return false;
+        if (!targetCell.CanAcceptPawns || !targetCell.Logic.CanAcceptThatPawn(this)) return false;
         int dx = CurrentCell.GridCords[0] - targetCell.GridCords[0];
         int dy = CurrentCell.GridCords[1] - targetCell.GridCords[1];
         return Math.Abs(dx) != Math.Abs(dy);

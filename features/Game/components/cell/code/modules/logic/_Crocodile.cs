@@ -8,6 +8,7 @@ public class CrocodileLogic : BaseLogic
 {
   public CrocodileLogic(Cell cell) : base(cell) {
     Cell.PawnWasAdded += OnPawnWasAdded;
+    //example scene replacement from logic
     Cell.ReplaceCellMapScene(CellMapName.Visible, GD.Load<PackedScene>("res://features/Game/components/cell/scenes/visible_maps/Crocodile_map.tscn"));
   }
 

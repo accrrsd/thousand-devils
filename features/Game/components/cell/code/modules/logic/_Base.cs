@@ -15,14 +15,16 @@ public class BaseLogic
 
   protected Cell Cell { get; }
 
-  protected void PawnFight(Cell _, Pawn pawn) {
-    List<Pawn> EnemyPawns = Cell.GetPawns().Where(p => p.OwnerPlayer != pawn.OwnerPlayer).ToList();
-    if (EnemyPawns.Count > 0) {
-      EnemyPawns[0].MoveToCell(EnemyPawns[0].OwnerPlayer.Ship, false);
-      if (EnemyPawns.Count > 1) pawn.MoveToCell(pawn.OwnerPlayer.Ship, false);
+  protected virtual void PawnFight(Cell _, Pawn pawn) {
+    List<Pawn> enemyPawns = Cell.GetPawns().Where(p => p.OwnerPlayer != pawn.OwnerPlayer).ToList();
+    if (enemyPawns.Count > 0) {
+      enemyPawns[0].MoveToCell(enemyPawns[0].OwnerPlayer.Ship, false);
+      if (enemyPawns.Count > 1) pawn.MoveToCell(pawn.OwnerPlayer.Ship, false);
     }
   }
 
   // can be rewritten, modified or (canceled by -= ) in childs
-  protected void DiscoverCell(Cell _, Pawn _2) => Cell.IsOpen = true;
+  protected virtual void DiscoverCell(Cell _, Pawn _2) => Cell.IsOpen = true;
+
+  public virtual bool CanAcceptThatPawn(Pawn pawn) => pawn != null;
 }

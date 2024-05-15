@@ -11,10 +11,12 @@ public static class UtilsFunctions
 {
   private static readonly Random Random = new();
 
-  public static Color GenerateColorFromRgb(float r, float g, float b, float a = 255) => new(r / 255, g / 255, b / 255, a / 255);
+  public static Color GenerateColorFromRgb(float r, float g, float b, float a = 255) =>
+    new(MathF.Round(r / 255, 2), MathF.Round(g / 255, 2), MathF.Round(b / 255, 2), MathF.Round(a / 255, 2));
 
   //Dev only
-  public static Color GenerateRandomColor() => GenerateColorFromRgb(Random.Next(0, 256), Random.Next(0, 256), Random.Next(0, 256));
+  public static Color GenerateRandomColor(bool generateAlpha = false) =>
+    GenerateColorFromRgb(Random.Next(0, 256), Random.Next(0, 256), Random.Next(0, 256), generateAlpha ? Random.Next(0, 256) : 255);
 
   public static T GetRandomEnumValueExcluding<T>(params T[] excludedValues) where T : struct, Enum {
     if (!typeof(T).IsEnum) throw new ArgumentException($"{typeof(T)} is not an enum type");

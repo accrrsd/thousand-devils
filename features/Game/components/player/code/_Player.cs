@@ -13,8 +13,9 @@ public class Player
   public Player(Cell shipCell, Game.code.Game game) {
     if (shipCell.Logic is not ShipLogic) throw new ArgumentException("Cell must have Logic.Ship");
     Ship = shipCell;
-    foreach (Pawn pawn in Ship.GetPawns()) UpdatePawnControl(pawn);
     ColorTheme = UtilsFunctions.GenerateRandomColor();
+    foreach (Pawn pawn in Ship.GetPawns()) UpdatePawnControl(pawn);
+    GD.Print(ColorTheme.ToString());
   }
 
   public Game.code.Game Game { get; set; }

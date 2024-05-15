@@ -65,7 +65,7 @@ public class VerticalPinnedMode : BaseMode
 
     if (targetCell.CanAcceptPawns) {
       Pawn currentPawn = _firstCell.GetPawns().FirstOrDefault(p => p.OwnerPlayer == Camera.Game.TurnModule.GetActivePlayer());
-      if (currentPawn == null) return false;
+      if (currentPawn == null || targetCell.Logic.CanAcceptThatPawn(currentPawn)) return false;
       currentPawn.MoveToCell(targetCell);
       return true;
     }

@@ -13,5 +13,4 @@ public class PossibleShipLogic : BaseLogic
     Cell.GetParent().AddChild(shipCell);
     Cell.QueueFree();
   }
-  // todo func replace by other cell as universal method
 }

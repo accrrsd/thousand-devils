@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Godot;
 using ThousandDevils.features.Game.components.pawn.code;
+using ThousandDevils.features.Game.utils;
 using static ThousandDevils.features.GlobalUtils.UtilsFunctions;
 
 namespace ThousandDevils.features.Game.components.cell.code.modules.logic;
@@ -38,34 +38,39 @@ public class ArrowLogic : BaseLogic
     _isPresent = true;
     Vector2I newPos = Cell.GridCords + _possibleDirections[0];
     Cell targetCell = Cell.Field.GetCellFromCellsGrid(newPos);
-    if (!(targetCell.CanAcceptPawns && IsIn2DArrayBounds(newPos, Cell.Field.CellsGrid))) {
-      pawn.Die();
-      return;
-    }
-
-    pawn.MoveToCell(targetCell, false);
+    if (IsIn2DArrayBounds(newPos, Cell.Field.CellsGrid) && pawn.MoveToCell(targetCell)) return;
+    pawn.Die();
   }
 
   private void MultipleDirectionLogic(Pawn pawn) {
-    Cell.Field.SwitchHighlightByCords(true, _possibleDirections.Select(direction => Cell.GridCords + direction).ToList());
+    //todo Сделать проверку могут ли клетки принимать пешку, и если нет, убивать ее. КОНТРАРГУМЕНТ - КЛЕТКА НЕ БУДЕТ ОБНАРУЖЕНА ПРИВЫЧНЫМ СПОСОБОМ, НО ЕСЛИ ЧТО МЕТОД Я УЖЕ НАПИСАЛ.
+    // List<Cell> affected = Cell.Field.SwitchHighlightByCords(true, _possibleDirections.Select(direction => Cell.GridCords + direction).ToList());
+    // Cell.Field.Game.Camera.CurrentMode.ForcedByCellLogic = this;
+    // GD.Print(affected);
 
-    void OnCellWasClicked(Node node) {
-      if (node is Cell targetCell) {
-        if (targetCell.Logic is ArrowLogic) pawn.MoveToCell(targetCell, false);
-        pawn.MoveToCell(targetCell, false);
-      }
-    }
+    Cell.Field.Game.Camera.CurrentMode.ForcedByCellLogic = this;
+    Cell.Field.SwitchHighlightNeighbors(Cell, true);
+  }
 
-    bool OnCellWasClickedPredicate(Node node) {
-      if (node is Cell targetCell && Cell.Field.HighlightedCells.Contains(targetCell)) return true;
-      return false;
-    }
+  public override bool HighlightPawnMoves(Pawn pawn) {
+    if (_possibleDirections.Count == 1) OneDirectionLogic(pawn);
+    else MultipleDirectionLogic(pawn);
+    //true because if not affected - we kill pawn, so its always accepted.
+    return true;
+  }
 
-    Cell.Field.Game.Camera.AskForRayCast(OnCellWasClicked, OnCellWasClickedPredicate);
+  public override bool OnHighlightCellClick(Cell highlightedCell) {
+    Pawn currentPawn = Cell.GetPawns()[0];
+    if (highlightedCell.Type is CellType.Arrow) return currentPawn.MoveToCell(highlightedCell);
+    if (!currentPawn.MoveToCell(highlightedCell, true))
+      //error handle (if arrow try to move pawn to unavailable cell (non arrow cell))
+      currentPawn.Die();
+    Cell.Field.Game.Camera.CurrentMode.ForcedByCellLogic = null;
+    return true;
   }
 
   private void OnPawnWasAdded(Cell _, Pawn pawn) {
-    if (_possibleDirections.Count == 1) OneDirectionLogic(pawn);
-    else MultipleDirectionLogic(pawn);
+    Cell.Field.SwitchHighlightNeighbors(Cell, true);
+    // HighlightPawnMoves(pawn);
   }
 }

@@ -1,7 +1,4 @@
-using System;
-using Godot;
 using ThousandDevils.features.Game.components.pawn.code;
-using ThousandDevils.features.Game.utils;
 
 namespace ThousandDevils.features.Game.components.cell.code.modules.logic;
 
@@ -13,7 +10,7 @@ public class RumTrapLogic : BaseLogic
 
   private void OnPawnWasAdded(Cell _, Pawn pawn) {
     pawn.CanMove = false;
-    
+
     void Wrapper(int __) {
       pawn.CanMove = true;
       Cell.Field.Game.TurnModule.OnCircleChange -= Wrapper;

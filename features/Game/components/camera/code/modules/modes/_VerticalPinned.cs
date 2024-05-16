@@ -44,13 +44,13 @@ public class VerticalPinnedMode : BaseMode
     // Camera.Translate(new Vector3(currentSpeed[0], 0, currentSpeed[2]));
   }
 
-  public override void OnInput(InputEvent @event) {
-    base.OnInput(@event);
-    if (Input.IsActionJustPressed("lmb_click")) {
-      Node rayCastRes = ShootRay();
-      if (ProcessDefaultRayCast && rayCastRes is Cell cell) DefaultCameraLogic(cell);
-    }
-  }
+  // public override void OnInput(InputEvent @event) {
+  //   base.OnInput(@event);
+  //   if (Input.IsActionJustPressed("lmb_click")) {
+  //     Node rayCastRes = ShootRay();
+  //     if (ForcedByCellLogic && rayCastRes is Cell cell) DefaultCameraLogic(cell);
+  //   }
+  // }
 
   //Todo В двух тудушках ниже нужно учитывать что в камере у нас есть ProcessDefaultRayCast.
 
@@ -73,25 +73,29 @@ public class VerticalPinnedMode : BaseMode
     return false;
   }
 
-  // Todo Если выполнить todo сверху, можно упростить и вынести в базовый класс режимов Камеры.
-  private void DefaultCameraLogic(Cell targetCell) {
-    // if click on player that have turn
-    Pawn currentPawn = targetCell.GetPawns().FirstOrDefault(p => p.OwnerPlayer.IsTurn);
-    if (currentPawn != null) _firstCell = currentPawn.HighlightMove();
-
-    // if click on highlighted cell
-    if (ClickOnHighlightedCell(targetCell)) {
-      _firstCell = null;
-    }
-
-    // if click on non highlighted cell
-    else if (_firstCell != null) {
-      Camera.Game.Field.SwitchHighlightNeighbors(_firstCell, false);
-      _firstCell = null;
-    }
-    else {
-      // if any click on map
-      GD.Print(targetCell.GridCords);
-    }
-  }
+  // // Todo Если выполнить todo сверху, можно упростить и вынести в базовый класс режимов Камеры.
+  // private void DefaultCameraLogic(Cell targetCell) {
+  //   // if click on player that have turn
+  //   Pawn currentPawn = targetCell.GetPawns().FirstOrDefault(p => p.OwnerPlayer.IsTurn);
+  //   if (currentPawn != null) {
+  //     _firstCell = targetCell;
+  //     targetCell.Logic.HighlightPawnMoves(currentPawn);
+  //     return;
+  //   }
+  //
+  //   // if click on highlighted cell
+  //   if (ClickOnHighlightedCell(targetCell)) {
+  //     _firstCell = null;
+  //   }
+  //
+  //   // if click on non highlighted cell
+  //   else if (_firstCell != null) {
+  //     Camera.Game.Field.SwitchHighlightNeighbors(_firstCell, false);
+  //     _firstCell = null;
+  //   }
+  //   else {
+  //     // if any click on map
+  //     GD.Print(targetCell.GridCords);
+  //   }
+  // }
 }

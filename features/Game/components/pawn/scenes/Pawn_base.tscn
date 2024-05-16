@@ -5,6 +5,7 @@
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_u12w1"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_aki1q"]
+resource_local_to_scene = true
 
 [node name="PawnBase" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)

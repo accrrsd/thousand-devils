@@ -10,6 +10,6 @@
         <Product>ThousandDevils</Product>
     </PropertyGroup>
     <ItemGroup>
-      <Folder Include="features\devOnly\" />
+        <Folder Include="features\devOnly\"/>
     </ItemGroup>
 </Project>

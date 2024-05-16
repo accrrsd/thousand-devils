@@ -50,7 +50,7 @@ public partial class Cell : Node3D, ICell
   // random by default and can be changed inside editor, if it still random - forceful change.
   [Export] public CellType Type { get; private set; } = CellType.Random;
 
-  public bool CanAcceptPawns { get; set; }
+  public bool CanAcceptPawns { get; set; } = true;
 
   public bool IsOpen {
     get => _isOpen;
@@ -169,7 +169,7 @@ public partial class Cell : Node3D, ICell
       CellType.Jungles => new JunglesLogic(this),
       CellType.Fortress => new FortressLogic(this),
       CellType.Horse => new HorseLogic(this),
-      CellType.Сannon => new СannonLogic(this),
+      CellType.Cannon => new CannonLogic(this),
       _ => new BaseLogic(this)
     };
   }

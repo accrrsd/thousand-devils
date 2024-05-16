@@ -25,19 +25,6 @@ public partial class Camera : Camera3D
     CurrentMode?.OnReady();
   }
 
-  public void AskForRayCast(Action<Node> onRayCastCallback, Predicate<Node> predicate = null, bool pauseDefaultRayCast = true) {
-    if (pauseDefaultRayCast) CurrentMode.ProcessDefaultRayCast = false;
-
-    void Wrapper(Node node) {
-      if (predicate != null && !predicate(node)) return;
-      onRayCastCallback(node);
-      CurrentMode.OnRayCast -= Wrapper;
-      if (pauseDefaultRayCast) CurrentMode.ProcessDefaultRayCast = true;
-    }
-
-    CurrentMode.OnRayCast += Wrapper;
-  }
-
   public override void _Input(InputEvent @event) {
     base._Input(@event);
     CurrentMode?.OnInput(@event);

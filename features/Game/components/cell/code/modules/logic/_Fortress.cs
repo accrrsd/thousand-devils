@@ -9,8 +9,8 @@ public class FortressLogic : BaseLogic
 
   public override bool CanAcceptThatPawn(Pawn pawn) {
     if (!base.CanAcceptThatPawn(pawn)) return false;
-    bool canAcceptPawn = pawn.OwnerPlayer == Cell.GetPawns()[0].OwnerPlayer;
-    bool pawnHaveItem = pawn.CarryItem != PawnItems.None;
-    return canAcceptPawn && !pawnHaveItem;
+    bool canAcceptPawn = Cell.GetPawns().Count == 0 || (Cell.GetPawns().Count > 0 && pawn.OwnerPlayer == Cell.GetPawns()[0].OwnerPlayer);
+    bool pawnDontHaveItem = pawn.CarryItem == PawnItems.None;
+    return canAcceptPawn && pawnDontHaveItem;
   }
 }

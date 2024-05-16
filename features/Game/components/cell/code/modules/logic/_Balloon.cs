@@ -9,6 +9,6 @@ public class BalloonLogic : BaseLogic
   }
 
   private void OnPawnWasAdded(Cell _, Pawn pawn) {
-    pawn.MoveToCell(pawn.OwnerPlayer.Ship, false);
+    pawn.MoveToCell(pawn.OwnerPlayer.Ship);
   }
 }

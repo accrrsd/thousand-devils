@@ -14,8 +14,7 @@ public static class UtilsFunctions
   public static Color GenerateColorFromRgb(float r, float g, float b, float a = 255) =>
     new(MathF.Round(r / 255, 2), MathF.Round(g / 255, 2), MathF.Round(b / 255, 2), MathF.Round(a / 255, 2));
 
-  //Dev only
-  public static Color GenerateRandomColor(bool generateAlpha = false) =>
+  public static Color GenerateRandomRgbColor(bool generateAlpha = false) =>
     GenerateColorFromRgb(Random.Next(0, 256), Random.Next(0, 256), Random.Next(0, 256), generateAlpha ? Random.Next(0, 256) : 255);
 
   public static T GetRandomEnumValueExcluding<T>(params T[] excludedValues) where T : struct, Enum {
@@ -24,32 +23,6 @@ public static class UtilsFunctions
     T[] resultValues = Enum.GetValues<T>().Where(x => !excludedValues.Contains(x)).ToArray();
     int randomIndex = Random.Next(resultValues.Length);
     return resultValues[randomIndex];
-  }
-
-  /// <param name="list"></param>
-  /// <param name="onEachFunc">
-  ///   Addition function to call each elem: fist param - elem, second index in list, third - column,
-  ///   fourth - row
-  /// </param>
-  /// <param name="cols"></param>
-  /// <param name="rows"></param>
-  public static T[][] ListTo2DArray<T>(List<T> list, int rows, int cols, Action<T, int, int, int> onEachFunc = null) {
-    if (list.Count != rows * cols)
-      throw new ArgumentException("List size does not match array dimensions " + "Array size: " + cols * rows +
-                                  " List size: " + list.Count + " Cols: " + cols + " Rows: " + rows);
-
-    T[][] arr = new T[rows][];
-    for (int i = 0; i < rows; i++) arr[i] = new T[cols];
-
-    int index = 0;
-    for (int i = 0; i < rows; i++)
-      for (int j = 0; j < cols; j++) {
-        onEachFunc?.Invoke(list[index], index, i, j);
-        arr[i][j] = list[index];
-        index++;
-      }
-
-    return arr;
   }
 
   public static bool IsIn2DArrayBounds<T>(int x, int y, T[][] arr) => x >= 0 && x < arr.Length && y >= 0 && y < arr[0].Length;
@@ -74,10 +47,7 @@ public static class UtilsFunctions
       pMethod =>
         pMethod.GetCustomAttribute(parentInChild ? typeof(ParentSetterAttribute) : typeof(ChildSetterAttribute)) !=
         null && pMethod.GetParameters()[0].ParameterType == (parentInChild ? parentClass.GetType() : childClass.GetType())).ToList();
-    if (neededMethods.Count == 0) {
-      GD.Print("Error on methods: ", parentInChild ? childClass.GetType() : parentClass.GetType());
-      return false;
-    }
+    if (neededMethods.Count == 0) return false;
 
     neededMethods[0].Invoke(parentInChild ? childClass : parentClass, new object[] { parentInChild ? parentClass : childClass });
     return true;

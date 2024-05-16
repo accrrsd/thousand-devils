@@ -1,35 +1,22 @@
 ﻿using System;
-using System.Linq;
 using Godot;
 using ThousandDevils.features.Game.components.cell.code;
-using ThousandDevils.features.Game.components.cell.code.modules.logic;
 using ThousandDevils.features.Game.components.pawn.code;
-using ThousandDevils.features.Game.utils;
 
 namespace ThousandDevils.features.Game.components.camera.code.modules.modes;
 
 public class FreeMode : BaseMode
 {
-  private Cell _firstCell;
+  private Cell _firstCellToTp;
   private Vector2 _lookAngles = Vector2.Zero;
   private bool _showMouse;
   private Vector3 _velocity = Vector3.Zero;
 
   public FreeMode(Camera camera) : base(camera) { }
 
-  public FreeMode(Camera camera, float speed, float mouseSensitivity, float acceleration) : base(camera) {
-    UpdateCameraStats(speed, mouseSensitivity, acceleration);
-  }
-
   public float Speed { get; private set; } = 5.0f;
-  public float MouseSensitivity { get; private set; } = 300.0f;
-  public float Acceleration { get; private set; } = 25.0f;
-
-  public void UpdateCameraStats(float speed, float mouseSensitivity, float acceleration) {
-    Speed = speed;
-    MouseSensitivity = mouseSensitivity;
-    Acceleration = acceleration;
-  }
+  public float MouseSensitivity { get; } = 300.0f;
+  public float Acceleration { get; } = 25.0f;
 
   public override void OnProcess(double delta) {
     if (!_showMouse) {
@@ -43,13 +30,29 @@ public class FreeMode : BaseMode
   }
 
   public override void OnInput(InputEvent @event) {
-    if (@event is InputEventMouseMotion mouseMotion)
+    if (@event is InputEventMouseMotion mouseMotion && !_showMouse)
       _lookAngles -= mouseMotion.Relative / MouseSensitivity;
     UpdateCameraSpeed();
-    if (Input.IsActionJustPressed("free_cam_lock")) UpdateCameraLock();
+    if (Input.IsActionJustPressed("free_cam_lock")) {
+      _showMouse = !_showMouse;
+      Input.MouseMode = _showMouse ? Input.MouseModeEnum.Visible : Input.MouseModeEnum.Captured;
+    }
+
     if (Input.IsActionJustPressed("lmb_click")) {
       Node rayCastRes = ShootRay();
-      if (ProcessDefaultRayCast && rayCastRes is Cell cell) DefaultCameraLogic(cell);
+      if (rayCastRes is Cell cell) CameraLogic(cell);
+    }
+    else if (Input.IsActionJustPressed("rmb_click")) {
+      Node rayCastRes = ShootRay();
+      if (rayCastRes is not Cell cell) return;
+      if (_firstCellToTp == null) {
+        _firstCellToTp = cell;
+      }
+      else {
+        Pawn pawn = _firstCellToTp.GetPawns()[0];
+        pawn?.MoveToCell(cell, true);
+        _firstCellToTp = null;
+      }
     }
   }
 
@@ -69,57 +72,10 @@ public class FreeMode : BaseMode
     return dir.Normalized();
   }
 
-  private void UpdateCameraLock() {
-    _showMouse = !_showMouse;
-    Input.MouseMode = _showMouse ? Input.MouseModeEnum.Visible : Input.MouseModeEnum.Captured;
-  }
-
   private void UpdateCameraSpeed() {
     if (Input.IsActionJustPressed("free_cam_increase_speed")) Speed += Speed / 2;
     if (Input.IsActionJustPressed("free_cam_decrease_speed")) Speed -= Speed / 2;
     if (Speed < 0.5) Speed = 0.5f;
-  }
-
-  private bool ClickOnHighlightedCell(Cell targetCell) {
-    if (!Camera.Game.Field.HighlightedCells.Contains(targetCell)) return false;
-    Camera.Game.Field.SwitchHighlightNeighbors(_firstCell, false);
-    if (targetCell.Type == CellType.Ocean && _firstCell.Type is CellType.Ship) {
-      ((ShipLogic)_firstCell.Logic).SwitchPlacesWithCell(targetCell);
-      return true;
-    }
-
-    if (targetCell.CanAcceptPawns) {
-      Pawn currentPawn = _firstCell.GetPawns().FirstOrDefault(p => p.OwnerPlayer == Camera.Game.TurnModule.GetActivePlayer());
-      if (currentPawn == null) return false;
-      currentPawn.MoveToCell(targetCell);
-      return true;
-    }
-
-    return false;
-  }
-
-  private void DefaultCameraLogic(Cell targetCell) {
-    // if click on player that have turn
-    Pawn currentPawn = targetCell.GetPawns().FirstOrDefault(p => p.OwnerPlayer.IsTurn);
-    if (currentPawn != null) {
-      _firstCell = currentPawn.HighlightMove();
-      return;
-    }
-
-    // if click on highlighted cell
-    if (ClickOnHighlightedCell(targetCell)) {
-      _firstCell = null;
-    }
-
-    // if click on non highlighted cell
-    else if (_firstCell != null) {
-      Camera.Game.Field.SwitchHighlightNeighbors(_firstCell, false);
-      _firstCell = null;
-    }
-    // if any click on map
-    else {
-      GD.Print(targetCell.Logic.GetType());
-      GD.Print(targetCell.GridCords);
-    }
+    if (Speed > 1000.0) Speed = 1000.0f;
   }
 }

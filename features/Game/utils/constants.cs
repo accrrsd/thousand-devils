@@ -3,7 +3,6 @@ namespace ThousandDevils.features.Game.utils;
 public enum CellType
 {
   Random,
-  Empty,
   Arrow,
   Trap,
   Balloon,
@@ -18,7 +17,7 @@ public enum CellType
   Jungles,
   Fortress,
   Horse,
-  Сannon
+  Cannon
 }
 
 public enum CameraModeType

@@ -1,4 +1,3 @@
-using System;
 using Godot;
 using ThousandDevils.features.Game.components.cell.code;
 using ThousandDevils.features.Game.components.player.code;
@@ -8,7 +7,6 @@ namespace ThousandDevils.features.Game.components.pawn.code;
 
 public partial class Pawn : Node3D
 {
-  private Player _ownerPlayer;
   public bool CanMove { get; set; } = true;
   public PawnItems CarryItem { get; set; } = PawnItems.None;
   public PawnType Type { get; set; } = PawnType.Basic;
@@ -17,13 +15,7 @@ public partial class Pawn : Node3D
   public Cell PrevCell { get; private set; }
   public Cell CurrentCell { get; private set; }
 
-  public Player OwnerPlayer {
-    get => _ownerPlayer;
-    set {
-      _ownerPlayer = value;
-      UpdatePawnColor(_ownerPlayer.ColorTheme);
-    }
-  }
+  public Player OwnerPlayer { get; set; }
 
   private StandardMaterial3D BaseMaterial { get; set; }
 
@@ -31,8 +23,8 @@ public partial class Pawn : Node3D
     CurrentCell = GetParent<Cell>();
   }
 
-  public void MoveToCell(Cell targetCell, bool increaseTurn = true) {
-    if (!CanMove || !targetCell.CanAcceptPawns || !targetCell.Logic.CanAcceptThatPawn(this)) return;
+  public bool MoveToCell(Cell targetCell, bool increaseTurn = false) {
+    if (!CanMove || !targetCell.CanAcceptPawns || !targetCell.Logic.CanAcceptThatPawn(this)) return false;
 
     CurrentCell.RemovePawn(this);
     PrevCell = CurrentCell;
@@ -41,27 +33,14 @@ public partial class Pawn : Node3D
     targetCell.AddPawn(this);
 
     if (increaseTurn) CurrentCell.Field.Game.TurnModule.CurrentTurn++;
+    return true;
   }
 
-  private void UpdatePawnColor(Color newColor) {
+  public void UpdatePawnColor(Color newColor) {
     MeshInstance3D modelInstance = GetNode<MeshInstance3D>("Model");
     BaseMaterial ??= modelInstance.GetSurfaceOverrideMaterial(0) as StandardMaterial3D ?? new StandardMaterial3D();
     BaseMaterial.AlbedoColor = newColor;
     modelInstance.SetSurfaceOverrideMaterial(0, BaseMaterial);
-  }
-
-  public Cell HighlightMove() {
-    if (!CanMove) return null;
-    if (CurrentCell.Type == CellType.Ship)
-      CurrentCell.Field.SwitchHighlightNeighbors(CurrentCell, true, targetCell => {
-        if (!targetCell.CanAcceptPawns || !targetCell.Logic.CanAcceptThatPawn(this)) return false;
-        int dx = CurrentCell.GridCords[0] - targetCell.GridCords[0];
-        int dy = CurrentCell.GridCords[1] - targetCell.GridCords[1];
-        return Math.Abs(dx) != Math.Abs(dy);
-      });
-    else CurrentCell.Field.SwitchHighlightNeighbors(CurrentCell, true, pCell => pCell.Type != CellType.Ocean && pCell.CanAcceptPawns);
-
-    return CurrentCell;
   }
 
   public void Die() {

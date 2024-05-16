@@ -1,6 +1,5 @@
 using Godot;
 using ThousandDevils.features.Game.components.pawn.code;
-using ThousandDevils.features.Game.utils;
 using static ThousandDevils.features.GlobalUtils.UtilsFunctions;
 
 namespace ThousandDevils.features.Game.components.cell.code.modules.logic;
@@ -17,6 +16,6 @@ public class IceLogic : BaseLogic
     Vector2I newGridPos = Cell.GridCords + direction;
     Cell targetCell = Cell.Field.GetCellFromCellsGrid(newGridPos);
     if (targetCell.CanAcceptPawns && IsIn2DArrayBounds(newGridPos, Cell.Field.CellsGrid))
-      pawn.MoveToCell(targetCell, false);
+      pawn.MoveToCell(targetCell);
   }
 }

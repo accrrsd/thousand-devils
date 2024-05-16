@@ -13,9 +13,8 @@ public class Player
   public Player(Cell shipCell, Game.code.Game game) {
     if (shipCell.Logic is not ShipLogic) throw new ArgumentException("Cell must have Logic.Ship");
     Ship = shipCell;
-    ColorTheme = UtilsFunctions.GenerateRandomColor();
+    ColorTheme = UtilsFunctions.GenerateRandomRgbColor();
     foreach (Pawn pawn in Ship.GetPawns()) UpdatePawnControl(pawn);
-    GD.Print(ColorTheme.ToString());
   }
 
   public Game.code.Game Game { get; set; }
@@ -29,8 +28,9 @@ public class Player
   public int MaxPawns { get; set; } = 3;
   public List<Pawn> ControlledPawns { get; set; } = new();
 
-  public void UpdatePawnControl(Pawn newPawn) {
-    ControlledPawns.Add(newPawn);
-    newPawn.OwnerPlayer = this;
+  public void UpdatePawnControl(Pawn pawn, bool shouldUpdateColor = true) {
+    ControlledPawns.Add(pawn);
+    pawn.OwnerPlayer = this;
+    if (shouldUpdateColor) pawn.UpdatePawnColor(ColorTheme);
   }
 }

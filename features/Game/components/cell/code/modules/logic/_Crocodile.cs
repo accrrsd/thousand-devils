@@ -13,7 +13,7 @@ public class CrocodileLogic : BaseLogic
   }
 
   private void OnPawnWasAdded(Cell _, Pawn pawn) {
-    pawn.MoveToCell(pawn.PrevCell, false);
+    pawn.MoveToCell(pawn.PrevCell);
     Cell.CanAcceptPawns = false;
   }
 }

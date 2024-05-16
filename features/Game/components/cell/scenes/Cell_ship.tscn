@@ -4,7 +4,7 @@
 [ext_resource type="MeshLibrary" uid="uid://ds7xg3mgo2jwe" path="res://MeshPacks/AllInOne.tres" id="2_81dyq"]
 
 [node name="Cell" instance=ExtResource("1_udoop")]
-Type = 11
+Type = 10
 
 [node name="GridMap" parent="VisibleMap" index="0"]
 data = {

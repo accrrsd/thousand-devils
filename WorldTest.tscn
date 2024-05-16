@@ -36,7 +36,7 @@ environment = SubResource("Environment_fh11p")
 transform = Transform3D(1, 0, 0, 0, 0.87538, 0.483435, 0, -0.483435, 0.87538, 0, 32.9057, -128.828)
 
 [node name="FreeCamera" type="Camera3D" parent="."]
-transform = Transform3D(-3.78552e-08, 0.5, -0.866025, 2.18557e-08, 0.866025, 0.5, 1, 1.95399e-14, -4.37114e-08, -148.973, 29.1585, -80.0888)
+transform = Transform3D(-1, 6.55671e-08, -6.98541e-08, 2.18557e-08, 0.866025, 0.5, 9.3279e-08, 0.5, -0.866025, 16.0893, 29.1585, -80.0888)
 script = ExtResource("2_tbvmi")
 
 [node name="Field" type="Node3D" parent="."]

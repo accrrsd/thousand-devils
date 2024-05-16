@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Godot;
 using ThousandDevils.features.Game.components.pawn.code;
 using static ThousandDevils.features.GlobalUtils.UtilsFunctions;
@@ -42,16 +43,16 @@ public class ArrowLogic : BaseLogic
       return;
     }
 
-    pawn.MoveToCell(targetCell);
+    pawn.MoveToCell(targetCell, false);
   }
 
   private void MultipleDirectionLogic(Pawn pawn) {
-    Cell.Field.SwitchHighlightByCords(true, _possibleDirections);
+    Cell.Field.SwitchHighlightByCords(true, _possibleDirections.Select(direction => Cell.GridCords + direction).ToList());
 
     void OnCellWasClicked(Node node) {
       if (node is Cell targetCell) {
         if (targetCell.Logic is ArrowLogic) pawn.MoveToCell(targetCell, false);
-        pawn.MoveToCell(targetCell);
+        pawn.MoveToCell(targetCell, false);
       }
     }
 

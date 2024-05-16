@@ -168,6 +168,8 @@ public partial class Cell : Node3D, ICell
       CellType.Rum => new RumLogic(this),
       CellType.Jungles => new JunglesLogic(this),
       CellType.Fortress => new FortressLogic(this),
+      CellType.Horse => new HorseLogic(this),
+      CellType.Сannon => new СannonLogic(this),
       _ => new BaseLogic(this)
     };
   }

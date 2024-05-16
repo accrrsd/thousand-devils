@@ -16,7 +16,9 @@ public enum CellType
   Ship,
   PossibleShip,
   Jungles,
-  Fortress
+  Fortress,
+  Horse,
+  Сannon
 }
 
 public enum CameraModeType

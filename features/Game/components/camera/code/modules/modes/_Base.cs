@@ -17,7 +17,7 @@ public class BaseMode
     Camera = camera;
   }
 
-  public BaseLogic ForcedByCellLogic { get; set; }
+  public BaseLogic RedirectClickToCellLogic { get; set; }
 
   public virtual void OnProcess(double delta) { }
   public virtual void OnInput(InputEvent @event) { }
@@ -43,30 +43,43 @@ public class BaseMode
     return node;
   }
 
-  protected virtual void CameraLogic(Cell targetCell) {
-    //if forced by some cell logic, click on non highlighted cell do nothing
-    if (ForcedByCellLogic != null) {
-      _firstCell = null;
-      if (Camera.Game.Field.HighlightedCells.Contains(targetCell)) ForcedByCellLogic.OnHighlightCellClick(targetCell);
-    }
+  private void DefaultCameraLogic(Cell targetCell) {
     //click on first cell
-    else if (_firstCell == null) {
+    if (_firstCell == null) {
       //if first cell is accepted
-      if (targetCell.Logic.OnCellClick())
+      if (targetCell.Logic.OnThisCellClick()) {
+        //stop event propagation and clear _firstCell variable
+        if (RedirectClickToCellLogic != null) return;
         _firstCell = targetCell;
-      else
+      }
+      else {
         GD.Print("Cords: ", targetCell.GridCords, " Logic: ", targetCell.Logic.GetType().Name);
+      }
     }
     //click on highlighted cell
     else if (Camera.Game.Field.HighlightedCells.Contains(targetCell)) {
-      _firstCell.Logic.OnHighlightCellClick(targetCell);
-      Camera.Game.Field.SwitchHighlightNeighbors(_firstCell, false);
+      _firstCell.Logic.OnHighlightedCellClick(targetCell);
+      //stop event propagation and clear _firstCell variable
+      if (RedirectClickToCellLogic != null) return;
+      Camera.Game.Field.ClearHighlighedCells();
+      targetCell.Logic.OnThisCellClickAsHighlighted(_firstCell);
       _firstCell = null;
     }
     //click on any cell on map
     else {
-      Camera.Game.Field.SwitchHighlightNeighbors(_firstCell, false);
+      Camera.Game.Field.ClearHighlighedCells();
       _firstCell = null;
     }
+  }
+
+  private void RedirectedCameraLogic(Cell targetCell) {
+    //if forced by some cell logic, click on non highlighted cell do nothing
+    _firstCell = null;
+    if (Camera.Game.Field.HighlightedCells.Contains(targetCell)) RedirectClickToCellLogic.OnHighlightedCellClick(targetCell);
+  }
+
+  protected virtual void CameraLogic(Cell targetCell) {
+    if (RedirectClickToCellLogic != null) RedirectedCameraLogic(targetCell);
+    else DefaultCameraLogic(targetCell);
   }
 }

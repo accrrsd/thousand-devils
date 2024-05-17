@@ -31,23 +31,30 @@ public class BaseLogic
 
   /// <summary>This method is called when user clicks on this cell. When is done with true - cell was set as first in camera</summary>
   /// <returns>true if cell was accepted</returns>
-  public virtual bool OnCellClick() {
+  public virtual bool OnThisCellClick() {
     Pawn currentPawn = Cell.GetPawns().FirstOrDefault(p => p.OwnerPlayer.IsTurn && p.CanMove);
     return currentPawn != null && HighlightPawnMoves(currentPawn);
   }
 
+  /// <summary>
+  ///   This method is called when user clicks on this cell when highlighted (after events like PawnWasAdded etc). It can be used to apply additional logic after "OnHighlightCellClick"
+  ///   without break camera control.
+  /// </summary>
+  public virtual void OnThisCellClickAsHighlighted(Cell firstCell) { }
+
   /// <summary>This method highlights moves for selected pawn. When is done with false, basically OnCellClick would be cancelled</summary>
   /// <returns>true if any cells was affected</returns>
-  public virtual bool HighlightPawnMoves(Pawn pawn) {
+  protected virtual bool HighlightPawnMoves(Pawn pawn) {
     return Cell.Field.SwitchHighlightNeighbors(Cell, true, pCell => pCell.Type != CellType.Ocean && pCell.CanAcceptPawns && pCell.Logic.CanAcceptThatPawn(pawn))
       .Count > 0;
   }
 
   /// <summary>
-  ///   This method is called when user clicks on highlighted cell when that cell selected (in camera). When is done with true - camera can apply addition logic (not implemented yet)
+  ///   This method is called when user clicks on highlighted cell when that cell selected as first (in camera). When is done with true - camera can apply addition logic (not
+  ///   implemented yet)
   /// </summary>
   /// <returns>True if highlight cell was accepted</returns>
-  public virtual bool OnHighlightCellClick(Cell highlightedCell) {
+  public virtual bool OnHighlightedCellClick(Cell highlightedCell) {
     Pawn currentPawn = Cell.GetPawns().FirstOrDefault(p => p.OwnerPlayer.IsTurn && p.CanMove);
     //move to cell already check if can accept and if logic can accept
     return currentPawn != null && currentPawn.MoveToCell(highlightedCell, true);

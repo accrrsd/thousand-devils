@@ -81,15 +81,19 @@ public partial class Field : Node3D
     }
 
     //if delete olds, we delete it anyway, but if value - we fill with new cells
-    HighlightedCells.ForEach(cell => cell.IsHighlighted = false);
-    HighlightedCells.Clear();
+    if (deleteOlds) ClearHighlighedCells();
+
     if (!value) return;
     foreach (Cell cell in newCells) cell.IsHighlighted = true;
     HighlightedCells.AddRange(newCells);
   }
 
+  public void ClearHighlighedCells() {
+    foreach (Cell cell in HighlightedCells) cell.IsHighlighted = false;
+    HighlightedCells.Clear();
+  }
+
   public List<Cell> SwitchHighlightNeighbors(Cell cell, bool value, Predicate<Cell> predicate = null, bool deleteOlds = true) {
-    GD.Print("H");
     int x = cell.GridCords[0];
     int y = cell.GridCords[1];
     List<Cell> affectedCells = new();

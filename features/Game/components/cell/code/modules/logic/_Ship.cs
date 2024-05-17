@@ -33,7 +33,7 @@ public class ShipLogic : BaseLogic
     field.Game.TurnModule.CurrentTurn++;
   }
 
-  public override bool HighlightPawnMoves(Pawn pawn) {
+  protected override bool HighlightPawnMoves(Pawn pawn) {
     return Cell.Field.SwitchHighlightNeighbors(Cell, true, targetCell => {
       if (targetCell.Type == CellType.Ocean) return true;
       if (!targetCell.CanAcceptPawns || !targetCell.Logic.CanAcceptThatPawn(pawn)) return false;
@@ -43,8 +43,8 @@ public class ShipLogic : BaseLogic
     }).Count > 0;
   }
 
-  public override bool OnHighlightCellClick(Cell highlightedCell) {
-    if (highlightedCell.Type != CellType.Ocean) return base.OnHighlightCellClick(highlightedCell);
+  public override bool OnHighlightedCellClick(Cell highlightedCell) {
+    if (highlightedCell.Type != CellType.Ocean) return base.OnHighlightedCellClick(highlightedCell);
     SwitchPlacesWithCell(highlightedCell);
     return true;
   }

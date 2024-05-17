@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Godot;
 using ThousandDevils.features.Game.components.pawn.code;
-using ThousandDevils.features.Game.utils;
 using static ThousandDevils.features.GlobalUtils.UtilsFunctions;
 
 namespace ThousandDevils.features.Game.components.cell.code.modules.logic;
@@ -42,35 +42,32 @@ public class ArrowLogic : BaseLogic
     pawn.Die();
   }
 
-  private void MultipleDirectionLogic(Pawn pawn) {
-    //todo Сделать проверку могут ли клетки принимать пешку, и если нет, убивать ее. КОНТРАРГУМЕНТ - КЛЕТКА НЕ БУДЕТ ОБНАРУЖЕНА ПРИВЫЧНЫМ СПОСОБОМ, НО ЕСЛИ ЧТО МЕТОД Я УЖЕ НАПИСАЛ.
-    // List<Cell> affected = Cell.Field.SwitchHighlightByCords(true, _possibleDirections.Select(direction => Cell.GridCords + direction).ToList());
-    // Cell.Field.Game.Camera.CurrentMode.ForcedByCellLogic = this;
-    // GD.Print(affected);
-
-    Cell.Field.Game.Camera.CurrentMode.ForcedByCellLogic = this;
-    Cell.Field.SwitchHighlightNeighbors(Cell, true);
+  private void HighlightCellsWithDirection(Pawn pawn) {
+    Cell.Field.Game.Camera.CurrentMode.RedirectClickToCellLogic = this;
+    //predicate for highlight checks for closet cells or if they can accept pawn
+    List<Cell> highlightedCells = Cell.Field.SwitchHighlightByCords(true, _possibleDirections.Select(direction => Cell.GridCords + direction).ToList(),
+      pCell => !pCell.IsOpen || (pCell.CanAcceptPawns && pCell.Logic.CanAcceptThatPawn(pawn)));
+    if (highlightedCells.Count != 0) return;
+    pawn.Die();
+    Cell.Field.Game.Camera.CurrentMode.RedirectClickToCellLogic = null;
   }
 
-  public override bool HighlightPawnMoves(Pawn pawn) {
-    if (_possibleDirections.Count == 1) OneDirectionLogic(pawn);
-    else MultipleDirectionLogic(pawn);
-    //true because if not affected - we kill pawn, so its always accepted.
-    return true;
-  }
-
-  public override bool OnHighlightCellClick(Cell highlightedCell) {
+  //multiple directions logic here
+  public override bool OnHighlightedCellClick(Cell highlightedCell) {
+    Cell.Field.Game.Camera.CurrentMode.RedirectClickToCellLogic = null;
+    Cell.Field.SwitchHighlightNeighbors(Cell, false);
+    if (Cell.GetPawns().Count == 0) return false;
     Pawn currentPawn = Cell.GetPawns()[0];
-    if (highlightedCell.Type is CellType.Arrow) return currentPawn.MoveToCell(highlightedCell);
-    if (!currentPawn.MoveToCell(highlightedCell, true))
-      //error handle (if arrow try to move pawn to unavailable cell (non arrow cell))
+    highlightedCell.Logic.OnThisCellClickAsHighlighted(Cell);
+    //always false for turn increase because we already increase it when get here.
+    if (!currentPawn.MoveToCell(highlightedCell))
       currentPawn.Die();
-    Cell.Field.Game.Camera.CurrentMode.ForcedByCellLogic = null;
     return true;
   }
 
   private void OnPawnWasAdded(Cell _, Pawn pawn) {
-    Cell.Field.SwitchHighlightNeighbors(Cell, true);
-    // HighlightPawnMoves(pawn);
+    Cell.Field.ClearHighlighedCells();
+    if (_possibleDirections.Count == 1) OneDirectionLogic(pawn);
+    else HighlightCellsWithDirection(pawn);
   }
 }

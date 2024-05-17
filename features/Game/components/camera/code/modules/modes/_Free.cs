@@ -1,7 +1,6 @@
 ﻿using System;
 using Godot;
 using ThousandDevils.features.Game.components.cell.code;
-using ThousandDevils.features.Game.components.pawn.code;
 
 namespace ThousandDevils.features.Game.components.camera.code.modules.modes;
 
@@ -9,7 +8,7 @@ public class FreeMode : BaseMode
 {
   private Cell _firstCellToTp;
   private Vector2 _lookAngles = Vector2.Zero;
-  private bool _showMouse;
+  private bool _showMouse = true;
   private Vector3 _velocity = Vector3.Zero;
 
   public FreeMode(Camera camera) : base(camera) { }
@@ -49,14 +48,14 @@ public class FreeMode : BaseMode
         _firstCellToTp = cell;
       }
       else {
-        Pawn pawn = _firstCellToTp.GetPawns()[0];
-        pawn?.MoveToCell(cell, true);
+        if (_firstCellToTp.GetPawns().Count > 0) _firstCellToTp.GetPawns()[0].MoveToCell(cell, true);
         _firstCellToTp = null;
       }
     }
   }
 
   public override void OnReady() {
+    _lookAngles = new Vector2(Camera.Rotation[1], Camera.Rotation[0]);
     if (!_showMouse) Input.MouseMode = Input.MouseModeEnum.Captured;
   }
 

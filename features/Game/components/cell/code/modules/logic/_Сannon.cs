@@ -20,7 +20,6 @@ public class CannonLogic : BaseLogic
   private void OnPawnWasAdded(Cell _, Pawn pawn) {
     int fieldSizeX = Cell.Field.CellsGrid.Length;
     int fieldSizeY = Cell.Field.CellsGrid[Cell.GridCords[0]].Length;
-
     if (_direction.Item1 == 0)
       pawn.MoveToCell(Cell.Field.CellsGrid[fieldSizeX * _direction.Item2][Cell.GridCords[1]]);
     if (_direction.Item1 == 1)

@@ -23,7 +23,7 @@ public class FreeMode : BaseMode
       Camera.Rotation = new Vector3(_lookAngles[1], _lookAngles[0], 0);
     }
 
-    Vector3 direction = UpdateDirection();
+    Vector3 direction = GetDirection();
     if (direction.LengthSquared() > 0) _velocity = direction * Acceleration * (float)delta;
     Camera.Translate(_velocity * (float)delta * Speed);
   }
@@ -32,7 +32,7 @@ public class FreeMode : BaseMode
     if (@event is InputEventMouseMotion mouseMotion && !_showMouse)
       _lookAngles -= mouseMotion.Relative / MouseSensitivity;
     UpdateCameraSpeed();
-    if (Input.IsActionJustPressed("free_cam_lock")) {
+    if (Input.IsActionJustPressed("cam_free_lock")) {
       _showMouse = !_showMouse;
       Input.MouseMode = _showMouse ? Input.MouseModeEnum.Visible : Input.MouseModeEnum.Captured;
     }
@@ -59,21 +59,21 @@ public class FreeMode : BaseMode
     if (!_showMouse) Input.MouseMode = Input.MouseModeEnum.Captured;
   }
 
-  private Vector3 UpdateDirection() {
+  private Vector3 GetDirection() {
     Vector3 dir = new();
-    if (Input.IsActionPressed("free_cam_forward")) dir += Vector3.Forward;
-    if (Input.IsActionPressed("free_cam_backward")) dir += Vector3.Back;
-    if (Input.IsActionPressed("free_cam_left")) dir += Vector3.Left;
-    if (Input.IsActionPressed("free_cam_right")) dir += Vector3.Right;
-    if (Input.IsActionPressed("free_cam_up")) dir += Vector3.Up;
-    if (Input.IsActionPressed("free_cam_down")) dir += Vector3.Down;
+    if (Input.IsActionPressed("cam_free_forward")) dir += Vector3.Forward;
+    if (Input.IsActionPressed("cam_free_backward")) dir += Vector3.Back;
+    if (Input.IsActionPressed("cam_free_left")) dir += Vector3.Left;
+    if (Input.IsActionPressed("cam_free_right")) dir += Vector3.Right;
+    if (Input.IsActionPressed("cam_free_up")) dir += Vector3.Up;
+    if (Input.IsActionPressed("cam_free_down")) dir += Vector3.Down;
     if (dir == Vector3.Zero) _velocity = Vector3.Zero;
     return dir.Normalized();
   }
 
   private void UpdateCameraSpeed() {
-    if (Input.IsActionJustPressed("free_cam_increase_speed")) Speed += Speed / 2;
-    if (Input.IsActionJustPressed("free_cam_decrease_speed")) Speed -= Speed / 2;
+    if (Input.IsActionJustPressed("wheel_up")) Speed += Speed / 2;
+    if (Input.IsActionJustPressed("wheel_down")) Speed -= Speed / 2;
     if (Speed < 0.5) Speed = 0.5f;
     if (Speed > 1000.0) Speed = 1000.0f;
   }

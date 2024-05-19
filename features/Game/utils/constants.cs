@@ -17,7 +17,10 @@ public enum CellType
   Jungles,
   Fortress,
   Horse,
-  Cannon
+  Cannon,
+  LightHouse,
+  DreamFlora,
+  Earthquake
 }
 
 public enum CameraModeType

@@ -13,6 +13,9 @@ public class CannonLogic : BaseLogic
     Cell.PawnWasAdded += OnPawnWasAdded;
   }
 
+  //todo После вызова cannon проблемы с ходами (вызывал через тп)
+  //todo Иногда выдает ошибку outside the bounds of array (возможно в некоторые стороны)
+
   private void GenerateRandomArrowType() {
     _direction = new Tuple<int, int>(_random.Next(0, 2), _random.Next(0, 2));
   }

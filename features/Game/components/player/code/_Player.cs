@@ -11,8 +11,9 @@ namespace ThousandDevils.features.Game.components.player.code;
 public class Player
 {
   public Player(Cell shipCell, Game.code.Game game) {
-    if (shipCell.Logic is not ShipLogic) throw new ArgumentException("Cell must have Logic.Ship");
+    if (shipCell.Logic is not ShipLogic shipCellLogic) throw new ArgumentException("Cell must have Logic.Ship");
     Ship = shipCell;
+    shipCellLogic.OwnerPlayer = this;
     ColorTheme = UtilsFunctions.GenerateRandomRgbColor();
     foreach (Pawn pawn in Ship.GetPawns()) UpdatePawnControl(pawn);
   }

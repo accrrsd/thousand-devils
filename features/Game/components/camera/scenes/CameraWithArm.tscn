@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://dxarux7q02ds4"]
+
+[ext_resource type="Script" path="res://features/Game/components/camera/code/Camera.cs" id="1_7esfw"]
+
+[node name="CameraWithArm" type="Node3D"]
+
+[node name="rotationArm" type="Node3D" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="rotationArm"]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 20, 20)
+script = ExtResource("1_7esfw")

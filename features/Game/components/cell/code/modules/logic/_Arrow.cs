@@ -29,6 +29,8 @@ public class ArrowLogic : BaseLogic
     }
   }
 
+  //todo Подсветил сам себя после телепортации
+
   private void OneDirectionLogic(Pawn pawn) {
     if (_isPresent) {
       pawn.Die();

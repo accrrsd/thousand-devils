@@ -6,6 +6,13 @@ namespace ThousandDevils.features.GlobalUtils;
 
 public static class GdUtilsFunctions
 {
+  public static Vector3 ClampVector3(Vector3 vector, Vector3 min, Vector3 max) =>
+    new(
+      Math.Clamp(vector[0], min[0], max[0]),
+      Math.Clamp(vector[1], min[1], max[1]),
+      Math.Clamp(vector[2], min[2], max[2])
+    );
+
   public static List<T> GetChildsByType<T>(Node parent, Predicate<T> predicate = null) where T : Node {
     List<T> childs = new();
     foreach (Node child in parent.GetChildren()) {

@@ -20,6 +20,7 @@ public class BaseMode
   public BaseLogic RedirectClickToCellLogic { get; set; }
 
   public virtual void OnProcess(double delta) { }
+  public virtual void OnPhysicsProcess(double delta) { }
   public virtual void OnInput(InputEvent @event) { }
   public virtual void OnReady() { }
 

@@ -1,101 +1,87 @@
-﻿using System.Linq;
+﻿using System;
 using Godot;
-using ThousandDevils.features.Game.components.cell.code;
-using ThousandDevils.features.Game.components.cell.code.modules.logic;
-using ThousandDevils.features.Game.components.pawn.code;
-using ThousandDevils.features.Game.utils;
 
 namespace ThousandDevils.features.Game.components.camera.code.modules.modes;
 
 public class VerticalPinnedMode : BaseMode
 {
-  private Cell _firstCell;
-  private Vector3 _velocity = Vector3.Zero;
+  private readonly float _movementSmoothness = 0.025f;
+  private readonly Node3D _rootArm;
+  private readonly Node3D _rotationArm;
+  private readonly float _rotationSmoothness = 0.03f;
+  private readonly float _zoomSmoothness = 0.03f;
+  private readonly Vector3 farZoom = new(0, 30, 30);
+  private readonly Vector3 nearZoom = new(0, 5, 5);
 
-  public VerticalPinnedMode(Camera camera) : base(camera) { }
+  //variables for handle lerp
+  private Vector3 _movementVelocity;
 
-  public VerticalPinnedMode(Camera camera, float speed, float acceleration) : base(camera) {
-    Speed = speed;
-    Acceleration = acceleration;
+  private Vector3 _targetAngle;
+  private Vector3 _targetPos;
+  private Vector3 _targetZoom;
+  private float _yRotationAngle;
+  private float _zoomDir;
+
+  public VerticalPinnedMode(Camera camera) : base(camera) {
+    _rotationArm = Camera.GetParent<Node3D>();
+    _rootArm = _rotationArm.GetParent<Node3D>();
+    _targetPos = _rootArm.GlobalPosition;
+    _targetAngle = _rotationArm.Rotation;
+    _targetZoom = Camera.Position;
   }
 
-  public float Speed { get; set; } = 5.0f;
-  public float Acceleration { get; } = 25.0f;
+  //todo В теории можно смещать центр относительно которого вращается камера с помощью рейкаста в середину экрана определенной длины, чтобы на близких расстояниях это работало хорошо. Делать это можно при достижении зума определенных значений.
 
-  private Vector3 GetDirection() {
-    Vector3 dir = new();
-    if (Input.IsActionPressed("free_cam_forward")) dir += Vector3.Forward;
-    if (Input.IsActionPressed("free_cam_backward")) dir += Vector3.Back;
-    if (Input.IsActionPressed("free_cam_left")) dir += Vector3.Left;
-    if (Input.IsActionPressed("free_cam_right")) dir += Vector3.Right;
-    if (dir == Vector3.Zero) _velocity = Vector3.Zero;
-    return dir.Normalized();
+  public float MovementSpeed { get; set; } = 30;
+  public float RotationSpeed { get; set; } = (float)Math.PI / 3.5f;
+  public float ZoomSpeed { get; set; } = 30;
+
+  private void CalculateRotationAngle(double delta) {
+    _yRotationAngle = Input.GetAxis("cam_arm_rotate_counterclock", "cam_arm_rotate_clock") * RotationSpeed * (float)delta;
+  }
+
+  private void HandleRotation() {
+    //lower rotation smoothness would be smoother
+    if (_yRotationAngle != 0) _targetAngle += new Vector3(_rotationArm.Rotation[0], _yRotationAngle, _rotationArm.Rotation[2]);
+    if (_targetAngle != _rotationArm.Rotation) _rotationArm.Rotation = _rotationArm.Rotation.Lerp(_targetAngle, _rotationSmoothness);
+  }
+
+  private void CalculateMovement(double delta) {
+    Vector2 dir = Input.GetVector("cam_free_right", "cam_free_left", "cam_free_forward", "cam_free_backward");
+    Vector3 calculatedDir = dir == Vector2.Zero ? Vector3.Zero : (_rotationArm.Transform.Basis * new Vector3(dir[1], 0, dir[0])).Normalized();
+    _movementVelocity = calculatedDir * MovementSpeed * _targetZoom[2] / (farZoom[2] / 1.5f) * (float)delta;
+  }
+
+  private void HandleMovement() {
+    if (_movementVelocity != Vector3.Zero) _targetPos += _movementVelocity;
+    if (_targetPos != _rootArm.GlobalPosition) _rootArm.GlobalPosition = _rootArm.GlobalPosition.Lerp(_targetPos, _movementSmoothness);
+  }
+
+  private void CalculateZoom(double delta) {
+    _zoomDir = 0;
+    if (Input.IsActionJustPressed("wheel_up")) _zoomDir = -1;
+    if (Input.IsActionJustPressed("wheel_down")) _zoomDir = 1;
+    _zoomDir *= ZoomSpeed * (float)delta;
+  }
+
+  private void HandleZoom() {
+    if (_targetZoom != Camera.Position) Camera.Position = Camera.Position.Lerp(_targetZoom, _zoomSmoothness);
+    if (_zoomDir != 0) {
+      Vector3 zoomVector = new(0, _zoomDir, _zoomDir);
+      if (_targetZoom + zoomVector >= nearZoom && _targetZoom + zoomVector <= farZoom) _targetZoom += zoomVector;
+    }
   }
 
 
   public override void OnProcess(double delta) {
-    base.OnProcess(delta);
-    Vector3 direction = GetDirection();
-
-
-    // if (direction.LengthSquared() > 0) _velocity = direction * Acceleration * (float)delta;
-    // Vector3 currentSpeed = _velocity * (float)delta * Speed;
-    // Vector3 newRes = new()
-    // Camera.Translate(new Vector3(currentSpeed[0], 0, currentSpeed[2]));
+    HandleRotation();
+    HandleMovement();
+    HandleZoom();
   }
 
-  // public override void OnInput(InputEvent @event) {
-  //   base.OnInput(@event);
-  //   if (Input.IsActionJustPressed("lmb_click")) {
-  //     Node rayCastRes = ShootRay();
-  //     if (ForcedByCellLogic && rayCastRes is Cell cell) DefaultCameraLogic(cell);
-  //   }
-  // }
-
-  //Todo В двух тудушках ниже нужно учитывать что в камере у нас есть ProcessDefaultRayCast.
-
-  // TODO Это можно вынести в базу логики клетки, чтобы логика была такая же, как в ArrowLogic.
-  private bool ClickOnHighlightedCell(Cell targetCell) {
-    if (!Camera.Game.Field.HighlightedCells.Contains(targetCell)) return false;
-    Camera.Game.Field.SwitchHighlightNeighbors(_firstCell, false);
-    if (targetCell.Type == CellType.Ocean && _firstCell.Type is CellType.Ship) {
-      ((ShipLogic)_firstCell.Logic).SwitchPlacesWithCell(targetCell);
-      return true;
-    }
-
-    if (targetCell.CanAcceptPawns) {
-      Pawn currentPawn = _firstCell.GetPawns().FirstOrDefault(p => p.OwnerPlayer == Camera.Game.TurnModule.GetActivePlayer());
-      if (currentPawn == null || targetCell.Logic.CanAcceptThatPawn(currentPawn)) return false;
-      currentPawn.MoveToCell(targetCell);
-      return true;
-    }
-
-    return false;
+  public override void OnPhysicsProcess(double delta) {
+    CalculateRotationAngle(delta);
+    CalculateMovement(delta);
+    CalculateZoom(delta);
   }
-
-  // // Todo Если выполнить todo сверху, можно упростить и вынести в базовый класс режимов Камеры.
-  // private void DefaultCameraLogic(Cell targetCell) {
-  //   // if click on player that have turn
-  //   Pawn currentPawn = targetCell.GetPawns().FirstOrDefault(p => p.OwnerPlayer.IsTurn);
-  //   if (currentPawn != null) {
-  //     _firstCell = targetCell;
-  //     targetCell.Logic.HighlightPawnMoves(currentPawn);
-  //     return;
-  //   }
-  //
-  //   // if click on highlighted cell
-  //   if (ClickOnHighlightedCell(targetCell)) {
-  //     _firstCell = null;
-  //   }
-  //
-  //   // if click on non highlighted cell
-  //   else if (_firstCell != null) {
-  //     Camera.Game.Field.SwitchHighlightNeighbors(_firstCell, false);
-  //     _firstCell = null;
-  //   }
-  //   else {
-  //     // if any click on map
-  //     GD.Print(targetCell.GridCords);
-  //   }
-  // }
 }

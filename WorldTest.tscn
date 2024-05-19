@@ -1,8 +1,8 @@
 [gd_scene load_steps=12 format=3 uid="uid://dy8kur3grffc1"]
 
 [ext_resource type="Script" path="res://features/Game/code/Game.cs" id="1_ktgh3"]
+[ext_resource type="PackedScene" uid="uid://dxarux7q02ds4" path="res://features/Game/components/camera/scenes/CameraWithArm.tscn" id="2_6wnnp"]
 [ext_resource type="Script" path="res://features/Game/components/field/code/Field.cs" id="2_c8w5x"]
-[ext_resource type="Script" path="res://features/Game/components/camera/code/Camera.cs" id="2_tbvmi"]
 [ext_resource type="PackedScene" uid="uid://b5l24udgnstuk" path="res://features/Game/components/cell/scenes/Cell_ocean.tscn" id="3_ytjbb"]
 [ext_resource type="PackedScene" uid="uid://cn8ocwpfjxpqf" path="res://features/Game/components/cell/scenes/Cell_possible_ship.tscn" id="6_k2nyk"]
 [ext_resource type="PackedScene" uid="uid://duvv5g71kads3" path="res://features/Game/components/cell/scenes/Cell_basic.tscn" id="6_uhj5r"]
@@ -29,15 +29,14 @@ fog_sky_affect = 0.02
 [node name="WorldTest" type="Node3D"]
 script = ExtResource("1_ktgh3")
 
+[node name="CameraWithArm" parent="." instance=ExtResource("2_6wnnp")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, -64.6308)
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_fh11p")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.87538, 0.483435, 0, -0.483435, 0.87538, 0, 32.9057, -128.828)
-
-[node name="FreeCamera" type="Camera3D" parent="."]
-transform = Transform3D(-4.95676e-08, -0.5, 0.866025, 2.18557e-08, 0.866025, 0.5, -1, 4.37114e-08, -3.19989e-08, 16.0893, 29.1585, -80.0888)
-script = ExtResource("2_tbvmi")
 
 [node name="Field" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, -75)

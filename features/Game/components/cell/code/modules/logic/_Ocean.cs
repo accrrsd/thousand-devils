@@ -17,6 +17,13 @@ public class OceanLogic : BaseLogic
     pawn.CarryItem = PawnItems.None;
   }
 
+  protected override bool HighlightPawnMoves(Pawn pawn) {
+    if (!base.HighlightPawnMoves(pawn)) return false;
+    List<Cell> highlightedCells = Cell.Field.SwitchHighlightNeighbors(Cell, true,
+      pCell => (pCell.Type == CellType.Ocean || pCell.Type == CellType.Ship) && pCell.CanAcceptPawns && pCell.Logic.CanAcceptThatPawn(pawn));
+    return highlightedCells.Count != 0;
+  }
+
   protected override void PawnFight(Cell _, Pawn pawn) {
     List<Pawn> enemyPawns = Cell.GetPawns().Where(p => p.OwnerPlayer != pawn.OwnerPlayer).ToList();
 

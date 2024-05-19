@@ -2,6 +2,7 @@ using System;
 using Godot;
 using ThousandDevils.features.Game.components.field.code;
 using ThousandDevils.features.Game.components.pawn.code;
+using ThousandDevils.features.Game.components.player.code;
 using ThousandDevils.features.Game.utils;
 using static ThousandDevils.features.GlobalUtils.LoadedPackedScenes;
 
@@ -15,7 +16,10 @@ public class ShipLogic : BaseLogic
     Cell.AddPawn(DefaultPawnNodeScene.Instantiate<Pawn>(), false);
     Cell.AddPawn(DefaultPawnNodeScene.Instantiate<Pawn>(), false);
     Cell.AddPawn(DefaultPawnNodeScene.Instantiate<Pawn>(), false);
+    Cell.PawnWasAdded += OnPawnWasAdded;
   }
+
+  public Player OwnerPlayer { get; set; }
 
   public void SwitchPlacesWithCell(Cell otherCell) {
     Field field = Cell.Field;
@@ -47,5 +51,9 @@ public class ShipLogic : BaseLogic
     if (highlightedCell.Type != CellType.Ocean) return base.OnHighlightedCellClick(highlightedCell);
     SwitchPlacesWithCell(highlightedCell);
     return true;
+  }
+
+  private void OnPawnWasAdded(Cell _, Pawn pawn) {
+    if (pawn.OwnerPlayer != OwnerPlayer) pawn.Die();
   }
 }

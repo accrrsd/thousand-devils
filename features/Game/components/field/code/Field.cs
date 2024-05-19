@@ -16,6 +16,7 @@ public partial class Field : Node3D
   public List<Cell> HighlightedCells { get; set; } = new();
   public List<Cell> Cells { get; private set; } = new();
   public Cell[][] CellsGrid { get; private set; }
+  public Tuple<int, int> FieldSize { get; private set; }
 
   public override void _Ready() {
     Cells = GetChildsByType<Cell>(this);
@@ -48,6 +49,7 @@ public partial class Field : Node3D
     float sizeX = maxX - minX + 1;
     float sizeZ = maxZ - minZ + 1;
 
+    FieldSize = new Tuple<int, int>((int)sizeX, (int)sizeZ);
 
     CellsGrid = new Cell[(int)sizeX][];
     for (int i = 0; i < (int)sizeX; i++) CellsGrid[i] = new Cell[(int)sizeZ];
@@ -61,7 +63,6 @@ public partial class Field : Node3D
       cell.GridCords = new Vector2I((int)newX, (int)newZ);
     }
   }
-
 
   public void UpdateCellGridCords(Cell cell, Vector2I newCords) {
     CellsGrid[newCords[0]][newCords[1]] = cell;

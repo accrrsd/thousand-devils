@@ -170,6 +170,8 @@ public partial class Cell : Node3D, ICell
       CellType.Fortress => new FortressLogic(this),
       CellType.Horse => new HorseLogic(this),
       CellType.Cannon => new CannonLogic(this),
+      CellType.LightHouse => new LightHouseLogic(this),
+      CellType.DreamFlora => new DreamFloraLogic(this),
       _ => new BaseLogic(this)
     };
   }

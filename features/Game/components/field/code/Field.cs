@@ -69,6 +69,17 @@ public partial class Field : Node3D
     cell.GridCords = newCords;
   }
 
+  public void ManageOneHighlightedCell(bool value, Cell cell, bool deleteOlds = true) {
+    cell.IsHighlighted = value;
+    if (value){
+      HighlightedCells.Add(cell);
+    }
+    else{
+      if (HighlightedCells.Contains(cell)) HighlightedCells.Remove(cell);
+    }
+      if (deleteOlds) ClearHighlighedCells();
+  }
+
   private void ManageHighlightCells(bool value, List<Cell> newCells, bool deleteOlds = true) {
     //Delete newCells from HighlightedCells
     if (!deleteOlds && !value) {

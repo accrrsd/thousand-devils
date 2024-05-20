@@ -11,7 +11,7 @@ public class DreamFloraLogic : BaseLogic
   private readonly Dictionary<Player, List<Pawn>> OriginalOwnersAndPawns = new();
 
   public DreamFloraLogic(Cell cell) : base(cell) {
-    // todo Нужно сделать всплывающее окно, что нужно играть за других игроков (Отключение в настройках)\
+    // todo Нужно сделать всплывающее окно, что нужно играть за других игроков (Отключение в настройках)
     // Карты, деньги, два ствола
     Cell.IsOpen = true;
     Cell.PawnWasAdded += OnPawnWasAdded;

@@ -21,8 +21,8 @@ public partial class Camera : Camera3D
     base._Ready();
     _modes.Add(CameraModeType.Free, new FreeMode(this));
     _modes.Add(CameraModeType.VerticalPinned, new VerticalPinnedMode(this));
-    UpdateCameraMode(CameraModeType.VerticalPinned);
-    // UpdateCameraMode(CameraModeType.Free);
+    // UpdateCameraMode(CameraModeType.VerticalPinned);
+    UpdateCameraMode(CameraModeType.Free);
     CurrentMode?.OnReady();
   }
 

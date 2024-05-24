@@ -13,10 +13,6 @@ public class RumTrapLogic : BaseLogic
     Cell.PawnWasAdded += OnPawnWasAdded;
   }
 
-  //todo В текущей логике будет ошибка,
-  //todo если на клетке стояла пешка и добавилась еще одна.
-  //todo Это реально и можно пофиксить через list pawn, currentCircle
-
   private void OnPawnWasAdded(Cell _, Pawn pawn) {
     if (_stuckPawns.Count == 0) Cell.Field.Game.TurnModule.OnCircleChange += Wrapper;
     

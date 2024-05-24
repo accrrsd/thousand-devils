@@ -20,7 +20,8 @@ public enum CellType
   Cannon,
   LightHouse,
   DreamFlora,
-  Earthquake
+  Earthquake,
+  Plane
 }
 
 public enum CameraModeType

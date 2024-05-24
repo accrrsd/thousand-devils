@@ -12,7 +12,6 @@ public class DreamFloraLogic : BaseLogic
 
   public DreamFloraLogic(Cell cell) : base(cell) {
     // todo Нужно сделать всплывающее окно, что нужно играть за других игроков (Отключение в настройках)
-    // Карты, деньги, два ствола
     Cell.IsOpen = true;
     Cell.PawnWasAdded += OnPawnWasAdded;
     Cell.Field.Game.TurnModule.OnCircleChange += CancelEffect;

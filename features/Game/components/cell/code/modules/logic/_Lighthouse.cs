@@ -13,7 +13,6 @@ public class LightHouseLogic : BaseLogic
   }
 
   private void HighlightClosedCells() {
-    Cell.Field.Game.Camera.CurrentMode.RedirectClickToCellLogic = this;
     List<Vector2I> highlightedCellsCords = new();
 
     for (int x = 0; x < Cell.Field.FieldSize.Item1; x++) {
@@ -36,17 +35,18 @@ public class LightHouseLogic : BaseLogic
   public override bool OnHighlightedCellClick(Cell highlightedCell) {
     highlightedCell.IsOpen = true;
     highlightedCell.IsHighlighted = false;
+    Cell.Field.ManageOneHighlightedCell(false, highlightedCell, false);
     _openedCellsCount--;
-    if (_openedCellsCount == 0) {
+    if (_openedCellsCount == 0 || Cell.Field.HighlightedCells.Count == 0) {
       Cell.Field.Game.Camera.CurrentMode.RedirectClickToCellLogic = null;
       Cell.Field.ClearHighlighedCells();
     }
-
     return true;
   }
 
   private void OnPawnWasAdded(Cell _, Pawn pawn) {
     Cell.Field.ClearHighlighedCells();
+    Cell.Field.Game.Camera.CurrentMode.RedirectClickToCellLogic = this;
     HighlightClosedCells();
     Cell.PawnWasAdded -= OnPawnWasAdded;
   }

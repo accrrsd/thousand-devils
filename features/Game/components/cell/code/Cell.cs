@@ -183,6 +183,7 @@ public partial class Cell : Node3D, ICell
       CellType.LightHouse => new LightHouseLogic(this),
       // CellType.DreamFlora => new DreamFloraLogic(this),
       CellType.Earthquake => new EarthquakeLogic(this),
+      CellType.Plane => new PlaneLogic(this),
       _ => new BaseLogic(this)
     };
   }

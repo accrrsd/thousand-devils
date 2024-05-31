@@ -43,7 +43,7 @@ public class HorseLogic : BaseLogic
   }
 
   private void OnPawnWasAdded(Cell _, Pawn pawn) {
-    Cell.Field.ClearHighlighedCells();
+    Cell.Field.ClearHighlightedCells();
     Cell.Field.Game.Camera.CurrentMode.RedirectClickToCellLogic = this;
     HighlightCellsWithDirection(pawn);
   }

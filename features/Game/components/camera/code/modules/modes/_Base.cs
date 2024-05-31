@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Godot;
 using Godot.Collections;
 using ThousandDevils.features.Game.components.cell.code;
@@ -58,17 +59,17 @@ public class BaseMode
       }
     }
     //click on highlighted cell
-    else if (Camera.Game.Field.HighlightedCells.Contains(targetCell)) {
+    else if (Camera.Game.Field.GetHighlightedCells().Contains(targetCell)) {
       _firstCell.Logic.OnHighlightedCellClick(targetCell);
       //stop event propagation and clear _firstCell variable
       if (RedirectClickToCellLogic != null) return;
-      Camera.Game.Field.ClearHighlighedCells();
+      Camera.Game.Field.ClearHighlightedCells();
       targetCell.Logic.OnThisCellClickAsHighlighted(_firstCell);
       _firstCell = null;
     }
     //click on any cell on map
     else {
-      Camera.Game.Field.ClearHighlighedCells();
+      Camera.Game.Field.ClearHighlightedCells();
       _firstCell = null;
     }
   }
@@ -76,7 +77,7 @@ public class BaseMode
   private void RedirectedCameraLogic(Cell targetCell) {
     //if forced by some cell logic, click on non highlighted cell do nothing
     _firstCell = null;
-    if (Camera.Game.Field.HighlightedCells.Contains(targetCell)) RedirectClickToCellLogic.OnHighlightedCellClick(targetCell);
+    if (Camera.Game.Field.GetHighlightedCells().Contains(targetCell)) RedirectClickToCellLogic.OnHighlightedCellClick(targetCell);
   }
 
   protected virtual void CameraLogic(Cell targetCell) {

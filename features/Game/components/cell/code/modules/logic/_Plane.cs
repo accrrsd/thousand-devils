@@ -1,9 +1,7 @@
-using System;
 using System.Collections.Generic;
 using Godot;
-using ThousandDevils.features.Game.components.field.code;
 using ThousandDevils.features.Game.components.pawn.code;
-using ThousandDevils.features.GlobalUtils;
+using ThousandDevils.features.Game.utils;
 
 namespace ThousandDevils.features.Game.components.cell.code.modules.logic;
 
@@ -22,10 +20,11 @@ public class PlaneLogic : BaseLogic
         Cell currentCell = Cell.Field.GetCellFromCellsGrid(x, z);
         bool opened = currentCell.IsOpen;
         if (!opened) continue;
-        if (currentCell.Type == utils.CellType.Ocean) continue;
+        if (currentCell.Type == CellType.Ocean) continue;
         highlightedCellsCords.Add(currentCell.GridCords);
       }
     }
+
     Cell.Field.SwitchHighlightByCords(true, highlightedCellsCords);
   }
 
@@ -36,7 +35,7 @@ public class PlaneLogic : BaseLogic
 
   private void OnPawnWasAdded(Cell _, Pawn pawn) {
     Cell.Field.Game.Camera.CurrentMode.RedirectClickToCellLogic = this;
-    Cell.Field.ClearHighlighedCells();
+    Cell.Field.ClearHighlightedCells();
     HighlightOpenedCells();
     Cell.PawnWasAdded -= OnPawnWasAdded;
   }

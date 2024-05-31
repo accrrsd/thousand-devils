@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Godot;
 using ThousandDevils.features.Game.components.field.code;
@@ -10,12 +9,12 @@ namespace ThousandDevils.features.Game.components.cell.code.modules.logic;
 
 public class EarthquakeLogic : BaseLogic
 {
+  private readonly Color _selectedColor;
   private int _changedCellsCount = 2;
-  private Cell _selectedCell = null;
-  private Color _selectedColor;
+  private Cell _selectedCell;
 
   public EarthquakeLogic(Cell cell) : base(cell) {
-    Cell.IsOpen = true;
+    //Cell.IsOpen = true;
     Cell.PawnWasAdded += OnPawnWasAdded;
     _selectedColor = UtilsFunctions.GenerateColorFromRgb(247, 127, 0);
   }
@@ -47,7 +46,7 @@ public class EarthquakeLogic : BaseLogic
 
     Cell.Field.SwitchHighlightByCords(true, highlightedCellsCords);
   }
-  
+
   private void SwitchCellsPlaces(Cell firstCell, Cell secondCell) {
     Field field = Cell.Field;
     Vector2I firstCellCords = firstCell.GridCords;
@@ -61,34 +60,35 @@ public class EarthquakeLogic : BaseLogic
     firstCell.GlobalPosition = secondCellGlobalPos;
     secondCell.GlobalPosition = firstCellGlobalPos;
   }
-  
+
   public override bool OnHighlightedCellClick(Cell highlightedCell) {
     if (_selectedCell == null) {
       highlightedCell.ChangeHighlightedBorderColor(_selectedColor);
       _selectedCell = highlightedCell;
       return true;
     }
-    
+
     if (_selectedCell == highlightedCell) {
-      highlightedCell.ChangeHighlightedBorderColor(default);
+      highlightedCell.ChangeHighlightedBorderColor();
       _selectedCell = null;
       return true;
     }
 
     SwitchCellsPlaces(_selectedCell, highlightedCell);
-    _selectedCell.ChangeHighlightedBorderColor(default);
+    _selectedCell.ChangeHighlightedBorderColor();
     _selectedCell = null;
     _changedCellsCount--;
-    
+
     if (_changedCellsCount == 0) {
       Cell.Field.Game.Camera.CurrentMode.RedirectClickToCellLogic = null;
-      Cell.Field.ClearHighlighedCells();
+      Cell.Field.ClearHighlightedCells();
     }
+
     return true;
   }
 
   private void OnPawnWasAdded(Cell _, Pawn pawn) {
-    Cell.Field.ClearHighlighedCells();
+    Cell.Field.ClearHighlightedCells();
     Cell.Field.Game.Camera.CurrentMode.RedirectClickToCellLogic = this;
     HighlightOpenedCells();
     Cell.PawnWasAdded -= OnPawnWasAdded;

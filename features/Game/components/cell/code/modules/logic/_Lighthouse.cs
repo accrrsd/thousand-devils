@@ -9,6 +9,7 @@ public class LightHouseLogic : BaseLogic
   private int _openedCellsCount = 4;
 
   public LightHouseLogic(Cell cell) : base(cell) {
+    cell.IsOpen = true;
     Cell.PawnWasAdded += OnPawnWasAdded;
   }
 
@@ -34,18 +35,18 @@ public class LightHouseLogic : BaseLogic
 
   public override bool OnHighlightedCellClick(Cell highlightedCell) {
     highlightedCell.IsOpen = true;
-    highlightedCell.IsHighlighted = false;
-    Cell.Field.ManageOneHighlightedCell(false, highlightedCell, false);
+    highlightedCell.UpdateHighlight(false);
     _openedCellsCount--;
-    if (_openedCellsCount == 0 || Cell.Field.HighlightedCells.Count == 0) {
+    if (_openedCellsCount == 0 || Cell.Field.GetHighlightedCells().Count == 0) {
       Cell.Field.Game.Camera.CurrentMode.RedirectClickToCellLogic = null;
-      Cell.Field.ClearHighlighedCells();
+      Cell.Field.ClearHighlightedCells();
     }
+
     return true;
   }
 
   private void OnPawnWasAdded(Cell _, Pawn pawn) {
-    Cell.Field.ClearHighlighedCells();
+    Cell.Field.ClearHighlightedCells();
     Cell.Field.Game.Camera.CurrentMode.RedirectClickToCellLogic = this;
     HighlightClosedCells();
     Cell.PawnWasAdded -= OnPawnWasAdded;

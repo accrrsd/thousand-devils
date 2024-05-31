@@ -68,7 +68,7 @@ public class ArrowLogic : BaseLogic
   }
 
   private void OnPawnWasAdded(Cell _, Pawn pawn) {
-    Cell.Field.ClearHighlighedCells();
+    Cell.Field.ClearHighlightedCells();
     if (_possibleDirections.Count == 1) OneDirectionLogic(pawn);
     else HighlightCellsWithDirection(pawn);
   }

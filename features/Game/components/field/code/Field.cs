@@ -12,8 +12,8 @@ namespace ThousandDevils.features.Game.components.field.code;
 
 public partial class Field : Node3D
 {
+  private readonly List<Cell> _highlightedCells = new();
   public Game.code.Game Game { get; private set; }
-  public List<Cell> HighlightedCells { get; set; } = new();
   public List<Cell> Cells { get; private set; } = new();
   public Cell[][] CellsGrid { get; private set; }
   public Tuple<int, int> FieldSize { get; private set; }
@@ -69,43 +69,20 @@ public partial class Field : Node3D
     cell.GridCords = newCords;
   }
 
-  public void ManageOneHighlightedCell(bool value, Cell cell, bool deleteOlds = true) {
-    cell.IsHighlighted = value;
-    if (value){
-      HighlightedCells.Add(cell);
-    }
-    else{
-      if (HighlightedCells.Contains(cell)) HighlightedCells.Remove(cell);
-    }
-      if (deleteOlds) ClearHighlighedCells();
+  public IReadOnlyList<Cell> GetHighlightedCells() => _highlightedCells.AsReadOnly();
+
+  /// <summary> Basically add and remove highlight cell would be called from Cell.UpdateHighlight, and do not be necessary called it here</summary>
+  public void AddHighlightedCell(Cell cell) => _highlightedCells.Add(cell);
+
+  /// <summary> Basically add and remove highlight cell would be called from Cell.UpdateHighlight, and do not be necessary called it here</summary>
+  public void RemoveHighlightedCell(Cell cell) => _highlightedCells.Remove(cell);
+
+  public void ClearHighlightedCells() {
+    foreach (Cell cell in _highlightedCells) cell.UpdateHighlight(false, false);
+    _highlightedCells.Clear();
   }
 
-  private void ManageHighlightCells(bool value, List<Cell> newCells, bool deleteOlds = true) {
-    //Delete newCells from HighlightedCells
-    if (!deleteOlds && !value) {
-      if (newCells.Count == 0) return;
-      HighlightedCells.RemoveAll(cell => {
-        if (!newCells.Contains(cell)) return false;
-        cell.IsHighlighted = false;
-        return true;
-      });
-      return;
-    }
-
-    //if delete olds, we delete it anyway, but if value - we fill with new cells
-    if (deleteOlds) ClearHighlighedCells();
-
-    if (!value) return;
-    foreach (Cell cell in newCells) cell.IsHighlighted = true;
-    HighlightedCells.AddRange(newCells);
-  }
-
-  public void ClearHighlighedCells() {
-    foreach (Cell cell in HighlightedCells) cell.IsHighlighted = false;
-    HighlightedCells.Clear();
-  }
-
-  public List<Cell> SwitchHighlightNeighbors(Cell cell, bool value, Predicate<Cell> predicate = null, bool deleteOlds = true) {
+  public List<Cell> SwitchHighlightNeighbors(Cell cell, bool value, Predicate<Cell> predicate = null) {
     int x = cell.GridCords[0];
     int y = cell.GridCords[1];
     List<Cell> affectedCells = new();
@@ -119,16 +96,16 @@ public partial class Field : Node3D
         if (predicate == null || predicate(targetCell)) affectedCells.Add(targetCell);
       }
 
-    ManageHighlightCells(value, affectedCells, deleteOlds);
+    foreach (Cell currentCell in affectedCells) currentCell.UpdateHighlight(value);
     return affectedCells;
   }
 
-  public List<Cell> SwitchHighlightByCords(bool value, List<Vector2I> cords, Predicate<Cell> predicate = null, bool deleteOlds = true) {
+  public List<Cell> SwitchHighlightByCords(bool value, List<Vector2I> cords, Predicate<Cell> predicate = null) {
     List<Cell> affectedCells = cords.Where(cord => {
       if (!IsIn2DArrayBounds(cord[0], cord[1], CellsGrid)) return false;
       return predicate == null || predicate(CellsGrid[cord[0]][cord[1]]);
     }).Select(cord => CellsGrid[cord[0]][cord[1]]).ToList();
-    ManageHighlightCells(value, affectedCells, deleteOlds);
+    foreach (Cell currentCell in affectedCells) currentCell.UpdateHighlight(value);
     return affectedCells;
   }
 }

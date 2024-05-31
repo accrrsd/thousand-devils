@@ -60,7 +60,7 @@ public partial class Cell : Node3D, ICell
       ChangeMapsVisibility(value);
       if (value && _firstDiscovering) {
         _firstDiscovering = false;
-        WasDiscovered?.Invoke(this, GetPawns()[0]);
+        WasDiscovered?.Invoke(this, GetPawns()?[0]);
       }
     }
   }
@@ -88,6 +88,8 @@ public partial class Cell : Node3D, ICell
   public IReadOnlyList<Pawn> GetPawns() => PawnsInside.AsReadOnly();
   public event Action<Cell, Pawn> PawnWasAdded;
   public event Action<Cell, Pawn> PawnWasRemoved;
+
+  /// <summary>Pawn would be null if discovered by code like LightHouse</summary>
   public event Action<Cell, Pawn> WasDiscovered;
 
   public void UpdateHighlight(bool value, bool affectHighlighted = true) {

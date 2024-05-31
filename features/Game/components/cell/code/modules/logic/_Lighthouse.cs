@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using Godot;
 using ThousandDevils.features.Game.components.pawn.code;
 
 namespace ThousandDevils.features.Game.components.cell.code.modules.logic;
@@ -9,28 +7,13 @@ public class LightHouseLogic : BaseLogic
   private int _openedCellsCount = 4;
 
   public LightHouseLogic(Cell cell) : base(cell) {
-    cell.IsOpen = true;
+    Cell.IsOpen = true;
     Cell.PawnWasAdded += OnPawnWasAdded;
   }
 
   private void HighlightClosedCells() {
-    List<Vector2I> highlightedCellsCords = new();
-
-    for (int x = 0; x < Cell.Field.FieldSize.Item1; x++) {
-      for (int z = 0; z < Cell.Field.FieldSize.Item2; z++) {
-        Cell currentCell = Cell.Field.GetCellFromCellsGrid(x, z);
-        bool opened = currentCell.IsOpen;
-        if (opened) continue;
-        highlightedCellsCords.Add(currentCell.GridCords);
-      }
-    }
-
-    if (highlightedCellsCords.Count == 0) {
-      Cell.Field.Game.Camera.CurrentMode.RedirectClickToCellLogic = null;
-      return;
-    }
-
-    Cell.Field.SwitchHighlightByCords(true, highlightedCellsCords);
+    if (Cell.Field.SwitchHighlightWholeField(true, pCell => !pCell.IsOpen).Count > 0) return;
+    Cell.Field.Game.Camera.CurrentMode.RedirectClickToCellLogic = null;
   }
 
   public override bool OnHighlightedCellClick(Cell highlightedCell) {

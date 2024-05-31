@@ -82,6 +82,18 @@ public partial class Field : Node3D
     _highlightedCells.Clear();
   }
 
+  public List<Cell> SwitchHighlightWholeField(bool value, Predicate<Cell> predicate = null) {
+    List<Cell> affectedCells = new();
+    for (int x = 0; x < FieldSize.Item1; x++) {
+      for (int z = 0; z < FieldSize.Item2; z++)
+        if (predicate == null || predicate(CellsGrid[x][z]))
+          affectedCells.Add(CellsGrid[x][z]);
+    }
+
+    foreach (Cell currentCell in affectedCells) currentCell.UpdateHighlight(value);
+    return affectedCells;
+  }
+
   public List<Cell> SwitchHighlightNeighbors(Cell cell, bool value, Predicate<Cell> predicate = null) {
     int x = cell.GridCords[0];
     int y = cell.GridCords[1];

@@ -5,17 +5,16 @@ namespace ThousandDevils.features.Game.components.cell.code.modules.logic;
 
 public class RumLogic : BaseLogic
 {
+  private bool _containsRum = true;
   private readonly Random _random = new();
   private readonly int _rumCount;
 
   public RumLogic(Cell cell) : base(cell) {
-    Cell.WasDiscovered += OnCellWasDiscovered;
+    Cell.PawnWasAdded += OnPawnWasAdded;
     _rumCount = _random.Next(1, 4);
   }
-
-//todo Обратить внимание и обсудить это.
-  private void OnCellWasDiscovered(Cell _, Pawn pawn) {
-    if (pawn == null) return;
-    pawn.OwnerPlayer.RumCount += _rumCount;
+    private void OnPawnWasAdded(Cell _, Pawn pawn) {
+    if (_containsRum) pawn.OwnerPlayer.RumCount += _rumCount;
+    _containsRum = false;
   }
 }

@@ -54,3 +54,5 @@ public enum CellMapName
   Visible,
   Invisible
 }
+
+public readonly Color SelectedColor = UtilsFunctions.GenerateColorFromRgb(247, 127, 0);

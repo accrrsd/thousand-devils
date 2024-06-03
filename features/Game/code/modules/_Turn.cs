@@ -1,4 +1,5 @@
 ﻿using System;
+using Godot;
 using ThousandDevils.features.Game.components.player.code;
 
 namespace ThousandDevils.features.Game.code.modules;
@@ -41,6 +42,7 @@ public class TurnModule
   }
 
   private void CalculateCurrentCircle(int currentTurn) {
+    GD.Print("Players ", _game.Players.Count);
     int calculatedCircle = currentTurn / _game.Players.Count;
     if (calculatedCircle != CurrentCircle) CurrentCircle = calculatedCircle;
   }

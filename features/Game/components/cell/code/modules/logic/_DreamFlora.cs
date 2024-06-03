@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Godot;
 using ThousandDevils.features.Game.components.pawn.code;
 using ThousandDevils.features.Game.components.player.code;
 
@@ -8,7 +9,7 @@ namespace ThousandDevils.features.Game.components.cell.code.modules.logic;
 
 public class DreamFloraLogic : BaseLogic
 {
-  private readonly Dictionary<Player, List<Pawn>> OriginalOwnersAndPawns = new();
+  private readonly Dictionary<Player, List<Pawn>> _originalOwnersAndPawns = new();
 
   public DreamFloraLogic(Cell cell) : base(cell) {
     // todo Нужно сделать всплывающее окно, что нужно играть за других игроков (Отключение в настройках)
@@ -18,24 +19,30 @@ public class DreamFloraLogic : BaseLogic
   }
 
   public void OnPawnWasAdded(Cell _, Pawn pawn) {
-    List<Player> Players = Cell.Field.Game.Players;
-    List<Player> ChangedPlayers = Players;
-    ChangedPlayers.Add(Players[0]);
-    ChangedPlayers.RemoveAt(0);
-    for (int i = 0; i < ChangedPlayers.Count; i++) {
-      Player originalPlayer = Players[i];
-      OriginalOwnersAndPawns.Add(originalPlayer, originalPlayer.ControlledPawns);
-      Player changedPlayer = ChangedPlayers[i];
-      originalPlayer.ControlledPawns.ForEach(pawn => pawn.OwnerPlayer = changedPlayer);
+    List<Player> players = Cell.Field.Game.Players;
+    List<Player> changedPlayers = players;
+    changedPlayers.Add(players[0]);
+    changedPlayers.RemoveAt(0);
+    GD.Print(changedPlayers.Count);
+    for (int i = 0; i < changedPlayers.Count; i++) {
+      Player originalPlayer = players[i];
+      _originalOwnersAndPawns.Add(originalPlayer, originalPlayer.ControlledPawns);
+      Player changedPlayer = changedPlayers[i];
+      changedPlayer.ControlledPawns = originalPlayer.ControlledPawns;
+      changedPlayer.ControlledPawns.ForEach(p => p.OwnerPlayer = changedPlayer);
     }
 
-    Cell.Field.Game.Players = ChangedPlayers;
+    Cell.Field.Game.Players = changedPlayers;
     Cell.PawnWasAdded -= OnPawnWasAdded;
   }
 
   public void CancelEffect(int currentTurn) {
-    foreach (KeyValuePair<Player, List<Pawn>> kvp in OriginalOwnersAndPawns) kvp.Key.ControlledPawns = kvp.Value;
-    Cell.Field.Game.Players = OriginalOwnersAndPawns.Keys.Select(key => key).ToList();
+    foreach (KeyValuePair<Player, List<Pawn>> kvp in _originalOwnersAndPawns) {
+      kvp.Value.ForEach(p => p.OwnerPlayer = kvp.Key);
+      kvp.Key.ControlledPawns = kvp.Value;
+    }
+
+    Cell.Field.Game.Players = _originalOwnersAndPawns.Keys.ToList();
     Cell.Field.Game.TurnModule.OnCircleChange -= CancelEffect;
   }
 }

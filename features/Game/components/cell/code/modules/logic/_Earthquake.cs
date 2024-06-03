@@ -20,31 +20,36 @@ public class EarthquakeLogic : BaseLogic
   }
 
   private void HighlightOpenedCells() {
-    List<Vector2I> highlightedCellsCords = new();
+    //todo Проконсультироваться с Максимом + добавить проверку на то, лежат ли пердметы на клетке
+    List<Cell> highlightedCells = Cell.Field.SwitchHighlightWholeField(true,
+      pCell => pCell.IsOpen && pCell.Type != CellType.Ocean && pCell.Type != CellType.Ship && pCell.Type != CellType.PossibleShip);
 
-    for (int x = 0; x < Cell.Field.FieldSize.Item1; x++) {
-      for (int z = 0; z < Cell.Field.FieldSize.Item2; z++) {
-        Cell currentCell = Cell.Field.GetCellFromCellsGrid(x, z);
-        bool opened = currentCell.IsOpen;
-        if (!opened) continue;
-        // todo НЕ РАБОТАЕТ БЛЯТЬ !1!!! (Пиздец, нахуй, блять)
-        // todo Поглядеть мол не работает Cell.Field.HighlightedCells (Жопа)
-        // todo Для Шипера (ДаНьКа ака Дантесс ака dAИ0И_B_Kedax2009.png ака Дано ака Д-Д-Даня) Изменять Cell.Field.HighlightedCells в Cell.IsHighlighted
-        // if (currentCell.Type == CellType.Ocean) continue;
-        if (currentCell.Type == CellType.Ship) continue;
-        // if (Cell.Type == CellType.PossibleShip) continue;
-        if (currentCell.GetPawns().Count > 0) continue;
-        // todo Сделать проверку на то, лежат ли предметы на клетке (Хуй)
-        highlightedCellsCords.Add(currentCell.GridCords);
-      }
-    }
+    if (highlightedCells.Count <= 1) Cell.Field.Game.Camera.CurrentMode.RedirectClickToCellLogic = null;
 
-    if (highlightedCellsCords.Count <= 1) {
-      Cell.Field.Game.Camera.CurrentMode.RedirectClickToCellLogic = null;
-      return;
-    }
+    //List<Vector2I> highlightedCellsCords = new();
+    // for (int x = 0; x < Cell.Field.FieldSize.Item1; x++) {
+    //   for (int z = 0; z < Cell.Field.FieldSize.Item2; z++) {
+    //     Cell currentCell = Cell.Field.GetCellFromCellsGrid(x, z);
+    //     bool opened = currentCell.IsOpen;
+    //     if (!opened) continue;
+    //     // todo НЕ РАБОТАЕТ БЛЯТЬ !1!!! (Пиздец, нахуй, блять)
+    //     // todo Поглядеть мол не работает Cell.Field.HighlightedCells (Жопа)
+    //     // todo Для Шипера (ДаНьКа ака Дантесс ака dAИ0И_B_Kedax2009.png ака Дано ака Д-Д-Даня) Изменять Cell.Field.HighlightedCells в Cell.IsHighlighted
+    //     // if (currentCell.Type == CellType.Ocean) continue;
+    //     if (currentCell.Type == CellType.Ship) continue;
+    //     // if (Cell.Type == CellType.PossibleShip) continue;
+    //     if (currentCell.GetPawns().Count > 0) continue;
+    //     // todo Сделать проверку на то, лежат ли предметы на клетке (Хуй)
+    //     highlightedCellsCords.Add(currentCell.GridCords);
+    //   }
+    // }
 
-    Cell.Field.SwitchHighlightByCords(true, highlightedCellsCords);
+    // if (highlightedCellsCords.Count <= 1) {
+    //   Cell.Field.Game.Camera.CurrentMode.RedirectClickToCellLogic = null;
+    //   return;
+    // }
+    //
+    // Cell.Field.SwitchHighlightByCords(true, highlightedCellsCords);
   }
 
   private void SwitchCellsPlaces(Cell firstCell, Cell secondCell) {

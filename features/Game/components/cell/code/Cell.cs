@@ -60,7 +60,7 @@ public partial class Cell : Node3D, ICell
       ChangeMapsVisibility(value);
       if (value && _firstDiscovering) {
         _firstDiscovering = false;
-        WasDiscovered?.Invoke(this, GetPawns()?[0]);
+        WasDiscovered?.Invoke(this, GetPawns().Count > 0 ? GetPawns()[0] : null);
       }
     }
   }
@@ -184,9 +184,9 @@ public partial class Cell : Node3D, ICell
       CellType.Horse => new HorseLogic(this),
       CellType.Cannon => new CannonLogic(this),
       CellType.LightHouse => new LightHouseLogic(this),
-      // CellType.DreamFlora => new DreamFloraLogic(this),
+      CellType.DreamFlora => new DreamFloraLogic(this),
       CellType.Earthquake => new EarthquakeLogic(this),
-      CellType.Plane => new PlaneLogic(this),
+      //CellType.Plane => new PlaneLogic(this),
       _ => new BaseLogic(this)
     };
   }

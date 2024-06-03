@@ -13,7 +13,9 @@ public class RumLogic : BaseLogic
     _rumCount = _random.Next(1, 4);
   }
 
+//todo Обратить внимание и обсудить это.
   private void OnCellWasDiscovered(Cell _, Pawn pawn) {
+    if (pawn == null) return;
     pawn.OwnerPlayer.RumCount += _rumCount;
   }
 }

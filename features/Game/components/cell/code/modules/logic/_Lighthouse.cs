@@ -7,7 +7,6 @@ public class LightHouseLogic : BaseLogic
   private int _openedCellsCount = 4;
 
   public LightHouseLogic(Cell cell) : base(cell) {
-    Cell.IsOpen = true;
     Cell.PawnWasAdded += OnPawnWasAdded;
   }
 

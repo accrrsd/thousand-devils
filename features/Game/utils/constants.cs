@@ -21,7 +21,8 @@ public enum CellType
   LightHouse,
   DreamFlora,
   Earthquake,
-  Plane
+  Plane,
+  Cave,
 }
 
 public enum CameraModeType
@@ -55,4 +56,4 @@ public enum CellMapName
   Invisible
 }
 
-public readonly Color SelectedColor = UtilsFunctions.GenerateColorFromRgb(247, 127, 0);
+// public readonly Color SelectedColor = UtilsFunctions.GenerateColorFromRgb(247, 127, 0);
